@@ -8,6 +8,7 @@
     <artifactId>hsac-fitnesse-plugin</artifactId>
     <version>1.5.0</version>
 	<packaging>jar</packaging>
+	<url>https://github.com/fhoeben/hsac-fitnesse-plugin</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
