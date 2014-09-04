@@ -7,4 +7,4 @@ To use this plugin:
 - otherwise (create that file and) add the line: "SymbolTypes = nl.hsac.fitnesse.symbols.MonthsFromToday, nl.hsac.fitnesse.symbols.WeekDaysFromToday, nl.hsac.fitnesse.symbols.RandomBsn, nl.hsac.fitnesse.symbols.RandomInt, nl.hsac.fitnesse.symbols.RandomString"
 - if there already is a line starting with SlimTables
     - add ", table template:nl.hsac.fitnesse.slim.AutoArgScenarioTable, screenplay:nl.hsac.fitnesse.slim.ScreenplayTable, template screenplay:nl.hsac.fitnesse.slim.ScreenplayAutoArgScenarioTable"
-- otherwise add the line: "SlimTables = table template:nl.hsac.fitnesse.slim.AutoArgScenarioTable, screenplay:nl.hsac.fitnesse.slim.ScreenplayTable, template screenplay:nl.hsac.fitnesse.slim.ScreenplayAutoArgScenarioTable"
+- otherwise add the line: "SlimTables = table template:nl.hsac.fitnesse.slim.AutoArgScenarioTable, storyboard:nl.hsac.fitnesse.slim.StoryboardTable, template storyboard:nl.hsac.fitnesse.slim.StoryboardAutoArgScenarioTable"

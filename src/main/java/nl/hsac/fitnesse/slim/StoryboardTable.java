@@ -16,22 +16,22 @@ import java.util.List;
 /**
  * Script table which takes a 'screenshot' on each action.
  */
-public class ScreenplayTable extends ScriptTable {
+public class StoryboardTable extends ScriptTable {
     private String screenshotPrefix;
 
-    public ScreenplayTable(Table table, String tableId, SlimTestContext context) {
+    public StoryboardTable(Table table, String tableId, SlimTestContext context) {
         super(table, tableId, context);
         screenshotPrefix = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
     }
 
     @Override
     protected String getTableType() {
-        return "screenplayTable";
+        return "storyboardTable";
     }
 
     @Override
     protected String getTableKeyword() {
-        return "screenplay";
+        return "storyboard";
     }
 
     protected String getActionName() {
