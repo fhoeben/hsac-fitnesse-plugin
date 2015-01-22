@@ -1,9 +1,9 @@
 package nl.hsac.fitnesse.symbols;
 
+import fitnesse.wikitext.parser.Maybe;
 import fitnesse.wikitext.parser.Parser;
 import fitnesse.wikitext.parser.Symbol;
 import fitnesse.wikitext.parser.SymbolType;
-import util.Maybe;
 
 import java.util.List;
 

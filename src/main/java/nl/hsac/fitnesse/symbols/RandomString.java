@@ -1,13 +1,13 @@
 package nl.hsac.fitnesse.symbols;
 
 import fitnesse.wikitext.parser.Matcher;
+import fitnesse.wikitext.parser.Maybe;
 import fitnesse.wikitext.parser.Parser;
 import fitnesse.wikitext.parser.Rule;
 import fitnesse.wikitext.parser.Symbol;
 import fitnesse.wikitext.parser.Translation;
 import fitnesse.wikitext.parser.Translator;
 import nl.hsac.fitnesse.util.RandomUtil;
-import util.Maybe;
 
 /**
  * Generates random string consisting of the supplied characters.
