@@ -13,13 +13,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * ScenarioTable that looks for input parameters in all its rows, without the
+ * ScenarioTable that looks for in- and output parameters in all its rows, without the
  * parameters having to be specified in the first row also.
  */
 public class AutoArgScenarioTable extends ScenarioTable {
     private final static Pattern ARG_PATTERN = Pattern.compile("@\\{(.+?)\\}");
+    private static final Pattern OUT_PATTERN = Pattern.compile("\\$(.+?)=");
 
     private Set<String> inputs;
+    private Set<String> outputs;
 
     public AutoArgScenarioTable(Table table, String tableId, SlimTestContext testContext) {
         super(table, tableId, testContext);
@@ -27,7 +29,8 @@ public class AutoArgScenarioTable extends ScenarioTable {
 
     @Override
     public List<SlimAssertion> getAssertions() throws SyntaxError {
-        inputs = findInputs();
+        inputs = findArguments(ARG_PATTERN);
+        outputs = findArguments(OUT_PATTERN);
         return super.getAssertions();
     }
 
@@ -41,16 +44,26 @@ public class AutoArgScenarioTable extends ScenarioTable {
         for (String input : inputs) {
             addInput(input);
         }
+        for (String output : outputs) {
+            addOutput(output);
+        }
     }
 
-    private Set<String> findInputs() {
+    private void addOutput(String argument) {
+        // if my pull request (https://github.com/unclebob/fitnesse/pull/592) gets
+        // merged output adding will have to be done that same as for input
+        // then this method can be deleted in this class
+        getOutputs().add(argument);
+    }
+
+    private Set<String> findArguments(Pattern pattern) {
         Set<String> found = new LinkedHashSet<String>();
         int rowCount = table.getRowCount();
         for (int row = 0; row < rowCount; row++) {
             int columnCount = table.getColumnCountInRow(row);
             for (int column = 0; column < columnCount; column++) {
                 String cellContent = table.getCellContents(column, row);
-                Matcher m = ARG_PATTERN.matcher(cellContent);
+                Matcher m = pattern.matcher(cellContent);
                 while (m.find()) {
                     String input = m.group(1);
                     found.add(input);
