@@ -47,7 +47,9 @@ public class StoryboardTable extends ScriptTable {
         List<SlimAssertion> realAssertions = super.invokeAction(startingCol, endingCol, row, expectation);
         String screenshotName = getScreenshotName(row);
         Instruction instruction = callFunction(getTableType() + "Actor", getActionName(), screenshotName);
-        SlimAssertion screenshotAssertion = makeAssertion(instruction, new ScreenshotExpectation(0, row));
+        table.addColumnToRow(row, "");
+        int screenshotColumn = table.getColumnCountInRow(row) - 1;
+        SlimAssertion screenshotAssertion = makeAssertion(instruction, new ScreenshotExpectation(screenshotColumn, row));
         realAssertions.add(screenshotAssertion);
         return realAssertions;
     }
@@ -64,9 +66,9 @@ public class StoryboardTable extends ScriptTable {
         @Override
         protected SlimTestResult createEvaluationMessage(String actual, String expected) {
             try {
-                table.addColumnToRow(getRow(), actual);
+                table.substitute(getCol(), getRow(), actual);
             } catch (Throwable t) {
-                table.addColumnToRow(getRow(), actual + ": " + t.getMessage());
+                table.substitute(getCol(), getRow(), actual + ": " + t.getMessage());
             }
             return SlimTestResult.plain();
         }
