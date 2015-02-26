@@ -6,7 +6,7 @@
 
     <groupId>nl.hsac</groupId>
     <artifactId>hsac-fitnesse-plugin</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.0</version>
 	<packaging>jar</packaging>
 	<url>https://github.com/fhoeben/hsac-fitnesse-plugin</url>
 
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.fitnesse</groupId>
 			<artifactId>fitnesse</artifactId>
-			<version>20150114</version>
+			<version>20150226</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Testing -->

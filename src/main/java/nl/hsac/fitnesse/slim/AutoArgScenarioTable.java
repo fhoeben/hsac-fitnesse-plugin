@@ -49,13 +49,6 @@ public class AutoArgScenarioTable extends ScenarioTable {
         }
     }
 
-    private void addOutput(String argument) {
-        // if my pull request (https://github.com/unclebob/fitnesse/pull/592) gets
-        // merged output adding will have to be done that same as for input
-        // then this method can be deleted in this class
-        getOutputs().add(argument);
-    }
-
     private Set<String> findArguments(Pattern pattern) {
         Set<String> found = new LinkedHashSet<String>();
         int rowCount = table.getRowCount();
