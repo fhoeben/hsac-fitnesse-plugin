@@ -25,11 +25,6 @@ public class StoryboardTable extends ScriptTable {
     }
 
     @Override
-    protected String getTableType() {
-        return "storyboardTable";
-    }
-
-    @Override
     protected String getTableKeyword() {
         return "storyboard";
     }
