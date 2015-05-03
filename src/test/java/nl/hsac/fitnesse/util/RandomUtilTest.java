@@ -1,6 +1,5 @@
-package nl.hsac.fitnesse.symbols.util;
+package nl.hsac.fitnesse.util;
 
-import nl.hsac.fitnesse.util.RandomUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
