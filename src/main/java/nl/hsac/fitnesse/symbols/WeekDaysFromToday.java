@@ -9,9 +9,6 @@ import java.util.GregorianCalendar;
  * Our version of !today, that allows us to specify working days instead of days,
  * i.e. no Saturdays and Sundays
  * Usage: !weekDaysFromToday [(format)] [+|-increment]
- *
- * To be able to use it, please ensure the class name is added to the list of SymbolTypes in
- * plugins.properties
  */
 public class WeekDaysFromToday extends Today {
     public WeekDaysFromToday() {

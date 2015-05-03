@@ -13,9 +13,6 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates random positive integer with an (inclusive) minimum  and (non-inclusive) maximum.
  * Usage: !randomInt [(min,max)]
  * The usage of parentheses around the max is because I could not get it to work otherwise. :-)
- *
- * To be able to use it, please ensure the class name is added to the list of SymbolTypes in
- * plugins.properties
  */
 public class RandomInt extends SymbolBase implements Rule, Translation {
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();

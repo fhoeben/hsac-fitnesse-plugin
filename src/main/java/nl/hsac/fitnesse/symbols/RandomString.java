@@ -13,9 +13,6 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates random string consisting of the supplied characters.
  * Usage: !randomString [(length) [(characters) [(prefix)]]]
  * The usage of parentheses around the parameters is because I could not get it to work otherwise. :-)
- *
- * To be able to use it, please ensure the class name is added to the list of SymbolTypes in
- * plugins.properties
  */
 public class RandomString extends SymbolBase implements Rule, Translation {
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();

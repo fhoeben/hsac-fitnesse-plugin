@@ -10,9 +10,6 @@ import nl.hsac.fitnesse.util.BsnUtil;
 /**
  * Symbol that creates a random BSN for use in tests.
  * Usage: !randomBSN
- *
- * To be able to use it, please ensure the class name is added to the list of SymbolTypes in
- * plugins.properties
  */
 public class RandomBsn extends SymbolType implements Translation {
     private static final BsnUtil BSN_UTIL = new BsnUtil();
