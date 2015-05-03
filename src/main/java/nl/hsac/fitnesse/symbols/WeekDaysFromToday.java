@@ -20,7 +20,6 @@ public class WeekDaysFromToday extends Today {
 
     @Override
     protected void addIncrement(GregorianCalendar cal, int numWeekDays) {
-        int numWeekendDays = 0;
         int numDays = Math.abs(numWeekDays);
         int dateAddition = numWeekDays < 0 ? -1 : 1;
 
@@ -29,12 +28,8 @@ public class WeekDaysFromToday extends Today {
 
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             if (dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY) {
-                numWeekendDays += dateAddition;
+                i--;
             }
-        }
-
-        if (numWeekendDays != 0) {
-            cal.add(Calendar.DATE, numWeekendDays);
         }
     }
 }
