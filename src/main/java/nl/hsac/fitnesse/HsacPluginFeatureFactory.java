@@ -8,11 +8,7 @@ import fitnesse.wikitext.parser.SymbolProvider;
 import fitnesse.wikitext.parser.SymbolType;
 import nl.hsac.fitnesse.slim.AutoArgScenarioTable;
 import nl.hsac.fitnesse.slim.StoryboardTable;
-import nl.hsac.fitnesse.symbols.MonthsFromToday;
-import nl.hsac.fitnesse.symbols.RandomBsn;
-import nl.hsac.fitnesse.symbols.RandomInt;
-import nl.hsac.fitnesse.symbols.RandomString;
-import nl.hsac.fitnesse.symbols.WeekDaysFromToday;
+import nl.hsac.fitnesse.symbols.*;
 
 public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
     @Override
@@ -32,6 +28,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         super.registerSymbolTypes(symbolProvider);
         add(symbolProvider, new MonthsFromToday());
         add(symbolProvider, new WeekDaysFromToday());
+        add(symbolProvider, new LastDayOfMonth());
         add(symbolProvider, new RandomInt());
         add(symbolProvider, new RandomString());
         add(symbolProvider, new RandomBsn());

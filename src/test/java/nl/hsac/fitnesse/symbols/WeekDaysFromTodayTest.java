@@ -108,7 +108,7 @@ public class WeekDaysFromTodayTest {
         checkDate(c, 18, Calendar.MAY, 2015);
     }
 
-    private void checkDate(GregorianCalendar c, int day, int month, int year) {
+    static void checkDate(GregorianCalendar c, int day, int month, int year) {
         assertEquals(day, c.get(Calendar.DAY_OF_MONTH));
         assertEquals(month, c.get(Calendar.MONTH));
         assertEquals(year, c.get(Calendar.YEAR));

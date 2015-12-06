@@ -12,4 +12,8 @@ public class MonthsFromToday extends Today {
     public MonthsFromToday() {
         super("MonthsFromToday", "!monthsFromToday", Calendar.MONTH);
     }
+
+    public MonthsFromToday(String symbolName, String symbolText)  {
+        super(symbolName, symbolText, Calendar.MONTH);
+    }
 }
