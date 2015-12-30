@@ -8,6 +8,11 @@ Slim tables:
 - table template: scenario without need to define all parameters in first line
 - storyboard: script which takes a 'screenshot' after each row
 
+Tool to determine usage of scenarios in Slim suite:
+- Change test system used from 'slim' to 'slimCoverage'
+- Run suite (the test will not actually call any fixtures)
+- An extra result (Scenario Usage Report) is added describing which scenarios are never used and some statistics on those that are used.
+
 
 This plugin is included in the FitNesse baseline installation of https://github.com/fhoeben/hsac-fitnesse-fixtures.
 After starting that installation Wiki pages demonstrating the use of this plugin can be opened:
