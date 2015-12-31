@@ -40,7 +40,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
     }
 
     @Override
-    public void getScenarioArguments() {
+    protected void getScenarioArguments() {
         for (String input : inputs) {
             addInput(input);
         }
