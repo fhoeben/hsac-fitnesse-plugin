@@ -131,7 +131,8 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
             testOutputChunk("<tr><th>Page</th><th>Scenario</th><th>Count</th></tr>");
             for (SlimScenarioUsagePer usagePerPage : usage.getUsage()) {
                 String pageName = usagePerPage.getGroupName();
-                outputTableRows(usagePerPage.getUsage(), pageName);
+                String pageLink = String.format("<a href=\"/%1$s\">%1$s</a>", pageName);
+                outputTableRows(usagePerPage.getUsage(), pageLink);
             }
             testOutputChunk("</table>");
 
