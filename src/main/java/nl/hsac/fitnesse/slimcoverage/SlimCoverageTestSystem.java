@@ -20,6 +20,7 @@ import java.util.Map;
 
 public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     private final SlimScenarioUsage usage;
+    private boolean inUsageReport = false;
 
     public SlimCoverageTestSystem(String testSystemName,
                                   SlimTableFactory slimTableFactory,
@@ -70,16 +71,24 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     @Override
-    protected void testStarted(TestPage testPage) throws IOException {
-        super.testStarted(testPage);
-        // ensure we have a single test passed, which is sometimes a requirement
-        // (i.e. when run by FitNesseRunner)
-        getTestContext().incrementPassedTestsCount();
+    protected void testComplete(TestPage testPage, TestSummary testSummary) throws IOException {
+        if (!inUsageReport) {
+            testSummary = new TestSummary(0, 0, 1, 0);
+        }
+        super.testComplete(testPage, testSummary);
+    }
+
+    @Override
+    protected void testOutputChunk(String output) throws IOException {
+        if (inUsageReport) {
+            super.testOutputChunk(output);
+        }
     }
 
     @Override
     public void bye() throws IOException {
         try {
+            inUsageReport = true;
             reportScenarioUsage();
         } finally {
             super.bye();
@@ -98,6 +107,9 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
         WikiPageDummy pageDummy = new WikiPageDummy("Scenario Usage Report", "Scenario Usage Report Content", null);
         WikiTestPage testPage = new WikiTestPage(pageDummy);
         testStarted(testPage);
+        // ensure we have a single test passed, which is sometimes a requirement
+        // (i.e. when run by FitNesseRunner)
+        getTestContext().incrementPassedTestsCount();
 
         Map<String, Integer> totalUsage = usage.getScenarioUsage().getUsage();
         if (totalUsage.isEmpty()) {
@@ -143,7 +155,7 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
                 outputNestedList(overriddenPerPage);
             }
         }
-        testComplete(testPage, new TestSummary(0, 0, 1, 0));
+        testComplete(testPage, new TestSummary(1, 0, 0, 0));
     }
 
     private void outputTableRows(Map<String, Integer> tableRows, String... prefixes) throws IOException {
