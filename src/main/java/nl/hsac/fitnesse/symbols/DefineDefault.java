@@ -24,11 +24,14 @@ public class DefineDefault extends SymbolType implements Rule, Translation {
         if (!ScanString.isVariableName(variableName)) return Symbol.nothing;
 
         String variableValue = System.getProperty(variableName);
+
+        // remove definition in wiki page
+        Symbol next = parser.moveNext(1);
+        Maybe<String> valueString = (next.isType(SymbolType.Text))
+                ? copyVariableValue(parser, next)
+                : parseVariableValue(parser, next);
+
         if (variableValue == null) {
-            Symbol next = parser.moveNext(1);
-            Maybe<String> valueString = (next.isType(SymbolType.Text))
-                    ? copyVariableValue(parser, next)
-                    : parseVariableValue(parser, next);
             if (valueString.isNothing()) return Symbol.nothing;
 
             variableValue = valueString.getValue();
