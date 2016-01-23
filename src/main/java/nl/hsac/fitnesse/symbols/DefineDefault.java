@@ -38,7 +38,7 @@ public class DefineDefault extends SymbolType implements Rule, Translation {
         } else {
             if (variableValue.startsWith("\"")
                     && variableValue.endsWith("\"")) {
-                variableValue = variableValue.substring(1, variableValue.length() - 2);
+                variableValue = variableValue.substring(1, variableValue.length() - 1);
             }
         }
 
