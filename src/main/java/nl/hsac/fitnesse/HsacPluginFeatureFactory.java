@@ -70,6 +70,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
             testSystemFactoryRegistry
                     .registerTestSystemFactory("slimcoverage",
                             new CoverageSlimTestSystemFactory(slimTableFactory, customComparatorRegistry));
+            LOG.info("Registered test system slimcoverage");
         }
     }
 }
