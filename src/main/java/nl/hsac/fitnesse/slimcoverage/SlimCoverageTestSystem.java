@@ -2,8 +2,10 @@ package nl.hsac.fitnesse.slimcoverage;
 
 import fitnesse.slim.instructions.Instruction;
 import fitnesse.testrunner.WikiTestPage;
+import fitnesse.testsystems.TestExecutionException;
 import fitnesse.testsystems.TestPage;
 import fitnesse.testsystems.TestSummary;
+import fitnesse.testsystems.UnableToStopException;
 import fitnesse.testsystems.slim.CustomComparatorRegistry;
 import fitnesse.testsystems.slim.HtmlSlimTestSystem;
 import fitnesse.testsystems.slim.SlimClient;
@@ -36,7 +38,7 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
             }
 
             @Override
-            public Map<String, Object> invokeAndGetResponse(List<Instruction> statements) throws IOException {
+            public Map<String, Object> invokeAndGetResponse(List<Instruction> statements) {
                 return null;
             }
 
@@ -45,11 +47,11 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
             }
 
             @Override
-            public void bye() throws IOException {
+            public void bye() {
             }
 
             @Override
-            public void kill() throws IOException {
+            public void kill() {
             }
         };
     }
@@ -66,12 +68,12 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     @Override
-    protected void processTable(SlimTable table) throws IOException, SyntaxError {
+    protected void processTable(SlimTable table) throws TestExecutionException {
         table.getAssertions();
     }
 
     @Override
-    protected void testComplete(TestPage testPage, TestSummary testSummary) throws IOException {
+    protected void testComplete(TestPage testPage, TestSummary testSummary) {
         if (!inUsageReport) {
             testSummary = new TestSummary(0, 0, 1, 0);
         }
@@ -79,14 +81,14 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     @Override
-    protected void testOutputChunk(String output) throws IOException {
+    protected void testOutputChunk(String output) {
         if (inUsageReport) {
             super.testOutputChunk(output);
         }
     }
 
     @Override
-    public void bye() throws IOException {
+    public void bye() throws UnableToStopException {
         try {
             inUsageReport = true;
             reportScenarioUsage();
@@ -95,15 +97,15 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
         }
     }
 
-    protected void reportScenarioUsageHeader(String header) throws IOException {
+    protected void reportScenarioUsageHeader(String header) {
         testOutputChunk("<h4>" + header + "</h4>");
     }
 
-    protected void reportScenarioUsageNewline() throws IOException {
+    protected void reportScenarioUsageNewline() {
         testOutputChunk("<br/>");
     }
 
-    protected void reportScenarioUsage() throws IOException {
+    protected void reportScenarioUsage() {
         WikiPageDummy pageDummy = new WikiPageDummy("Scenario Usage Report", "Scenario Usage Report Content", null);
         WikiTestPage testPage = new WikiTestPage(pageDummy);
         testStarted(testPage);
@@ -158,7 +160,7 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
         testComplete(testPage, new TestSummary(1, 0, 0, 0));
     }
 
-    private void outputTableRows(Map<String, Integer> tableRows, String... prefixes) throws IOException {
+    private void outputTableRows(Map<String, Integer> tableRows, String... prefixes) {
         for (Map.Entry<String, Integer> usagePerScenario : tableRows.entrySet()) {
             testOutputChunk("<tr>");
             testOutputChunk("<td>");
@@ -173,7 +175,7 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
         }
     }
 
-    private void outputNestedList(Map<String, Collection<String>> nestedList) throws IOException {
+    private void outputNestedList(Map<String, Collection<String>> nestedList) {
         testOutputChunk("<ul>");
         for (Map.Entry<String, Collection<String>> item : nestedList.entrySet()) {
             String itemName = item.getKey();
