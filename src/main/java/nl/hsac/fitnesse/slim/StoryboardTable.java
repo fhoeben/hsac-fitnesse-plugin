@@ -8,8 +8,6 @@ import fitnesse.testsystems.slim.tables.ScriptTable;
 import fitnesse.testsystems.slim.tables.SlimAssertion;
 import fitnesse.testsystems.slim.tables.SlimExpectation;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -21,7 +19,7 @@ public class StoryboardTable extends ScriptTable {
 
     public StoryboardTable(Table table, String tableId, SlimTestContext context) {
         super(table, tableId, context);
-        screenshotPrefix = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+        screenshotPrefix = context.getPageToTest().getFullPath();
     }
 
     @Override
