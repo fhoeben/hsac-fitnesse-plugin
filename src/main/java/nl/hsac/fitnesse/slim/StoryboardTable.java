@@ -48,7 +48,7 @@ public class StoryboardTable extends ScriptTable {
     }
 
     protected String getScreenshotName(int row) {
-        return String.format("%s/%s/%s_%s", getTableKeyword(), getScreenshotPrefix(), id, row);
+        return String.format("%s/%s/%s.%s", getTableKeyword(), getScreenshotPrefix(), id, row);
     }
 
     private class ScreenshotExpectation extends RowExpectation {
