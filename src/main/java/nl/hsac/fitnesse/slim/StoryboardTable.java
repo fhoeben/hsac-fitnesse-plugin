@@ -15,11 +15,22 @@ import java.util.List;
  * Script table which takes a 'screenshot' on each action.
  */
 public class StoryboardTable extends ScriptTable {
+    private static String lastPage = null;
+    private static String lastTop = null;
+    private static int storyboardCount;
+    private static int screenshotCount;
     private String screenshotPrefix;
 
     public StoryboardTable(Table table, String tableId, SlimTestContext context) {
         super(table, tableId, context);
-        screenshotPrefix = context.getPageToTest().getFullPath();
+        String fullPath = context.getPageToTest().getFullPath();
+        screenshotPrefix = fullPath;
+        if (!fullPath.equals(lastPage)) {
+            lastTop = null;
+            storyboardCount = 0;
+            screenshotCount = 0;
+            lastPage = fullPath;
+        }
     }
 
     @Override
@@ -31,14 +42,23 @@ public class StoryboardTable extends ScriptTable {
         return "takeScreenshot";
     }
 
+    protected int getStoryboardCounter() {
+        return storyboardCount;
+    }
+
     protected String getScreenshotPrefix() {
         return screenshotPrefix;
     }
 
+    protected int getScreenshotCounter() {
+        return screenshotCount;
+    }
+
     @Override
     protected List<SlimAssertion> invokeAction(int startingCol, int endingCol, int row, SlimExpectation expectation) {
-        List<SlimAssertion> realAssertions = super.invokeAction(startingCol, endingCol, row, expectation);
+        updateCounters();
         String screenshotName = getScreenshotName(row);
+        List<SlimAssertion> realAssertions = super.invokeAction(startingCol, endingCol, row, expectation);
         Instruction instruction = callFunction(getTableType() + "Actor", getActionName(), screenshotName);
         table.addColumnToRow(row, "");
         int screenshotColumn = table.getColumnCountInRow(row) - 1;
@@ -47,12 +67,24 @@ public class StoryboardTable extends ScriptTable {
         return realAssertions;
     }
 
+    private void updateCounters() {
+        String topTable = id.split("\\.")[0];
+        if (!topTable.equals(lastTop)) {
+            lastTop = topTable;
+            storyboardCount++;
+            screenshotCount = 0;
+        }
+        screenshotCount++;
+    }
+
     protected String getScreenshotName(int row) {
-        return String.format("%s/%s/%s.%s", getTableKeyword(), getScreenshotPrefix(), id, row);
+        return String.format("%s/%s/%02d-%03d",
+                                getTableKeyword(), getScreenshotPrefix(),
+                                getStoryboardCounter(), getScreenshotCounter());
     }
 
     private class ScreenshotExpectation extends RowExpectation {
-        public ScreenshotExpectation(int col, int row) {
+        ScreenshotExpectation(int col, int row) {
             super(col, row);
         }
 
