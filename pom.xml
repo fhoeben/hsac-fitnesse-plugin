@@ -6,7 +6,7 @@
 
     <groupId>nl.hsac</groupId>
     <artifactId>hsac-fitnesse-plugin</artifactId>
-    <version>1.13.1-SNAPSHOT</version>
+    <version>1.14.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<url>https://github.com/fhoeben/hsac-fitnesse-plugin</url>
 	<name>HSAC's FitNesse Plugin</name>
