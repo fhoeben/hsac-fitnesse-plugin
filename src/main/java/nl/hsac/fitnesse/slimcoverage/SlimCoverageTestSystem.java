@@ -12,7 +12,6 @@ import fitnesse.testsystems.slim.SlimClient;
 import fitnesse.testsystems.slim.SlimTestContextImpl;
 import fitnesse.testsystems.slim.tables.SlimTable;
 import fitnesse.testsystems.slim.tables.SlimTableFactory;
-import fitnesse.testsystems.slim.tables.SyntaxError;
 import fitnesse.wiki.WikiPageDummy;
 
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     @Override
-    protected void processTable(SlimTable table) throws TestExecutionException {
+    protected void processTable(SlimTable table, boolean isSuiteTearDownPage) throws TestExecutionException {
         table.getAssertions();
     }
 
