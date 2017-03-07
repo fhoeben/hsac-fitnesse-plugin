@@ -38,6 +38,13 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         super.registerSymbolTypes(symbolProvider);
         add(symbolProvider, new MonthsFromToday());
         add(symbolProvider, new WeekDaysFromToday());
+        add(symbolProvider, new NextMonday());
+        add(symbolProvider, new NextTuesday());
+        add(symbolProvider, new NextWednesday());
+        add(symbolProvider, new NextThursday());
+        add(symbolProvider, new NextFriday());
+        add(symbolProvider, new NextSaturday());
+        add(symbolProvider, new NextSunday());
         add(symbolProvider, new LastDayOfMonth());
         add(symbolProvider, new RandomInt());
         add(symbolProvider, new RandomString());
