@@ -14,14 +14,14 @@ import java.util.GregorianCalendar;
  */
 
 public abstract class NextXDay extends Today {
-    private int DAY;
+    private int day;
 
     public NextXDay(String name, String symbol, int date){
         super(name, symbol, date);
     }
 
-    public void setDAY(int newDay) {
-        DAY = newDay;
+    public void setDay(int newDay) {
+        day = newDay;
     }
 
     @Override
@@ -35,7 +35,7 @@ public abstract class NextXDay extends Today {
     protected GregorianCalendar getNext(int incrementInt) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(Clock.currentDate());
-        while(calendar.get(Calendar.DAY_OF_WEEK) != DAY) {
+        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
             calendar.add(Calendar.DATE, 1);
         }
         this.addIncrement(calendar, incrementInt);
@@ -51,7 +51,7 @@ public abstract class NextXDay extends Today {
             cal.add(Calendar.DATE, dateAddition);
 
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-            if (dayOfWeek != DAY) {
+            if (dayOfWeek != day) {
                 i--;
             }
         }
