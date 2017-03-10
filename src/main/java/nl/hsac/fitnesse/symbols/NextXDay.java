@@ -16,12 +16,9 @@ import java.util.GregorianCalendar;
 public abstract class NextXDay extends Today {
     private int day;
 
-    public NextXDay(String name, String symbol, int date){
-        super(name, symbol, date);
-    }
-
-    public void setDay(int newDay) {
-        day = newDay;
+    public NextXDay(String name, String symbol, int unitForIncrement, int day){
+        super(name, symbol, unitForIncrement);
+        this.day = day;
     }
 
     @Override

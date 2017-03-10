@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 public class NextSaturday extends NextXDay {
     public NextSaturday() {
-        super("NextSaturday", "!nextSaturday", Calendar.DATE);
-        super.setDay(Calendar.SATURDAY);
+        super("NextSaturday", "!nextSaturday", Calendar.DATE, Calendar.SATURDAY);
     }
 }
