@@ -28,13 +28,18 @@ public abstract class NextXDay extends Today {
     public String toTarget(Translator translator, Symbol symbol) {
         String increment = symbol.getProperty("Increment");
         int incrementInt = increment.startsWith("+")?Integer.parseInt(increment.substring(1)):(increment.startsWith("-")?-Integer.parseInt(increment.substring(1)):0);
+        GregorianCalendar calendar = getNext(incrementInt);
+        return (new SimpleDateFormat(this.makeFormat(symbol.getProperty("Format")))).format(calendar.getTime());
+    }
+
+    protected GregorianCalendar getNext(int incrementInt) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(Clock.currentDate());
         while(calendar.get(Calendar.DAY_OF_WEEK) != DAY) {
             calendar.add(Calendar.DATE, 1);
         }
         this.addIncrement(calendar, incrementInt);
-        return (new SimpleDateFormat(this.makeFormat(symbol.getProperty("Format")))).format(calendar.getTime());
+        return calendar;
     }
 
     @Override
