@@ -74,8 +74,10 @@ public class NextXDayTest {
     }
 
     private void checkNext(NextXDay nf, int increment, int day) {
-        GregorianCalendar cal = nf.getNext(increment);
-        checkDate(2017, 3, day, cal);
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(Clock.currentDate());
+        nf.addIncrement(calendar, increment);
+        checkDate(2017, 3, day, calendar);
     }
 
     private static void setClock(int year, int month, int day) {

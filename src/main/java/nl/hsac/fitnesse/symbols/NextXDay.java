@@ -1,11 +1,7 @@
 package nl.hsac.fitnesse.symbols;
 
-import fitnesse.util.Clock;
-import fitnesse.wikitext.parser.Symbol;
 import fitnesse.wikitext.parser.Today;
-import fitnesse.wikitext.parser.Translator;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -16,31 +12,17 @@ import java.util.GregorianCalendar;
 public abstract class NextXDay extends Today {
     private int day;
 
-    public NextXDay(String name, String symbol, int unitForIncrement, int day){
-        super(name, symbol, unitForIncrement);
+    protected NextXDay(String name, String symbol, int day){
+        super(name, symbol, Calendar.DATE);
         this.day = day;
     }
 
     @Override
-    public String toTarget(Translator translator, Symbol symbol) {
-        String increment = symbol.getProperty("Increment");
-        int incrementInt = increment.startsWith("+")?Integer.parseInt(increment.substring(1)):(increment.startsWith("-")?-Integer.parseInt(increment.substring(1)):0);
-        GregorianCalendar calendar = getNext(incrementInt);
-        return (new SimpleDateFormat(this.makeFormat(symbol.getProperty("Format")))).format(calendar.getTime());
-    }
-
-    protected GregorianCalendar getNext(int incrementInt) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(Clock.currentDate());
-        while (calendar.get(Calendar.DAY_OF_WEEK) != day) {
-            calendar.add(Calendar.DATE, 1);
-        }
-        this.addIncrement(calendar, incrementInt);
-        return calendar;
-    }
-
-    @Override
     protected void addIncrement(GregorianCalendar cal, int numWeekDays) {
+        while (cal.get(Calendar.DAY_OF_WEEK) != day) {
+            cal.add(Calendar.DATE, 1);
+        }
+
         int numDays = Math.abs(numWeekDays);
         int dateAddition = numWeekDays < 0 ? -1 : 1;
 
@@ -52,9 +34,5 @@ public abstract class NextXDay extends Today {
                 i--;
             }
         }
-    }
-
-    private String makeFormat(String format) {
-        return format.equals("-t")?"d MMM, yyyy HH:mm":(format.equals("-xml")?"yyyy-MM-dd\'T\'HH:mm:ss":(format.isEmpty()?"dd MMM, yyyy":format));
     }
 }
