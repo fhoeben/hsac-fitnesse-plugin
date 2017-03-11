@@ -9,10 +9,10 @@ import java.util.GregorianCalendar;
  * Abstract class to get the first occurrence (starting today) of a specific day of the week.
  * Can be called with +x or -x to add x or subtract days.
  */
-public abstract class DaySymbol extends Today {
+public abstract class DayOfWeek extends Today {
     private int day;
 
-    protected DaySymbol(String name, String symbol, int day){
+    protected DayOfWeek(String name, String symbol, int day){
         super(name, symbol, Calendar.DATE);
         this.day = day;
     }
@@ -29,7 +29,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Monday (today or later).
      * Usage: !Monday [(format)] [+|-increment]
      */
-    public static class Monday extends DaySymbol {
+    public static class Monday extends DayOfWeek {
         public Monday() {
             super("Monday", "!Monday", Calendar.MONDAY);
         }
@@ -39,7 +39,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Tuesday (today or later).
      * Usage: !Tuesday [(format)] [+|-increment]
      */
-    public static class Tuesday extends DaySymbol {
+    public static class Tuesday extends DayOfWeek {
         public Tuesday() {
             super("Tuesday", "!Tuesday", Calendar.TUESDAY);
         }
@@ -49,7 +49,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Wednesday (today or later).
      * Usage: !Wednesday [(format)] [+|-increment]
      */
-    public static class Wednesday extends DaySymbol {
+    public static class Wednesday extends DayOfWeek {
         public Wednesday() {
             super("Wednesday", "!Wednesday", Calendar.WEDNESDAY);
         }
@@ -59,7 +59,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Thursday (today or later).
      * Usage: !Thursday [(format)] [+|-increment]
      */
-    public static class Thursday extends DaySymbol {
+    public static class Thursday extends DayOfWeek {
         public Thursday() {
             super("Thursday", "!Thursday", Calendar.THURSDAY);
         }
@@ -69,7 +69,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Friday (today or later).
      * Usage: !Friday [(format)] [+|-increment]
      */
-    public static class Friday extends DaySymbol {
+    public static class Friday extends DayOfWeek {
         public Friday() {
             super("Friday", "!Friday", Calendar.FRIDAY);
         }
@@ -79,7 +79,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Saturday (today or later).
      * Usage: !Saturday [(format)] [+|-increment]
      */
-    public static class Saturday extends DaySymbol {
+    public static class Saturday extends DayOfWeek {
         public Saturday() {
             super("Saturday", "!Saturday", Calendar.SATURDAY);
         }
@@ -89,7 +89,7 @@ public abstract class DaySymbol extends Today {
      * An altered !today, that allows us to calculate a date relative to the first Sunday (today or later).
      * Usage: !Sunday [(format)] [+|-increment]
      */
-    public static class Sunday extends DaySymbol {
+    public static class Sunday extends DayOfWeek {
         public Sunday() {
             super("Sunday", "!Sunday", Calendar.SUNDAY);
         }
