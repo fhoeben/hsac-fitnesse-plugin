@@ -10,52 +10,52 @@ import static org.junit.Assert.assertEquals;
 public class DaySymbolTest {
     @Test
     public void testNoIncrement() {
-        checkNext(new Friday(), 0, 10);
-        checkNext(new Saturday(), 0, 11);
-        checkNext(new Sunday(), 0, 12);
-        checkNext(new Monday(), 0, 13);
-        checkNext(new Tuesday(), 0, 14);
-        checkNext(new Wednesday(), 0, 15);
-        checkNext(new Thursday(), 0, 16);
+        checkNext(new DaySymbol.Friday(), 0, 10);
+        checkNext(new DaySymbol.Saturday(), 0, 11);
+        checkNext(new DaySymbol.Sunday(), 0, 12);
+        checkNext(new DaySymbol.Monday(), 0, 13);
+        checkNext(new DaySymbol.Tuesday(), 0, 14);
+        checkNext(new DaySymbol.Wednesday(), 0, 15);
+        checkNext(new DaySymbol.Thursday(), 0, 16);
     }
 
     @Test
     public void testIncrementOne() {
-        checkNext(new Friday(), 1, 11);
-        checkNext(new Saturday(), 1, 12);
-        checkNext(new Sunday(), 1, 13);
-        checkNext(new Monday(), 1, 14);
-        checkNext(new Tuesday(), 1, 15);
-        checkNext(new Wednesday(), 1, 16);
-        checkNext(new Thursday(), 1, 17);
+        checkNext(new DaySymbol.Friday(), 1, 11);
+        checkNext(new DaySymbol.Saturday(), 1, 12);
+        checkNext(new DaySymbol.Sunday(), 1, 13);
+        checkNext(new DaySymbol.Monday(), 1, 14);
+        checkNext(new DaySymbol.Tuesday(), 1, 15);
+        checkNext(new DaySymbol.Wednesday(), 1, 16);
+        checkNext(new DaySymbol.Thursday(), 1, 17);
     }
 
     @Test
     public void testIncrementMinusOne() {
-        checkNext(new Friday(), -1, 9);
-        checkNext(new Saturday(), -1, 10);
-        checkNext(new Sunday(), -1, 11);
-        checkNext(new Monday(), -1, 12);
-        checkNext(new Tuesday(), -1, 13);
-        checkNext(new Wednesday(), -1, 14);
-        checkNext(new Thursday(), -1, 15);
+        checkNext(new DaySymbol.Friday(), -1, 9);
+        checkNext(new DaySymbol.Saturday(), -1, 10);
+        checkNext(new DaySymbol.Sunday(), -1, 11);
+        checkNext(new DaySymbol.Monday(), -1, 12);
+        checkNext(new DaySymbol.Tuesday(), -1, 13);
+        checkNext(new DaySymbol.Wednesday(), -1, 14);
+        checkNext(new DaySymbol.Thursday(), -1, 15);
     }
 
     @Test
     public void testIncrementTwo() {
-        checkNext(new Friday(), 2, 12);
-        checkNext(new Saturday(), 2, 13);
-        checkNext(new Sunday(), 2, 14);
-        checkNext(new Monday(), 2, 15);
-        checkNext(new Tuesday(), 2, 16);
-        checkNext(new Wednesday(), 2, 17);
-        checkNext(new Thursday(), 2, 18);
+        checkNext(new DaySymbol.Friday(), 2, 12);
+        checkNext(new DaySymbol.Saturday(), 2, 13);
+        checkNext(new DaySymbol.Sunday(), 2, 14);
+        checkNext(new DaySymbol.Monday(), 2, 15);
+        checkNext(new DaySymbol.Tuesday(), 2, 16);
+        checkNext(new DaySymbol.Wednesday(), 2, 17);
+        checkNext(new DaySymbol.Thursday(), 2, 18);
     }
 
     @Test
     public void testIncrementMinusTwo() {
-        checkNext(new Wednesday(), -2, 13);
-        checkNext(new Thursday(), -2, 14);
+        checkNext(new DaySymbol.Wednesday(), -2, 13);
+        checkNext(new DaySymbol.Thursday(), -2, 14);
     }
 
     private void checkNext(DaySymbol nf, int increment, int day) {

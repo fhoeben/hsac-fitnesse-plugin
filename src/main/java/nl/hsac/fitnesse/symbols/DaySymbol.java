@@ -24,4 +24,74 @@ public abstract class DaySymbol extends Today {
         }
         super.addIncrement(cal, increment);
     }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Monday (today or later).
+     * Usage: !Monday [(format)] [+|-increment]
+     */
+    public static class Monday extends DaySymbol {
+        public Monday() {
+            super("Monday", "!Monday", Calendar.MONDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Tuesday (today or later).
+     * Usage: !Tuesday [(format)] [+|-increment]
+     */
+    public static class Tuesday extends DaySymbol {
+        public Tuesday() {
+            super("Tuesday", "!Tuesday", Calendar.TUESDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Wednesday (today or later).
+     * Usage: !Wednesday [(format)] [+|-increment]
+     */
+    public static class Wednesday extends DaySymbol {
+        public Wednesday() {
+            super("Wednesday", "!Wednesday", Calendar.WEDNESDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Thursday (today or later).
+     * Usage: !Thursday [(format)] [+|-increment]
+     */
+    public static class Thursday extends DaySymbol {
+        public Thursday() {
+            super("Thursday", "!Thursday", Calendar.THURSDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Friday (today or later).
+     * Usage: !Friday [(format)] [+|-increment]
+     */
+    public static class Friday extends DaySymbol {
+        public Friday() {
+            super("Friday", "!Friday", Calendar.FRIDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Saturday (today or later).
+     * Usage: !Saturday [(format)] [+|-increment]
+     */
+    public static class Saturday extends DaySymbol {
+        public Saturday() {
+            super("Saturday", "!Saturday", Calendar.SATURDAY);
+        }
+    }
+
+    /**
+     * An altered !today, that allows us to calculate a date relative to the first Sunday (today or later).
+     * Usage: !Sunday [(format)] [+|-increment]
+     */
+    public static class Sunday extends DaySymbol {
+        public Sunday() {
+            super("Sunday", "!Sunday", Calendar.SUNDAY);
+        }
+    }
 }
