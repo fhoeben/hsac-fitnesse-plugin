@@ -1,28 +1,13 @@
 package nl.hsac.fitnesse.symbols;
 
-import fitnesse.util.Clock;
-import fitnesse.util.DateAlteringClock;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
 public class NextXDayTest {
-    @BeforeClass
-    public static void fixClock() {
-        setClock(2017, 3, 10);
-    }
-
-    @AfterClass
-    public static void resetClock() {
-        Clock.restoreDefaultClock();
-    }
-
     @Test
     public void testNoIncrement() {
         checkNext(new NextFriday(), 0, 10);
@@ -74,15 +59,9 @@ public class NextXDayTest {
     }
 
     private void checkNext(NextXDay nf, int increment, int day) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(Clock.currentDate());
+        GregorianCalendar calendar = new GregorianCalendar(2017, 2, 10);
         nf.addIncrement(calendar, increment);
         checkDate(2017, 3, day, calendar);
-    }
-
-    private static void setClock(int year, int month, int day) {
-        DateAlteringClock d = new DateAlteringClock(new Date(year - 1900, month - 1, day));
-        d.freeze();
     }
 
     private void checkDate(int year, int month, int day, GregorianCalendar cal) {
