@@ -17,10 +17,10 @@ import nl.hsac.fitnesse.util.RandomUtil;
 public class RandomString extends SymbolBase implements Rule, Translation {
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
     private static final String CHARACTERS = "Characters";
-    private static final String LENGTH = "Length";
+    private static final String MIN_MAX_LENGTH = "Length";
     private static final String PREFIX = "Prefix";
     private static final String DEFAULT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-                                                + "-=_+[]{};':|\\,./<>ëïä?!@#$%^&*§±`~€Ω≈ç√∫~≤≥åß∂ƒ©˙∆˚¬…æ«πø¥†®´∑œ£¢∞§¶";
+            + "-=_+[]{};':|\\,./<>ëïä?!@#$%^&*§±`~€Ω≈ç√∫~≤≥åß∂ƒ©˙∆˚¬…æ«πø¥†®´∑œ£¢∞§¶";
 
     public RandomString() {
         super("RandomString");
@@ -30,7 +30,7 @@ public class RandomString extends SymbolBase implements Rule, Translation {
     }
 
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
-        Maybe<Symbol> result = storeParenthesisContent(current, parser, LENGTH);
+        Maybe<Symbol> result = storeParenthesisContent(current, parser, MIN_MAX_LENGTH);
         if (!result.isNothing()) {
             result = storeParenthesisContent(current, parser, CHARACTERS);
             if (!result.isNothing()) {
@@ -41,13 +41,56 @@ public class RandomString extends SymbolBase implements Rule, Translation {
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
+        String param = symbol.getProperty(MIN_MAX_LENGTH, null);
         String permitted = symbol.getProperty(CHARACTERS, DEFAULT_CHARS);
-        int length = getProperty(symbol, LENGTH, -1);
         String prefix = symbol.getProperty(PREFIX, "");
-        length = length - prefix.length();
-        if (length < 1) {
-            length = RANDOM_UTIL.random(100);
-        }
+        int length = getRandomStringLength(param, prefix);
         return prefix + RANDOM_UTIL.randomString(permitted, length);
+    }
+
+    public int getRandomStringLength(String param, String prefix) {
+        int randomStringLength;
+        int minimalLength;
+        int maximalLength;
+        int prefixLength;
+
+        //Handle the prefix input parameter
+        if (prefix == "") {
+            prefixLength = 0;
+        } else {
+            prefixLength = prefix.length();
+        }
+
+        // Handle the length input parameter
+        if (param == null) { //if there is no parameter, use the default
+            randomStringLength = RANDOM_UTIL.random(100);
+        } else if (!param.contains(",")) { //no comma in the parameter, just parse directly to requestedLength
+            int requestedLength = parseInt(param);
+            if (prefixLength > requestedLength) {
+                throw new IllegalArgumentException("The prefix is longer than the requested string length");
+            }
+            int randomBase = parseInt(param) - prefixLength;
+            randomStringLength = RANDOM_UTIL.random(randomBase);
+        } else { // if there is a comma, there must be range
+            String[] values = param.split(","); //any values after the first two are ignored
+            minimalLength = parseInt(values[0]);
+            maximalLength = parseInt(values[1]);
+
+            if (minimalLength < 0) {
+                throw new IllegalArgumentException("You cannot use a negative value here, nobody wants a negative string");
+            }
+            if (maximalLength < minimalLength) {
+                throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
+            }
+            if (prefixLength > minimalLength) {
+                throw new IllegalArgumentException("The prefix is longer than the requested minimal string length");
+            }
+
+            int randomBase = maximalLength - minimalLength;
+            int randomValue = RANDOM_UTIL.random(randomBase);
+            randomStringLength = randomValue + minimalLength - prefixLength;
+
+        }
+        return randomStringLength;
     }
 }
