@@ -4,14 +4,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by PrinsKD on 24-3-2017.
  * These tests are to check the working of the RandomString wikiword
  */
-
-
 public class RandomStringTest {
     private final RandomString stringLengthGenerator = new RandomString();
 
@@ -30,7 +28,10 @@ public class RandomStringTest {
 
     @Test
     public void testNoParameters() {
-        checkGeneratedLength(null, "", 100);
+        for (int i = 0; i < 1000; i++) {
+            int result = stringLengthGenerator.getRandomStringLength(null, "");
+            assertTrue("Actual value:" + result, result < 100);
+        }
     }
 
     @Test
@@ -74,7 +75,7 @@ public class RandomStringTest {
     private void checkGeneratedLength(String lengthParam, String prefix, int expectedmaxValue) {
         for (int i = 0; i < 1000; i++) {
             int result = stringLengthGenerator.getRandomStringLength(lengthParam, prefix);
-            assertTrue("Actual value:" + result, result < expectedmaxValue);
+            assertEquals("Actual value:" + result, expectedmaxValue, result);
         }
     }
 

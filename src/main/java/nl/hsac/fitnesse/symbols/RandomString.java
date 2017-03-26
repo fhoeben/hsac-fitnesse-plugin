@@ -49,37 +49,44 @@ public class RandomString extends SymbolBase implements Rule, Translation {
     }
 
     int getRandomStringLength(String param, String prefix) {
-        int randomLength;
+        int length;
 
-        // Handle the length input parameter
         if (param == null) {
-            randomLength = RANDOM_UTIL.random(100);
+            length = RANDOM_UTIL.random(100);
         } else {
             String[] values = param.split(","); //any values after the first two are ignored
 
-            int minimalLength = parseInt(values[0]);
-            if (minimalLength < 0) {
+            int lengthParam = parseInt(values[0]);
+            if (lengthParam < 0) {
                 throw new IllegalArgumentException("You cannot use a negative value here, nobody wants a negative string");
             }
 
             //Handle the prefix input parameter
             int prefixLength = prefix.length();
-            if (prefixLength > minimalLength) {
-                throw new IllegalArgumentException("The prefix is longer than the requested minimal string length");
+            if (prefixLength > lengthParam) {
+                throw new IllegalArgumentException("The prefix is longer than the requested (minimal) string length");
             }
 
             if (values.length == 1) {
-                randomLength = RANDOM_UTIL.random(minimalLength) - prefixLength;
+                length = lengthParam;
             } else {
+                int minimalLength = lengthParam;
                 int maximalLength = parseInt(values[1]);
-                if (maximalLength < minimalLength) {
-                    throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
-                }
-                int randomBase = maximalLength - minimalLength;
-                randomLength = RANDOM_UTIL.random(randomBase) + minimalLength - prefixLength;
+                length = getRandomLength(minimalLength, maximalLength);
             }
+            length = length - prefixLength;
         }
 
+        return length;
+    }
+
+    private int getRandomLength(int minimalLength, int maximalLength) {
+        int randomLength;
+        if (maximalLength < minimalLength) {
+            throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
+        }
+        int randomBase = maximalLength - minimalLength;
+        randomLength = RANDOM_UTIL.random(randomBase) + minimalLength;
         return randomLength;
     }
 }
