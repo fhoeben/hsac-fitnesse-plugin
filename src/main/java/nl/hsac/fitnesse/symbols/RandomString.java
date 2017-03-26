@@ -44,11 +44,11 @@ public class RandomString extends SymbolBase implements Rule, Translation {
         String param = symbol.getProperty(MIN_MAX_LENGTH, null);
         String permitted = symbol.getProperty(CHARACTERS, DEFAULT_CHARS);
         String prefix = symbol.getProperty(PREFIX, "");
-        int length = getRandomStringLength(param, prefix);
+        int length = getStringLength(param, prefix);
         return prefix + RANDOM_UTIL.randomString(permitted, length);
     }
 
-    int getRandomStringLength(String param, String prefix) {
+    int getStringLength(String param, String prefix) {
         int length;
 
         if (param == null) {
@@ -81,12 +81,11 @@ public class RandomString extends SymbolBase implements Rule, Translation {
     }
 
     private int getRandomLength(int minimalLength, int maximalLength) {
-        int randomLength;
         if (maximalLength < minimalLength) {
             throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
         }
-        int randomBase = maximalLength - minimalLength;
-        randomLength = RANDOM_UTIL.random(randomBase) + minimalLength;
+        int randomRange = maximalLength - minimalLength;
+        int randomLength = RANDOM_UTIL.random(randomRange) + minimalLength;
         return randomLength;
     }
 }

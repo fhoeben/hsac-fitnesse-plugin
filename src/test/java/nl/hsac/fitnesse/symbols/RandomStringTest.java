@@ -29,7 +29,7 @@ public class RandomStringTest {
     @Test
     public void testNoParameters() {
         for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getRandomStringLength(null, "");
+            int result = stringLengthGenerator.getStringLength(null, "");
             assertTrue("Actual value:" + result, result < 100);
         }
     }
@@ -74,7 +74,7 @@ public class RandomStringTest {
      */
     private void checkGeneratedLength(String lengthParam, String prefix, int expectedmaxValue) {
         for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getRandomStringLength(lengthParam, prefix);
+            int result = stringLengthGenerator.getStringLength(lengthParam, prefix);
             assertEquals("Actual value:" + result, expectedmaxValue, result);
         }
     }
@@ -84,7 +84,7 @@ public class RandomStringTest {
      */
     private void checkGeneratedLengthException(String lengthParam, String prefix) {
         exception.expect(IllegalArgumentException.class);
-        stringLengthGenerator.getRandomStringLength(lengthParam, prefix);
+        stringLengthGenerator.getStringLength(lengthParam, prefix);
     }
 
     /**
@@ -92,7 +92,7 @@ public class RandomStringTest {
      */
     private void checkGeneratedLengthRange(String lengthParam, String prefix, int expectedminValue, int expectedmaxValue) {
         for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getRandomStringLength(lengthParam, prefix);
+            int result = stringLengthGenerator.getStringLength(lengthParam, prefix);
             assertTrue("Actual value:" + result, result >= expectedminValue);
             assertTrue("Actual value:" + result, result <= expectedmaxValue);
 
