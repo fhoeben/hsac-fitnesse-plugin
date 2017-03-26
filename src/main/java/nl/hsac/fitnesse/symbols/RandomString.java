@@ -48,12 +48,12 @@ public class RandomString extends SymbolBase implements Rule, Translation {
         return prefix + RANDOM_UTIL.randomString(permitted, length);
     }
 
-    public int getRandomStringLength(String param, String prefix) {
+    int getRandomStringLength(String param, String prefix) {
         int randomStringLength;
         int minimalLength;
-        int maximalLength = 0;
+        int maximalLength;
         int prefixLength;
-        int randomValue = 0;
+        int randomValue;
 
         //Handle the prefix input parameter
         prefixLength = prefix.length();
@@ -67,27 +67,24 @@ public class RandomString extends SymbolBase implements Rule, Translation {
         String[] values = param.split(","); //any values after the first two are ignored
         minimalLength = parseInt(values[0]);
 
-        if (values.length == 1) {
-            randomValue = RANDOM_UTIL.random(minimalLength) - prefixLength;
-        } else {
-            maximalLength = parseInt(values[1]); // moved this here to prevent trying to fill an int with null
-        }
-
-
         if (minimalLength < 0) {
             throw new IllegalArgumentException("You cannot use a negative value here, nobody wants a negative string");
-        }
-        if (maximalLength < minimalLength && maximalLength != 0) {//maxlength is not set to default
-            throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
         }
         if (prefixLength > minimalLength) {
             throw new IllegalArgumentException("The prefix is longer than the requested minimal string length");
         }
 
-        if (maximalLength > minimalLength) { //so basically with two normal range indicators
+        if (values.length == 1) {
+            randomValue = RANDOM_UTIL.random(minimalLength) - prefixLength;
+        } else {
+            maximalLength = parseInt(values[1]); // moved this here to prevent trying to fill an int with null
+            if (maximalLength < minimalLength && maximalLength != 0) {//maxlength is not set to default
+                throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
+            }
             int randomBase = maximalLength - minimalLength;
             randomValue = RANDOM_UTIL.random(randomBase) + minimalLength - prefixLength;
         }
+
 
         return randomValue;
     }
