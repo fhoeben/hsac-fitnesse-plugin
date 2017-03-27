@@ -56,25 +56,22 @@ public class RandomString extends SymbolBase implements Rule, Translation {
         } else {
             String[] values = param.split(","); //any values after the first two are ignored
 
-            int lengthParam = parseInt(values[0]);
-            if (lengthParam < 0) {
+            int minimalLength = parseInt(values[0]);
+            if (minimalLength < 0) {
                 throw new IllegalArgumentException("You cannot use a negative value here, nobody wants a negative string");
             }
 
             //Handle the prefix input parameter
             int prefixLength = prefix.length();
-            if (prefixLength > lengthParam) {
+            if (prefixLength > minimalLength) {
                 throw new IllegalArgumentException("The prefix is longer than the requested (minimal) string length");
             }
 
-            if (values.length == 1) {
-                length = lengthParam;
-            } else {
-                int minimalLength = lengthParam;
-                int maximalLength = parseInt(values[1]);
-                length = getRandomLength(minimalLength, maximalLength);
+            int maximalLength = minimalLength;
+            if (values.length > 1) {
+                maximalLength = parseInt(values[1]);
             }
-            length = length - prefixLength;
+            length = getRandomLength(minimalLength, maximalLength) - prefixLength;
         }
 
         return length;
