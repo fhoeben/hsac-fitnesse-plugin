@@ -40,6 +40,11 @@ public class RandomStringTest {
     }
 
     @Test
+    public void testRangeIncludesMax() {
+        checkGeneratedLengthRange("10,10", "", 10, 10);
+    }
+
+    @Test
     public void testRangeWithParameter() {
         checkGeneratedLengthRange("10,20", "vspgh", 5, 15);
     }

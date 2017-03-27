@@ -84,7 +84,7 @@ public class RandomString extends SymbolBase implements Rule, Translation {
         if (maximalLength < minimalLength) {
             throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
         }
-        int randomRange = maximalLength - minimalLength;
+        int randomRange = maximalLength - minimalLength + 1;
         int randomLength = RANDOM_UTIL.random(randomRange) + minimalLength;
         return randomLength;
     }
