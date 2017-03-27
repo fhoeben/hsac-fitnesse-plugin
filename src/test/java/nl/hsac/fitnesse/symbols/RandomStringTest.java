@@ -45,6 +45,11 @@ public class RandomStringTest {
     }
 
     @Test
+    public void testRangeCanIncludeZero() {
+        checkGeneratedLengthRange("0,5", "", 0, 5);
+    }
+
+    @Test
     public void testRangeWithParameter() {
         checkGeneratedLengthRange("10,20", "vspgh", 5, 15);
     }
@@ -62,6 +67,21 @@ public class RandomStringTest {
     @Test
     public void testNegativeValue() {
         checkGeneratedLengthException("-5", "");
+    }
+
+    @Test
+    public void testZeroParameterNoRange() {
+        checkGeneratedLengthException("0", "");
+    }
+
+    @Test
+    public void testRandomSameLengthAsPrefix() {
+        checkGeneratedLengthException("2", "ab");
+    }
+
+    @Test
+    public void testRandomRangeSameLengthAsPrefix() {
+        checkGeneratedLengthException("2,2", "ab");
     }
 
     @Test

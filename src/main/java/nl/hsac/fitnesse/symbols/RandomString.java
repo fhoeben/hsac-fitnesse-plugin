@@ -58,7 +58,7 @@ public class RandomString extends SymbolBase implements Rule, Translation {
 
             int minimalLength = parseInt(values[0]);
             if (minimalLength < 0) {
-                throw new IllegalArgumentException("You cannot use a negative value here, nobody wants a negative string");
+                throw new IllegalArgumentException("You cannot use a negative value here, we cannot make a string of negative length");
             }
 
             //Handle the prefix input parameter
@@ -70,6 +70,9 @@ public class RandomString extends SymbolBase implements Rule, Translation {
             int maximalLength = minimalLength;
             if (values.length > 1) {
                 maximalLength = parseInt(values[1]);
+            }
+            if (minimalLength == prefixLength && maximalLength == prefixLength) {
+                throw new IllegalArgumentException("The requested length is same as prefix length, you don't need a random value");
             }
             length = getRandomLength(minimalLength, maximalLength) - prefixLength;
         }
