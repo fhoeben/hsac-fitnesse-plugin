@@ -36,4 +36,10 @@ public class RandomUtil {
         }
         return result.toString();
     }
+
+
+    public <T> T randomElement(T[] elements){
+        return elements[random(elements.length)];
+    }
+
 }

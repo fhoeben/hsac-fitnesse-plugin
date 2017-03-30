@@ -2,22 +2,27 @@ package nl.hsac.fitnesse.util;
 
 import java.util.Random;
 
-public class TopLevelDomains {
 
-    private static final tlds[] VALUES = tlds.values();
+public class RandomDomain {
 
-    private static final int SIZE = VALUES.length;
     private static final Random RANDOM = new Random();
+    private static final RandomUtil RANDOM_UTIL = new RandomUtil();
+    private static final String PERMITTED = "abcdefghijklmnopqrstuvwxyz1234567890-";
 
-    public static tlds getRandomTld()  {
-        return VALUES[RANDOM.nextInt(SIZE)];
+
+    public static String getRandomDomain(int length) {
+        return RANDOM_UTIL.randomString(PERMITTED, length);
+    }
+
+
+    public static tlds getRandomTld() {
+        return RANDOM_UTIL.randomElement(tlds.values());
     }
 
     // The below list includes all top level domains registered with IANA on 26th of March 2017
     // Version 2017032600, Last Updated Sun Mar 26 07:07:01 2017 UTC
     // http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-
-    public enum tlds {
+    private static enum tlds {
         AAA,
         AARP,
         ABARTH,
@@ -1410,6 +1415,6 @@ public class TopLevelDomains {
         ZW
     }
 
-    ;
+
 }
 
