@@ -4,27 +4,25 @@ import fitnesse.wikitext.parser.*;
 import nl.hsac.fitnesse.util.RandomUtil;
 
 /**
- * Generates random string consisting of the supplied characters.
- * Usage: !randomString [(length) [(characters) [(prefix)]]]
+ * Generates random email adress consisting of the maximum length and domain supplied.
+ * A random generated domain will always consist of two characters, disregarding the handful of single letter domains in excistence.
+ * Usage: !randomEmail [(maxlength) [(domain)]]
  * The usage of parentheses around the parameters is because I could not get it to work otherwise. :-)
  */
 public class RandomEmail extends SymbolBase implements Rule, Translation {
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-    private static final String MIN_MAX_LENGTH = "Length";
+    private static final String MAX_LENGTH = "Length";
     private static final String DOMAIN = "Domainname";
-    private static final String DEFAULT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            + "1234567890" +
-            "1234567890";
 
     public RandomEmail() {
-        super("RandomString");
-        wikiMatcher(new Matcher().string("!randomString"));
+        super("RandomEmail");
+        wikiMatcher(new Matcher().string("!randomEmail"));
         wikiRule(this);
         htmlTranslation(this);
     }
 
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
-        Maybe<Symbol> result = storeParenthesisContent(current, parser, MIN_MAX_LENGTH);
+        Maybe<Symbol> result = storeParenthesisContent(current, parser, MAX_LENGTH);
         if (!result.isNothing()) {
             result = storeParenthesisContent(current, parser, DOMAIN);
         }
@@ -33,55 +31,69 @@ public class RandomEmail extends SymbolBase implements Rule, Translation {
 
 
     public String toTarget(Translator translator, Symbol symbol) {
-        String param = symbol.getProperty(MIN_MAX_LENGTH, null);
+        String maxLength = symbol.getProperty(MAX_LENGTH, null);
         String domain = symbol.getProperty(DOMAIN, "");
-        int length = getEmailLength(param, domain);
+        int length = getFullEmailLength(maxLength, domain);
         String localPart = getRandomLocalPart(length);
         return localPart + "@" + domain;
     }
 
-    public static String getRandomLocalPart(int length) {
-        String permitted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-                "1234567890!#$%&'*+-/=?^_`{|}~.";
-        return RANDOM_UTIL.randomString(permitted, length);
-    }
+    private int getFullEmailLength(String maxLength, String domain) {
+        int emailMaxLength;
+        int emailMinLength = 7;
 
-    private int getEmailLength(String param, String prefix) {
-        int length;
-
-        if (param == null) {
-            length = RANDOM_UTIL.random(100);
+        if (maxLength == null) {
+            emailMaxLength = RANDOM_UTIL.random(93) + emailMinLength; //adding minLength here as the minimal length of an email address is 7 characters
         } else {
-            String[] values = param.split(","); //any values after the first two are ignored
+            int maxlength = parseInt(maxLength);
+            int domainLength = domain.length();
 
-            int minimalLength = parseInt(values[0]);
-            if (minimalLength < 0) {
+            if (maxlength < 0) {
                 throw new IllegalArgumentException("You cannot use a negative value here, we cannot make a string of negative length");
             }
 
-            //Handle the prefix input parameter
-            int domainLength = prefix.length();
-            if (domainLength >= minimalLength) {
-                throw new IllegalArgumentException("The domain is the same size or longer than the requested (minimal) string length");
+            if (maxlength < emailMinLength) {
+                throw new IllegalArgumentException("An email address has a minimal length of " + emailMinLength + " characters");
             }
 
-            int maximalLength = minimalLength;
-            if (values.length > 1) {
-                maximalLength = parseInt(values[1]);
+            if (domainLength >= maxlength +2) {  //the +2 is to ensure the @ and one random character in the address are counted towards minimal
+                throw new IllegalArgumentException("The domain with @ is the same size or longer than the requested (maximal) string length");
             }
-            length = getRandomLength(minimalLength, maximalLength) - domainLength;
+
+            emailMaxLength = RANDOM_UTIL.random(maxlength);
+
         }
 
-        return length;
+        return emailMaxLength;
     }
 
-    private int getRandomLength(int minimalLength, int maximalLength) {
-        if (maximalLength < minimalLength) {
-            throw new IllegalArgumentException("Ensure the Max value is higher then the Min value");
+
+    private int getRandomEmail(String emailMaxLength, String domain) {
+
+        //first determine what length your emailaddress should get
+
+        //Step 1: remove the minimal domain name plus @ sign (6 characters) from the max length
+        // the remaining characters will be randomly divided to make the local-address and the domain name
+        int randomLength = maxlength - 6;
+
+        //Step 2: When a domain is set, move to step 3
+        // If not so, make a random split in the random length allocating both parts some length
+        if (domainLength == 0) {
+
         }
-        int randomRange = maximalLength - minimalLength + 1;
-        int randomLength = RANDOM_UTIL.random(randomRange) + minimalLength;
-        return randomLength;
+        int localAddressLength = RANDOM_UTIL.random(randomLength);
+        int randomDomainLength = randomLength - localAddressLength;
+
+
+        emailMaxLength = getRandomLength(maxlength, maximalLength) - domainLength;
+
+    }
+
+
+    private static String getRandomLocalPart(int length) {
+        String permitted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "1234567890!#$%&'*+-/=?^_`{|}~.";
+        return RANDOM_UTIL.randomString(permitted, length);
     }
 
 }
