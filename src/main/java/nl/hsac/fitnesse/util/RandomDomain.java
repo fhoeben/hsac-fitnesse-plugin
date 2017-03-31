@@ -1,28 +1,42 @@
 package nl.hsac.fitnesse.util;
 
-import java.util.Random;
-
-
 public class RandomDomain {
 
-    private static final Random RANDOM = new Random();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
     private static final String PERMITTED = "abcdefghijklmnopqrstuvwxyz1234567890-";
 
 
-    public static String getRandomDomain(int length) {
+    private String getRandomDomain(int length) {
         return RANDOM_UTIL.randomString(PERMITTED, length);
     }
 
 
-    public static tlds getRandomTld() {
-        return RANDOM_UTIL.randomElement(tlds.values());
+    private String getRandomTld() {
+        return RANDOM_UTIL.randomElement(tlds.values()).toString();
     }
+
+    public String generateFullDomain(int fullDomainLength) {
+        if (fullDomainLength < 5){
+            throw new IllegalArgumentException("Minimal possible domain length is 5 (2 character, a period, 2 characters)");
+        }
+
+        int domainLength = 0;
+        String tld = "";
+
+        while (domainLength < 2) { //a domain cannot be less than 2 characters (ignoring the handful that exist)
+            tld = getRandomTld();
+            domainLength = fullDomainLength - tld.length() - 1; //minus 1 for the period between second level and top level domain
+        }
+
+        String domain = getRandomDomain(domainLength);
+        return domain + "." + tld;
+    }
+
 
     // The below list includes all top level domains registered with IANA on 26th of March 2017
     // Version 2017032600, Last Updated Sun Mar 26 07:07:01 2017 UTC
     // http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-    private static enum tlds {
+    private enum tlds {
         AAA,
         AARP,
         ABARTH,
