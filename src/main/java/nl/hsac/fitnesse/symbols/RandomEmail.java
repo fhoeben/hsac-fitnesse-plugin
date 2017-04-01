@@ -33,17 +33,17 @@ public class RandomEmail extends SymbolBase implements Rule, Translation {
     public String toTarget(Translator translator, Symbol symbol) {
         String maxLength = symbol.getProperty(MAX_LENGTH, null);
         String domain = symbol.getProperty(DOMAIN, "");
-        int length = getFullEmailLength(maxLength, domain);
-        String localPart = getRandomLocalPart(length);
-        return localPart + "@" + domain;
+        //int length = getEmailRandomPartLength(maxLength, domain);
+        //String localPart = getRandomLocalPart(length);
+        //return localPart + "@" + domain;
     }
 
-    private int getFullEmailLength(String maxLength, String domain) {
-        int emailMaxLength;
+    private int getEmailRandomPartLength(String maxLength, String domain) {
+        int emailRandomLength;
         int emailMinLength = 7;
 
         if (maxLength == null) {
-            emailMaxLength = RANDOM_UTIL.random(93) + emailMinLength; //adding minLength here as the minimal length of an email address is 7 characters
+            emailRandomLength = RANDOM_UTIL.random(93) + emailMinLength; //adding minLength here as the minimal length of an email address is 7 characters
         } else {
             int maxlength = parseInt(maxLength);
             int domainLength = domain.length();
@@ -60,11 +60,11 @@ public class RandomEmail extends SymbolBase implements Rule, Translation {
                 throw new IllegalArgumentException("The domain with @ is the same size or longer than the requested (maximal) string length");
             }
 
-            emailMaxLength = RANDOM_UTIL.random(maxlength);
+            emailRandomLength = RANDOM_UTIL.random(maxlength-domainLength);
 
         }
 
-        return emailMaxLength;
+        return emailRandomLength;
     }
 
 
