@@ -6,7 +6,7 @@ public class RandomDomain {
     private static final String PERMITTED = "abcdefghijklmnopqrstuvwxyz1234567890-";
 
 
-    private String getRandomDomain(int length) {
+    public String getRandomDomain(int length) {
         return RANDOM_UTIL.randomString(PERMITTED, length);
     }
 
@@ -36,7 +36,7 @@ public class RandomDomain {
     // The below list includes all top level domains registered with IANA on 26th of March 2017
     // Version 2017032600, Last Updated Sun Mar 26 07:07:01 2017 UTC
     // http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-    private enum tlds {
+    public enum tlds {
         AAA,
         AARP,
         ABARTH,

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * These tests are to check the working of the RandomString wikiword
+ * These tests are to check the working of the RandomEmail wikiword
  */
 public class RandomEmailTest {
     private final RandomString stringLengthGenerator = new RandomString();
