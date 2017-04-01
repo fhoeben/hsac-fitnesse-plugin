@@ -15,7 +15,7 @@ public class RandomDomain {
         return RANDOM_UTIL.randomElement(tlds.values()).toString();
     }
 
-    public String generateFullDomain(int fullDomainLength) {
+    public static String generateFullDomain(RandomDomain randomDomain, int fullDomainLength) {
         if (fullDomainLength < 5){
             throw new IllegalArgumentException("Minimal possible domain length is 5 (2 character, a period, 2 characters)");
         }
@@ -24,11 +24,11 @@ public class RandomDomain {
         String tld = "";
 
         while (domainLength < 2) { //a domain cannot be less than 2 characters (ignoring the handful that exist)
-            tld = getRandomTld();
+            tld = randomDomain.getRandomTld();
             domainLength = fullDomainLength - tld.length() - 1; //minus 1 for the period between second level and top level domain
         }
 
-        String domain = getRandomDomain(domainLength);
+        String domain = randomDomain.getRandomDomain(domainLength);
         return domain + "." + tld;
     }
 

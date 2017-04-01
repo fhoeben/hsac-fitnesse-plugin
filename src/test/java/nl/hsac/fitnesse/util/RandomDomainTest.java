@@ -1,12 +1,10 @@
 package nl.hsac.fitnesse.util;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.Random;
-
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests RandomUtil.
@@ -15,9 +13,11 @@ public class RandomDomainTest {
     private final RandomDomain domain = new RandomDomain();
     private final RandomUtil random = new RandomUtil();
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
     /**
      * Tests tld randomization.
-     * todo: write test
      */
     @Test
     public void testRandomTld() {
@@ -25,16 +25,15 @@ public class RandomDomainTest {
             String result = domain.getRandomTld();
             boolean resultExists = false;
 
-            for (RandomDomain.tlds me : RandomDomain.tlds.values()) {
-                if (me.name().equalsIgnoreCase(result)) {
+            for (RandomDomain.tlds tlds : RandomDomain.tlds.values()) {
+                if (tlds.name().equalsIgnoreCase(result)) {
                     resultExists = true;
                     break;
                 }
             }
-            assertTrue("Got: " + result + " on test " + i, resultExists == true);
+            assertTrue("Got: " + result + " on test " + i, resultExists);
         }
     }
-
 
     /**
      * Tests domain generation.
@@ -45,34 +44,34 @@ public class RandomDomainTest {
             int length = random.random(100) + 1; //considering a randomizer will generate non-inclusive from 0
             String result = domain.getRandomDomain(length);
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[abcdefghijklmnopqrstuvwxyz1234567890-]+"));
         }
     }
 
-
     /**
      * Tests top and second level domain construction.
-     * todo: write test
      */
     @Test
     public void testGenerateFullDomain() {
         for (int i = 0; i < 1000; i++) {
-            int result = 0;
-            assertTrue("Got: " + result, result < 10);
+            int length = random.random(95) + 5; //5 to use as minimal length for a hostname in email
+            String result = RandomDomain.generateFullDomain(domain, length);
+            assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[abcdefghijklmnopqrstuvwxyz1234567890-]+" + "." + "[ABCDEFGHIJKLMNOPQRSTUVWXYZ]+"));
         }
-
     }
-
 
     /**
-     * Tests length restriction.
-     * todo: write test
+     * Tests error message if requested domain length is less than 5.
      */
     @Test
-    public void testGenerateFullDomainDomainLength() {
-        for (int i = 0; i < 1000; i++) {
-            int result = 0;
-            assertTrue("Got: " + result, result < 10);
-        }
-
+    public void testDomainLengthException() {
+        exception.expect(IllegalArgumentException.class);
+        RandomDomain.generateFullDomain(domain, 4);
+        RandomDomain.generateFullDomain(domain, 3);
+        RandomDomain.generateFullDomain(domain, 2);
+        RandomDomain.generateFullDomain(domain, 1);
+        RandomDomain.generateFullDomain(domain, -1);
     }
+
 }
