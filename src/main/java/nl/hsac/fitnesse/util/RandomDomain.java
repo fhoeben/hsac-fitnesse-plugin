@@ -11,7 +11,7 @@ public class RandomDomain {
     }
 
 
-    private String getRandomTld() {
+    public String getRandomTld() {
         return RANDOM_UTIL.randomElement(tlds.values()).toString();
     }
 
