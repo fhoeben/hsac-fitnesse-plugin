@@ -56,8 +56,8 @@ public class RandomUtil {
      * @return array with two integers.
      */
     public int[] getRandomSplit(int fullValue) {
-        int firstValue = random(fullValue - 1); //minus one so the secondValue will never become 0
-        int secondValue = fullValue - firstValue;
+        int firstValue = random(fullValue-1) + 1; //+1 so it will never become 0
+        int secondValue = fullValue - firstValue +1;//+1 so it will never become 0
         int split[] = {firstValue, secondValue};
         return split;
     }

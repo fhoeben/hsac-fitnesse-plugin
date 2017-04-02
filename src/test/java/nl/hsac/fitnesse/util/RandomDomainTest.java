@@ -57,7 +57,7 @@ public class RandomDomainTest {
             int length = random.random(95) + 5; //5 to use as minimal length for a hostname in email
             String result = RandomDomain.generateFullDomain(domain, length);
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
-            assertTrue("Got: " + result + " on regex test " + i, result.matches("[abcdefghijklmnopqrstuvwxyz1234567890-]+" + "." + "[ABCDEFGHIJKLMNOPQRSTUVWXYZ]+"));
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[a-z0-9-]+" + "." + "[A-Z]+"));
         }
     }
 

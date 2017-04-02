@@ -32,53 +32,67 @@ public class RandomEmail extends SymbolBase implements Rule, Translation {
         return result;
     }
 
-
     public String toTarget(Translator translator, Symbol symbol) {
         String maxLength = symbol.getProperty(MAX_LENGTH, null);
         String domain = symbol.getProperty(DOMAIN, "");
+        return randomEmail(maxLength, domain);
+    }
 
-        if (parseInt(maxLength) < MIN_EMAIL_LENGTH) {
+    public String randomEmail(String inputLength, String domain) {
+
+        int maxLength;
+        if (inputLength == null) {
+            maxLength = 100;
+        } else {
+            maxLength = parseInt(inputLength);
+        }
+
+        if (maxLength < MIN_EMAIL_LENGTH) {
             throw new IllegalArgumentException("An email address has a minimal length of " + MIN_EMAIL_LENGTH + " characters");
         }
 
         if (domain.length() > 0) { //meaning a domain is given
-            return getRandomLocalAddress(getEmailRandomPartLength(maxLength, domain)) + "@" + domain;
+            if (domain.length() < 5) {
+                throw new IllegalArgumentException("A domainname consists of at least 5 characters");
+            }
+            return getRandomLocalAddress(getEmailRandomPartLength(inputLength, domain)) + "@" + domain;
         } else { //meaning no domain is given
-            int[] randomSplit = RANDOM_UTIL.getRandomSplit(parseInt(MAX_LENGTH) - 5);//the @ will be taken from the second value before a random domain is made
+            int emailRandomLength = maxLength - MIN_EMAIL_LENGTH;
+            emailRandomLength = RANDOM_UTIL.random(emailRandomLength) + MIN_EMAIL_LENGTH;
+            int[] randomSplit = RANDOM_UTIL.getRandomSplit(emailRandomLength - 5); //minimal domain length
             String localAddress = getRandomLocalAddress(randomSplit[0]);
-            String randomDomain = RandomDomain.generateFullDomain(RANDOM_DOMAIN, randomSplit[1] - 1);//removing one character that will be the @
+            String randomDomain = RandomDomain.generateFullDomain(RANDOM_DOMAIN, randomSplit[1] + 4);//removing one character that will be the @
             return localAddress + "@" + randomDomain;
         }
+
     }
 
     //This method returns the maximal length of the randomized string, based on the max length and domain length
-    private int getEmailRandomPartLength(String maxLength, String domain) {
+    public int getEmailRandomPartLength(String maxLength, String domain) {
         int emailRandomLength;
+        int maxlength = parseInt(maxLength);
+        int domainLength = domain.length();
 
-        if (maxLength == null) {
-            emailRandomLength = RANDOM_UTIL.random(93) + MIN_EMAIL_LENGTH; //adding minLength here as the minimal length of an email address is 7 characters
-        } else {
-            int maxlength = parseInt(maxLength);
-            int domainLength = domain.length();
-
-            if (maxlength < 0) {
-                throw new IllegalArgumentException("You cannot use a negative value here, we cannot make a string of negative length");
-            }
-
-            if (domainLength >= maxlength + 2) {  //the +2 is to ensure the @ and one random character in the address are counted towards minimal
-                throw new IllegalArgumentException("The domain with @ is the same size or longer than the requested (maximal) string length");
-            }
-
-            emailRandomLength = RANDOM_UTIL.random(maxlength - domainLength);
-
+        if (maxlength < 0) {
+            throw new IllegalArgumentException("You cannot use a negative value here, we cannot make a string of negative length");
         }
+
+        if (domainLength + 1 >= maxlength) {  //the +2 is to ensure the @ in the address IS counted towards minimal length
+            throw new IllegalArgumentException("The domain with @ is the same size or longer than the requested (maximal) string length");
+        }
+
+        emailRandomLength = RANDOM_UTIL.random(maxlength - domainLength - 1) + 1; //-1 for @, +1 for minimal emaillength
 
         return emailRandomLength;
     }
 
-    private static String getRandomLocalAddress(int localAddressLength) {
+    public static String getRandomLocalAddress(int localAddressLength) {
         String permitted = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
                 "1234567890!#$%&'*+-/=?^_`{|}~.";
+        if (localAddressLength == 0) {
+            throw new IllegalArgumentException("Zero is a bad length for a local email address");
+
+        }
         return RANDOM_UTIL.randomString(permitted, localAddressLength);
     }
 

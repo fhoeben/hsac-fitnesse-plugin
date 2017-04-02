@@ -1,67 +1,36 @@
 package nl.hsac.fitnesse.symbols;
 
+import nl.hsac.fitnesse.util.RandomUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.assertEquals;
+import static java.lang.String.valueOf;
 import static org.junit.Assert.assertTrue;
 
 /**
  * These tests are to check the working of the RandomEmail wikiword
  */
 public class RandomEmailTest {
-    private final RandomString stringLengthGenerator = new RandomString();
+    private final RandomUtil random = new RandomUtil();
+    private final RandomEmail EmailGenerator = new RandomEmail();
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testLength() {
-        checkGeneratedLength("50", "", 50);
+    public void testLengthNoDomain() {
+        testGenerateEmail("50", "", 50);
     }
 
     @Test
-    public void testLengthWithPrefix() {
-        checkGeneratedLength("50", "prefix", 44);
+    public void testLengthNoInputParam() {
+        testGenerateEmail(null, "", 100);
     }
 
     @Test
-    public void testNoParameters() {
-        for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getStringLength(null, "");
-            assertTrue("Actual value:" + result, result < 100);
-        }
-    }
-
-    @Test
-    public void testRange() {
-        checkGeneratedLengthRange("10,60", "", 10, 60);
-    }
-
-    @Test
-    public void testRangeIncludesMax() {
-        checkGeneratedLengthRange("10,10", "", 10, 10);
-    }
-
-    @Test
-    public void testRangeCanIncludeZero() {
-        checkGeneratedLengthRange("0,5", "", 0, 5);
-    }
-
-    @Test
-    public void testRangeWithParameter() {
-        checkGeneratedLengthRange("10,20", "vspgh", 5, 15);
-    }
-
-    @Test
-    public void testprefixTooLongMinLength() {
-        checkGeneratedLengthException("5", "verylongprefix");
-    }
-
-    @Test
-    public void testprefixTooLongMinMaxLength() {
-        checkGeneratedLengthException("3,10", "verylongprefix");
+    public void testLengthWithDomain() {
+        testGenerateEmail("40", "doma.in", 40);
     }
 
     @Test
@@ -70,37 +39,86 @@ public class RandomEmailTest {
     }
 
     @Test
-    public void testZeroParameterNoRange() {
-        checkGeneratedLengthException("0", "");
+    public void testNegativeValueWithDomain() {
+        checkGeneratedLengthException("-5", "org.org");
     }
 
     @Test
-    public void testRandomSameLengthAsPrefix() {
-        checkGeneratedLengthException("2", "ab");
+    public void testSmallLengthNoDomain() {
+        checkGeneratedLengthException("6", "");
     }
 
     @Test
-    public void testRandomRangeSameLengthAsPrefix() {
-        checkGeneratedLengthException("2,2", "ab");
+    public void testRandomSameLengthAsDomain() {
+        checkGeneratedLengthException("12", "verylong.nl");
     }
 
     @Test
-    public void testNegativeValueMinMax() {
-        checkGeneratedLengthException("-5,4", "");
-    }
-
-    @Test
-    public void testMinValueBigger() {
-        checkGeneratedLengthException("10,7", "");
+    public void testEmailLengthToSmall() {
+        checkGeneratedLengthException("2", "");
     }
 
     /**
-     * To test using none or a single value for length, in the latter case also with or without prefix
+     * Tests local email address generation.
      */
-    private void checkGeneratedLength(String lengthParam, String prefix, int expectedmaxValue) {
+    @Test
+    public void testGetRandomLocalAddress() {
         for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getStringLength(lengthParam, prefix);
-            assertEquals("Actual value:" + result, expectedmaxValue, result);
+            int length = random.random(100) + 1; //zero is not an option
+            String result = RandomEmail.getRandomLocalAddress(length);
+            assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[-a-zA-Z0-9!#$%&'*+/=?^_`{|}~.]+"));
+        }
+    }
+
+    /**
+     * Tests zero exception.
+     */
+    @Test
+    public void testGetRandomLocalAddressZeroException() {
+        exception.expect(IllegalArgumentException.class);
+        EmailGenerator.getRandomLocalAddress(0);
+
+    }
+
+    /**
+     * Tests domain oversize exception.
+     */
+    @Test
+    public void testgetEmailRandomPartLengthDomainSizeException() {
+        exception.expect(IllegalArgumentException.class);
+        EmailGenerator.getEmailRandomPartLength("9", "test.com");
+    }
+
+    /**
+     * Tests length generation for the random part if a domain is given.
+     */
+    @Test
+    public void testgetEmailRandomPartLength() {
+        for (int i = 0; i < 1000; i++) {
+            String length = Integer.toString(random.random(50) + 8 + 1 + 1); //domain is 8 long, 1 for @, 1 for at least 1 character
+            int result = EmailGenerator.getEmailRandomPartLength(length, "test.com");
+            assertTrue("Got: " + result + " on test " + i, result <= 50);
+
+        }
+    }
+
+    /**
+     * Tests small domain exception.
+     */
+    @Test
+    public void testRandomEmail() {
+        exception.expect(IllegalArgumentException.class);
+        EmailGenerator.randomEmail("10", "n.nl");
+    }
+
+    /**
+     * To test using none or a single value for length, in the latter case also with or without domain
+     */
+    private void testGenerateEmail(String lengthParam, String domain, int ExpectedLength) {
+        for (int i = 0; i < 1000; i++) {
+            String result = EmailGenerator.randomEmail(lengthParam, domain);
+            assertTrue("Actual value:" + result + " on test " + i, result.length() <= ExpectedLength);
         }
     }
 
@@ -109,18 +127,8 @@ public class RandomEmailTest {
      */
     private void checkGeneratedLengthException(String lengthParam, String prefix) {
         exception.expect(IllegalArgumentException.class);
-        stringLengthGenerator.getStringLength(lengthParam, prefix);
+        EmailGenerator.randomEmail(lengthParam, prefix);
     }
 
-    /**
-     * Test using a range, with or without a prefix
-     */
-    private void checkGeneratedLengthRange(String lengthParam, String prefix, int expectedminValue, int expectedmaxValue) {
-        for (int i = 0; i < 1000; i++) {
-            int result = stringLengthGenerator.getStringLength(lengthParam, prefix);
-            assertTrue("Actual value:" + result, result >= expectedminValue);
-            assertTrue("Actual value:" + result, result <= expectedmaxValue);
 
-        }
-    }
 }
