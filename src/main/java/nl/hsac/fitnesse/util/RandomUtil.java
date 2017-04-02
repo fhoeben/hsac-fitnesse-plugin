@@ -36,4 +36,30 @@ public class RandomUtil {
         }
         return result.toString();
     }
+
+    /**
+     * Picks and returns a random value from the supplied array.
+     *
+     * @param elements the array from which a value will be picked.
+     * @return random element from the array of values.
+     */
+    public <T> T randomElement(T[] elements){
+        return elements[random(elements.length)];
+    }
+
+
+    /**
+     * Creates a random split in an integer, resulting in two integers.
+     * These two integers added together will result in the original input
+     *
+     * @param fullValue integer that needs to be split.
+     * @return array with two integers.
+     */
+    public int[] getRandomSplit(int fullValue) {
+        int firstValue = random(fullValue-1) + 1; //+1 so it will never become 0
+        int secondValue = fullValue - firstValue +1;//+1 so it will never become 0
+        int split[] = {firstValue, secondValue};
+        return split;
+    }
+
 }
