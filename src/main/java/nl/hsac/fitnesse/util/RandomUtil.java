@@ -36,4 +36,35 @@ public class RandomUtil {
         }
         return result.toString();
     }
+
+    /**
+     * Picks and returns a random value from the supplied array.
+     * Does not work in int[]
+     *
+     * @param elements the array from which a value will be picked.
+     * @return random element from the array of values.
+     */
+    public <T> T randomElement(T[] elements) {
+        return elements[random(elements.length)];
+    }
+
+
+    /**
+     * Creates a random split in an integer, resulting in two integers.
+     * These two integers added together will result in the original input
+     * Minimal input value is 2
+     *
+     * @param inputValue integer that needs to be split.
+     * @return array with two integers.
+     */
+    public int[] getRandomSplit(int inputValue) {
+        if (inputValue < 2) {
+            throw new IllegalArgumentException("Minimal possible value to split is 2");
+        }
+        int firstValue = random(inputValue - 1) + 1; //+1 so it will never become 0
+        int secondValue = inputValue - firstValue;//
+        int split[] = {firstValue, secondValue};
+        return split;
+    }
+
 }
