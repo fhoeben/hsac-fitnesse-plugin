@@ -1,6 +1,10 @@
 package nl.hsac.fitnesse.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +13,10 @@ import static org.junit.Assert.*;
  */
 public class RandomUtilTest {
     private final RandomUtil util = new RandomUtil();
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
 
     /**
      * Tests int generation.
@@ -22,26 +30,38 @@ public class RandomUtilTest {
     }
 
     /**
-     * Tests int generation.
-     * todo: write test
+     * Tests random selection of an element from an array.
      */
     @Test
-    public void TestRandomElement() {
-        for (int i = 0; i < 1000; i++) {
-            int result = util.random(10);
-            assertTrue("Got: " + result, result < 10);
+    public void TestRandomElementString() {
+        for (int i = 0; i < 100; i++) {
+            String[] ElementTest = {"Element1", "Element2", "Element3"};
+            String result = util.randomElement(ElementTest);
+            assertTrue("Got: " + result, Arrays.asList(ElementTest).contains(result));
         }
     }
 
     /**
-     * Tests int generation.
-     * todo: write test
+     * Tests the splitting of an integer into two integers of random siz
+     * The sum of the two generated integers is the original integer.
      */
     @Test
     public void testRandomSplit() {
         for (int i = 0; i < 1000; i++) {
-            int result = util.random(10);
-            assertTrue("Got: " + result, result < 10);
+            int orignalInt = util.random(100) + 2;
+            int[] result = util.getRandomSplit(orignalInt);
+            assertTrue("Got: " + orignalInt + " , " + result[0] + " , " + result[1], orignalInt == result[0] + result[1]);
         }
     }
+
+    /**
+     * Tests error message if input value is less than 2.
+     */
+    @Test
+    public void testDomainLengthException() {
+        exception.expect(IllegalArgumentException.class);
+        util.getRandomSplit(1);
+    }
+
+
 }

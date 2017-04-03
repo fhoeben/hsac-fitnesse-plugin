@@ -59,7 +59,7 @@ public class RandomEmail extends SymbolBase implements Rule, Translation {
         } else { //meaning no domain is given
             int emailRandomLength = maxLength - MIN_EMAIL_LENGTH;
             emailRandomLength = RANDOM_UTIL.random(emailRandomLength) + MIN_EMAIL_LENGTH;
-            int[] randomSplit = RANDOM_UTIL.getRandomSplit(emailRandomLength - 5); //minimal domain length
+            int[] randomSplit = RANDOM_UTIL.getRandomSplit(emailRandomLength - 5); //minimal top level domain length
             String localAddress = getRandomLocalAddress(randomSplit[0]);
             String randomDomain = RandomDomain.generateFullDomain(RANDOM_DOMAIN, randomSplit[1] + 4);//removing one character that will be the @
             return localAddress + "@" + randomDomain;
