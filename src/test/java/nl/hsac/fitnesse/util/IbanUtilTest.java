@@ -1,6 +1,4 @@
 package nl.hsac.fitnesse.util;
-
-import nl.hsac.fitnesse.symbols.RandomIban;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
