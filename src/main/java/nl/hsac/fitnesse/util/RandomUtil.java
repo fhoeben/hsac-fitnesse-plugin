@@ -7,7 +7,7 @@ import java.util.Random;
  * Helper for random values.
  */
 public class RandomUtil {
-    private Random random = new SecureRandom();
+    private static Random random = new SecureRandom();
 
     /**
      * Generates random number below a certain value.
@@ -35,5 +35,15 @@ public class RandomUtil {
             result.append(value);
         }
         return result.toString();
+    }
+
+    /**
+     * Return a random value from a given enum
+     * @param clazz The enum class to get a value from
+     * @return a randomly selected value from the enum
+     */
+    public <T extends Enum<?>> T randomEnum(Class<T> clazz){
+        int x = random.nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
     }
 }
