@@ -18,7 +18,6 @@ public class IbanUtilTest {
         for (int i = 0; i < 100; i++) {
             String bic = RANDOM_UTIL.randomEnum(NlBankCodes.class).toString();
             String result = generator.generateIban("NL", bic);
-            System.out.println(result);
             assertEquals("Got: " + result, 18, result.length());
         }
     }
