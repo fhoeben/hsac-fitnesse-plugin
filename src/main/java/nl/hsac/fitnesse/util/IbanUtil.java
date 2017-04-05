@@ -3,7 +3,7 @@ package nl.hsac.fitnesse.util;
 import java.math.BigDecimal;
 
 /**
- * Helpers for BSNs.
+ * Helpers for IBAN.
  */
 public class IbanUtil {
     private RandomUtil randomUtil = new RandomUtil();
