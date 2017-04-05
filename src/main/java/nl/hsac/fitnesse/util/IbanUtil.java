@@ -11,9 +11,9 @@ public class IbanUtil {
 
 
     /**
-     * Generates random number that could be a BSN.
-     * Based on: http://www.testnummers.nl/bsn.js
-     * @return random BSN.
+     * Generates random number to create IBAN.
+     * BBAN gen based on: http://testnummers.nl/bank.js
+     * @return random IBAN.
      */
 
     public String generateIban(String country, String bankCode) {
