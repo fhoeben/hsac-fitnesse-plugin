@@ -67,4 +67,14 @@ public class RandomUtil {
         return split;
     }
 
+
+    /**
+     * Return a random value from a given enum
+     * @param clazz The enum class to get a value from
+     * @return a randomly selected value from the enum
+     */
+    public <T extends Enum<?>> T randomEnum(Class<T> clazz){
+        int x = random.nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
+    }
 }
