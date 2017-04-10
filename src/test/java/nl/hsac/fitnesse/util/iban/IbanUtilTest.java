@@ -7,12 +7,13 @@ import org.junit.rules.ExpectedException;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests BsnUtil.
  */
 public class IbanUtilTest {
-    private final IbanUtil ibanGenerator = new IbanUtil();
+    private final IbanUtil ibanUtil = new IbanUtil();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -24,8 +25,8 @@ public class IbanUtilTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String result = ibanGenerator.generateIban("", "");
-            assertEquals("Got: " + result, 18, result.length());
+            String result = ibanUtil.generateIban("", "");
+            assertTrue("Got: " + result, result.length() > 15);
         }
     }
 
@@ -35,8 +36,8 @@ public class IbanUtilTest {
     @Test
     public void testCountry() {
         for (int i = 0; i < 100; i++) {
-            String result = ibanGenerator.generateIban("NL", "");
-            assertEquals("Got: " + result, 18, result.length());
+            String result = ibanUtil.generateIban("BE", "");
+            assertEquals("Got: " + result, 16, result.length());
         }
     }
 
@@ -47,7 +48,7 @@ public class IbanUtilTest {
     public void testCountryBank() {
         for (int i = 0; i < 100; i++) {
             String bic = RANDOM_UTIL.randomElement(NLIban.NlBankCodes.values()).toString();
-            String result = ibanGenerator.generateIban("NL", bic);
+            String result = ibanUtil.generateIban("NL", bic);
             assertEquals("Got: " + result, 18, result.length());
         }
     }
@@ -59,18 +60,30 @@ public class IbanUtilTest {
     public void testErrorCountryCode() {
             exception.expect(IllegalArgumentException.class);
             String bic = RANDOM_UTIL.randomElement(NLIban.NlBankCodes.values()).toString();
-            String result = ibanGenerator.generateIban("ZZ", bic);
+            String result = ibanUtil.generateIban("ZZ", bic);
 
     }
 
     /**
-     * Tests error code on unknown bank code.
+     * Tests letters to numbers.
      */
     @Test
-    public void testErrorBankCode() {
-            exception.expect(IllegalArgumentException.class);
-            String bic = "ZZZZ";
-            String result = ibanGenerator.generateIban("NL", bic);
-
+    public void testLettersToNumbers() {
+        testLettersToNumbersCall("AA", "1010");
+        testLettersToNumbersCall("AB", "1011");
+        testLettersToNumbersCall("ZZ", "3535");
+        testLettersToNumbersCall("pp", "2525");
+        testLettersToNumbersCall("As", "1028");
+        testLettersToNumbersCall("nL", "2321");
     }
+
+    private void testLettersToNumbersCall(String letters, String result) {
+        String numbers = ibanUtil.lettersToNumbers(letters);
+        assertEquals("Got: " + numbers, result, numbers);
+    }
+
+
+
+
 }
+

@@ -7,7 +7,7 @@ import nl.hsac.fitnesse.util.RandomUtil;
  */
 public class NLIban {
     private RandomUtil randomUtil = new RandomUtil();
-    private static int LETTER_OFFSET = 9;
+    private IbanUtil ibanUtil = new IbanUtil();
 
     /**
      * Generates random number to create IBAN.
@@ -65,44 +65,13 @@ public class NLIban {
         bban += Nr2;
         bban += Nr1;
 
-        String baseIbanStr = lettersToNumbers(bankCode) + bban + lettersToNumbers(country) + "00";
-        String controlNr = String.valueOf(98 - mod97(baseIbanStr));
+        String baseIbanStr = ibanUtil.lettersToNumbers(bankCode.toUpperCase()) + bban + ibanUtil.lettersToNumbers(country.toUpperCase()) + "00";
+        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }
         return country.toUpperCase() + controlNr + bankCode.toUpperCase() + bban;
 
-    }
-
-    private int mod97(String modString) {
-        String part = "";
-        int modPart;
-
-        for (int i = 0; i < modString.length(); i++){
-            if (part.length() < 9)
-                part = part + modString.charAt(i);
-            else {
-                modPart = (int)Long.parseLong(part)%97;
-                part = Integer.toString(modPart) + modString.charAt(i);
-            }
-        }
-        return (int)Long.parseLong(part)%97;
-    }
-
-    private String lettersToNumbers(String str) {
-        str = str.toLowerCase();
-        String result = "";
-        char[] ch  = str.toCharArray();
-        for(char c : ch)
-        {
-            int charCode = (int)c;
-            int startCode = 96;
-            if(charCode<=122 & charCode>=97) {
-                int charNumber = (charCode - startCode) + LETTER_OFFSET;
-                result += charNumber;
-            }
-        }
-        return result;
     }
 
     /**
