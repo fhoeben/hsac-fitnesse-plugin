@@ -58,7 +58,7 @@ public class RandomUtilTest {
      * Tests error message if input value is less than 2.
      */
     @Test
-    public void testDomainLengthException() {
+    public void testSplitLengthException() {
         exception.expect(IllegalArgumentException.class);
         util.getRandomSplit(1);
     }

@@ -48,7 +48,6 @@ public class RandomUtil {
         return elements[random(elements.length)];
     }
 
-
     /**
      * Creates a random split in an integer, resulting in two integers.
      * These two integers added together will result in the original input
@@ -65,16 +64,5 @@ public class RandomUtil {
         int secondValue = inputValue - firstValue;//
         int split[] = {firstValue, secondValue};
         return split;
-    }
-
-
-    /**
-     * Return a random value from a given enum
-     * @param clazz The enum class to get a value from
-     * @return a randomly selected value from the enum
-     */
-    public <T extends Enum<?>> T randomEnum(Class<T> clazz){
-        int x = random.nextInt(clazz.getEnumConstants().length);
-        return clazz.getEnumConstants()[x];
     }
 }

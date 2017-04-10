@@ -1,9 +1,7 @@
 package nl.hsac.fitnesse.symbols;
 
 import fitnesse.wikitext.parser.*;
-import nl.hsac.fitnesse.util.NlBankCodes;
-import nl.hsac.fitnesse.util.IbanUtil;
-import nl.hsac.fitnesse.util.RandomUtil;
+import nl.hsac.fitnesse.util.iban.*;
 
 /**
  * Symbol that creates a random  IBAN number for use in tests.
@@ -12,7 +10,6 @@ import nl.hsac.fitnesse.util.RandomUtil;
  */
 public class RandomIban extends SymbolBase implements Rule, Translation {
     private static final IbanUtil IBAN_UTIL = new IbanUtil();
-    private static final RandomUtil RANDOM_UTIL = new RandomUtil();
     private static final String COUNTRY = "countryCode";
     private static final String BANK = "bankCode";
 
@@ -33,10 +30,9 @@ public class RandomIban extends SymbolBase implements Rule, Translation {
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
-        String bankCode = symbol.getProperty(BANK, RANDOM_UTIL.randomEnum(NlBankCodes.class).toString());
-        String country = symbol.getProperty(COUNTRY, "NL");
+        String country = symbol.getProperty(COUNTRY, "");
+        String bankCode = symbol.getProperty(BANK, "");
         return IBAN_UTIL.generateIban(country, bankCode);
-
     }
 
 }
