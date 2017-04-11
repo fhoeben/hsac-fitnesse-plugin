@@ -17,21 +17,25 @@ public class IbanUtil {
         }
 
         switch (country) {
-            case "NL":
-                NLIban nlIban = new NLIban();
-                iban = nlIban.generateNLIban(country, bankCode);
-                return iban;
             case "BE":
                 BEIban beIban = new BEIban();
                 iban = beIban.generateBEIban(country, bankCode);
+                return iban;
+            case "CH":
+                CHIban chIban = new CHIban();
+                iban = chIban.generateCHIban(country, bankCode);
                 return iban;
             case "DE":
                 DEIban deIban = new DEIban();
                 iban = deIban.generateDEIban(country, bankCode);
                 return iban;
-            case "CH":
-                CHIban chIban = new CHIban();
-                iban = chIban.generateCHIban(country, bankCode);
+            case "NL":
+                NLIban nlIban = new NLIban();
+                iban = nlIban.generateNLIban(country, bankCode);
+                return iban;
+            case "LU":
+                LUIban luIban = new LUIban();
+                iban = luIban.generateLUIban(country, bankCode);
                 return iban;
             default:
                 throw new IllegalArgumentException("This country code is unknown");
@@ -42,7 +46,8 @@ public class IbanUtil {
             "NL",
             "BE",
             "DE",
-            "CH"
+            "CH",
+            "LU"
     };
 
     // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
