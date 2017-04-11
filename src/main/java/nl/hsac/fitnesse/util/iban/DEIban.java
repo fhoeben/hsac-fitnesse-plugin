@@ -38,45 +38,17 @@ public class DEIban {
         }
 
 
-        //create a 6 digit account number, digit 7 has a checksum based mod11.
-        String bban = "";
-        int N1 = randomUtil.random(10);
-        int N2 = randomUtil.random(10);
-        int N3 = randomUtil.random(10);
-        int N4 = randomUtil.random(10);
-        int N5 = randomUtil.random(10);
-        int N6 = randomUtil.random(10);
+        String permittedAccountDigits = "0123456789";
+        String accountNumber = randomUtil.randomString(permittedAccountDigits, 10);
 
-        int tmp = N1*2 + N2*3+ N3*4+ N4*5+ N5*6+ N6*7;
-        int N7 = tmp%11;
-        if (N7 == 10){N7=1;}
-
-        int N8 = randomUtil.random(10);
-        int N9 = randomUtil.random(10);
-
-        tmp = N1*2 + N2*3+ N3*4+ N4*5+ N5*6+ N6*7+ N7*2+ N8*3+ N9*4;
-        int N10 = tmp%11;
-        if (N10 == 10){N10=1;}
-
-        bban += N1;
-        bban += N2;
-        bban += N3;
-        bban += N4;
-        bban += N5;
-        bban += N6;
-        bban += N7;
-        bban += N8;
-        bban += N9;
-        bban += N10;
-
-        String baseIbanStr = bankCode + bban + ibanUtil.lettersToNumbers(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanUtil.lettersToNumbers(country) + "00";
 
         String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }
 
-        return country + controlNr + bankCode + bban;
+        return country + controlNr + bankCode + accountNumber;
 
     }
 
