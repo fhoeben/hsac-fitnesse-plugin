@@ -25,6 +25,10 @@ public class IbanUtil {
                 BEIban beIban = new BEIban();
                 iban = beIban.generateBEIban(country, bankCode);
                 return iban;
+            case "DE":
+                DEIban deIban = new DEIban();
+                iban = deIban.generateDEIban(country, bankCode);
+                return iban;
             default:
                 throw new IllegalArgumentException("This country code is unknown");
         }
@@ -32,7 +36,8 @@ public class IbanUtil {
 
     private String[] countryCodes = {
             "NL",
-            "BE"
+            "BE",
+            "DE"
     };
 
     // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
