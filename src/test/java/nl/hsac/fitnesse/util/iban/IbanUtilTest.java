@@ -36,8 +36,8 @@ public class IbanUtilTest {
     @Test
     public void testCountry() {
         for (int i = 0; i < 100; i++) {
-            String result = ibanUtil.generateIban("BE", "");
-            assertEquals("Got: " + result, 16, result.length());
+            String result = ibanUtil.generateIban("DE", "");
+            assertEquals("Got: " + result, 22, result.length());
         }
     }
 
