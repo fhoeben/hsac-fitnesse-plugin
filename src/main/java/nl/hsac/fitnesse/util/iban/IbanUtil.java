@@ -8,10 +8,10 @@ import nl.hsac.fitnesse.util.RandomUtil;
  */
 public class IbanUtil {
     private final RandomUtil RANDOM_UTIL = new RandomUtil();
-    private String iban = "";
+
 
     public String generateIban(String country, String bankCode) {
-
+        String iban;
         if (country.equals("")) {
             country = RANDOM_UTIL.randomElement(countryCodes);
         }

@@ -59,9 +59,7 @@ public class CHIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        String bic = "666";
-        String result = generator.generateCHIban("", bic);
-
+        generator.generateCHIban("", "666");
     }
 
 }
