@@ -17,12 +17,26 @@ public class NLIbanTest {
     public final ExpectedException exception = ExpectedException.none();
 
     /**
+     * Tests generation without parameters.
+     */
+    @Test
+    public void testNoParam() {
+        for (int i = 0; i < 100; i++) {
+            String result = generator.generateNLIban("", "");
+            assertEquals("Got: " + result, 18, result.length());
+            assertTrue("Got: " + result, result.charAt(0)=='N' && result.charAt(1)=='L');
+        }
+    }
+
+
+
+    /**
      * Tests basic generation.
      */
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(NLIban.NlBankCodes.values()).toString();
+            String bic = RANDOM_UTIL.randomElement(generator.NlBankCodes);
             String result = generator.generateNLIban("NL", bic);
             assertEquals("Got: " + result, 18, result.length());
         }
@@ -45,9 +59,7 @@ public class NLIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        String bic = "ZZZZ";
-        String result = generator.generateNLIban("", bic);
-
+        generator.generateNLIban("", "ZZZZ");
     }
 
 

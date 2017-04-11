@@ -22,21 +22,7 @@ public class DEIban {
             country = "DE";
         }
 
-        //Validator if the requested bankcode is valid (meaning listed in the array at the bottom)
-        if (bankCode.equals("")) {
-            bankCode = randomUtil.randomElement(DEBankCodes);
-        } else {
-            boolean bankCodeValid = false;
-            for (String c : DEBankCodes) {
-                if (c == bankCode) {
-                    bankCodeValid = true;
-                }
-            }
-            if (bankCodeValid == false) {
-                throw new IllegalArgumentException("This bank code is unknown");
-            }
-        }
-
+        bankCode = ibanUtil.getBankCode(bankCode, DEBankCodes);
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 10);

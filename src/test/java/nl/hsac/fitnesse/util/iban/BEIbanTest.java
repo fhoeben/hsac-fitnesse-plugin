@@ -57,9 +57,7 @@ public class BEIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        String bic = "654";
-        String result = generator.generateBEIban("", bic);
-
+        generator.generateBEIban("", "654");
     }
 
 }

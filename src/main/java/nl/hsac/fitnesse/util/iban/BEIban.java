@@ -22,20 +22,7 @@ public class BEIban {
             country = "BE";
         }
 
-        //Validator if the requested bankcode is valid (meaning listed in the array at the bottom)
-        if (bankCode.equals("")) {
-            bankCode = randomUtil.randomElement(BEBankCodes);
-        } else {
-            boolean bankCodeValid = false;
-            for (String c : BEBankCodes) {
-                if (c == bankCode) {
-                    bankCodeValid = true;
-                }
-            }
-            if (bankCodeValid == false) {
-                throw new IllegalArgumentException("This bank code is unknown");
-            }
-        }
+        bankCode = ibanUtil.getBankCode(bankCode, BEBankCodes);
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 7);

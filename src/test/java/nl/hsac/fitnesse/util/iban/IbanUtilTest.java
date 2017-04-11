@@ -15,6 +15,8 @@ import static org.junit.Assert.assertTrue;
 public class IbanUtilTest {
     private final IbanUtil ibanUtil = new IbanUtil();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
+    private final NLIban generator = new NLIban();
+
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -47,7 +49,7 @@ public class IbanUtilTest {
     @Test
     public void testCountryBank() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(NLIban.NlBankCodes.values()).toString();
+            String bic = RANDOM_UTIL.randomElement(generator.NlBankCodes);
             String result = ibanUtil.generateIban("NL", bic);
             assertEquals("Got: " + result, 18, result.length());
         }
@@ -58,10 +60,8 @@ public class IbanUtilTest {
      */
     @Test
     public void testErrorCountryCode() {
-            exception.expect(IllegalArgumentException.class);
-            String bic = RANDOM_UTIL.randomElement(NLIban.NlBankCodes.values()).toString();
-            String result = ibanUtil.generateIban("ZZ", bic);
-
+        exception.expect(IllegalArgumentException.class);
+        ibanUtil.generateIban("ZZ", "");
     }
 
     /**
@@ -77,13 +77,28 @@ public class IbanUtilTest {
         testLettersToNumbersCall("nL", "2321");
     }
 
+    /**
+     * Tests country specific generation.
+     */
+    @Test
+    public void testAllCountryCodes() {
+        countrySelectTest("NL", 18);
+        countrySelectTest("DE", 22);
+        countrySelectTest("BE", 16);
+        countrySelectTest("CH", 21);
+    }
+
+
     private void testLettersToNumbersCall(String letters, String result) {
         String numbers = ibanUtil.lettersToNumbers(letters);
         assertEquals("Got: " + numbers, result, numbers);
     }
 
-
-
+    private void countrySelectTest(String countryCode, int expectedIbanLength) {
+        String result = ibanUtil.generateIban(countryCode, "");
+        assertEquals("Got: " + result, expectedIbanLength, result.length());
+        assertTrue("Got: " + result, result.charAt(0) == countryCode.charAt(0) && result.charAt(1) == countryCode.charAt(1));
+    }
 
 }
 
