@@ -5,9 +5,9 @@ import nl.hsac.fitnesse.util.iban.*;
 
 /**
  * Symbol that creates a random  IBAN number for use in tests.
- * Currently only Dutch IBAN's are supported
  * Usage: !randomIBAN
  */
+
 public class RandomIban extends SymbolBase implements Rule, Translation {
     private static final IbanUtil IBAN_UTIL = new IbanUtil();
     private static final String COUNTRY = "countryCode";
