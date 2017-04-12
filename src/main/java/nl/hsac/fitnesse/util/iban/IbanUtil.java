@@ -41,6 +41,10 @@ public class IbanUtil {
                 DKIban dkIban = new DKIban();
                 iban = dkIban.generateDKIban(country, bankCode);
                 return iban;
+            case "AT":
+                ATIban atIban = new ATIban();
+                iban = atIban.generateATIban(country, bankCode);
+                return iban;
             default:
                 throw new IllegalArgumentException("This country code is unknown");
         }
