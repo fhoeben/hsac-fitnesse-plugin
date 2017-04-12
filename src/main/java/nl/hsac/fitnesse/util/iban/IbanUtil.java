@@ -37,6 +37,10 @@ public class IbanUtil {
                 LUIban luIban = new LUIban();
                 iban = luIban.generateLUIban(country, bankCode);
                 return iban;
+            case "DK":
+                DKIban dkIban = new DKIban();
+                iban = dkIban.generateDKIban(country, bankCode);
+                return iban;
             default:
                 throw new IllegalArgumentException("This country code is unknown");
         }
@@ -47,7 +51,8 @@ public class IbanUtil {
             "BE",
             "DE",
             "CH",
-            "LU"
+            "LU",
+            "DK"
     };
 
     // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).

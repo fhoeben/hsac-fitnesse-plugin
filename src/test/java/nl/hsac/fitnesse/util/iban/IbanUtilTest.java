@@ -87,6 +87,7 @@ public class IbanUtilTest {
         countrySelectTest("BE", 16);
         countrySelectTest("CH", 21);
         countrySelectTest("LU", 20);
+        countrySelectTest("DK", 18);
     }
 
     /**
