@@ -24,7 +24,6 @@ public class LUIbanTest {
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
             String result = generator.generateLUIban("", "");
-            System.out.println(result);
             assertEquals("Got: " + result, 20, result.length());
         }
     }
