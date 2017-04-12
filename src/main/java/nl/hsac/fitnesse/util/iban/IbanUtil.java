@@ -51,14 +51,14 @@ public class IbanUtil {
     };
 
     // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
-    public String lettersToNumbers(String str) {
+    public String stringToNumbersIso13616(String str) {
         char[] letters = str.toUpperCase().toCharArray();
         String result = "";
-        String capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String capitals = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         for (int j = 0; j < letters.length; j++)
             for (int i = 0; i < capitals.length(); i++)
                 if (letters[j] == capitals.charAt(i)) {
-                    result = result + Integer.toString(i + 10);
+                    result = result + Integer.toString(i);
                 }
         return result;
     }
@@ -99,6 +99,21 @@ public class IbanUtil {
         }
         return bankCode;
     }
+
+    //method for padding a bankcode or other String with zero's to meet a desired length
+    public String padWithStartingZeros(String toBePadded, int requiredLength){
+        if (toBePadded.length() > requiredLength){
+            throw new IllegalArgumentException("The string to be padded is longer than the requested length");
+        }
+
+        while(requiredLength>toBePadded.length()){
+            toBePadded = "0" + toBePadded;
+        }
+
+        return toBePadded;
+    }
+
+
 
 
 

@@ -33,7 +33,7 @@ public class BEIban {
             accountControlNumber = "0" + accountControlNumber;
         }
 
-        String baseIbanStr = bankCode + accountNumber + accountControlNumber + ibanUtil.lettersToNumbers(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + accountControlNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
         String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;

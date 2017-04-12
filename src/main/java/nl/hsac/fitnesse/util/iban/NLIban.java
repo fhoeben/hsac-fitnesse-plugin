@@ -57,7 +57,7 @@ public class NLIban {
         bban += Nr2;
         bban += Nr1;
 
-        String baseIbanStr = ibanUtil.lettersToNumbers(bankCode.toUpperCase()) + bban + ibanUtil.lettersToNumbers(country.toUpperCase()) + "00";
+        String baseIbanStr = ibanUtil.stringToNumbersIso13616(bankCode.toUpperCase()) + bban + ibanUtil.stringToNumbersIso13616(country.toUpperCase()) + "00";
         String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;

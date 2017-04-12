@@ -89,9 +89,35 @@ public class IbanUtilTest {
         countrySelectTest("LU", 20);
     }
 
+    /**
+     * Tests country specific generation.
+     */
+@Test
+public void testPaddingWithStartingZeros(){
+    testPadWithStartingZeros("BankCode", 10);
+    testPadWithStartingZeros("BankCode", 8);
+    testPadWithStartingZeros("BankCode", 100);
+    testPadWithStartingZeros("", 10);
+}
+
+    /**
+     * Tests error code on desired length smaller than string to be padded
+     */
+    @Test
+    public void testErrorPaddingWithZeros() {
+        exception.expect(IllegalArgumentException.class);
+        ibanUtil.padWithStartingZeros("ZZ", 1);
+    }
+
+
+
+    private void testPadWithStartingZeros(String string, int desiredLength){
+        String result = ibanUtil.padWithStartingZeros(string, desiredLength);
+        assertEquals("Got" + result, result.length(), desiredLength );
+}
 
     private void testLettersToNumbersCall(String letters, String result) {
-        String numbers = ibanUtil.lettersToNumbers(letters);
+        String numbers = ibanUtil.stringToNumbersIso13616(letters);
         assertEquals("Got: " + numbers, result, numbers);
     }
 

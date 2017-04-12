@@ -23,19 +23,13 @@ public class CHIban {
         }
 
         bankCode = ibanUtil.getBankCode(bankCode, CHBankCodes);
-
-        if (bankCode.length() == 3) {
-            bankCode = "00" + bankCode;
-        }
-        if (bankCode.length() == 4) {
-            bankCode = "0" + bankCode;
-        }
+        bankCode = ibanUtil.padWithStartingZeros(bankCode, 5);
 
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 12);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.lettersToNumbers(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
 
         String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {

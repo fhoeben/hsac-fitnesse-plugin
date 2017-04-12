@@ -27,7 +27,7 @@ public class LUIban {
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 13);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.lettersToNumbers(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
 
         String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
