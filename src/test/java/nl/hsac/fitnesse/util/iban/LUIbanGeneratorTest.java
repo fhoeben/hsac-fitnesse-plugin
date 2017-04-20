@@ -6,13 +6,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Tests BEIban.
+ * Tests LUIbanGenerator.
  */
-public class DEIbanTest {
-    private final DEIban generator = new DEIban();
+public class LUIbanGeneratorTest {
+    private final LUIbanGenerator generator = new LUIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -24,9 +23,8 @@ public class DEIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban("", "");
-            assertEquals("Got: " + result, 22, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='D' && result.charAt(1)=='E');
+            String result = generator.generateLUIban("", "");
+            assertEquals("Got: " + result, 20, result.length());
         }
     }
 
@@ -36,8 +34,8 @@ public class DEIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban("DE", "");
-            assertEquals("Got: " + result, 22, result.length());
+            String result = generator.generateLUIban("LU", "");
+            assertEquals("Got: " + result, 20, result.length());
         }
     }
 
@@ -47,9 +45,9 @@ public class DEIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.DEBankCodes);
-            String result = generator.generateDEIban("DE", bic);
-            assertEquals("Got: " + result, 22, result.length());
+            String bic = RANDOM_UTIL.randomElement(generator.LUBankCodes);
+            String result = generator.generateLUIban("LU", bic);
+            assertEquals("Got: " + result, 20, result.length());
         }
     }
 
@@ -59,7 +57,7 @@ public class DEIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateDEIban("", "666");
+        generator.generateLUIban("", "666");
     }
 
 }

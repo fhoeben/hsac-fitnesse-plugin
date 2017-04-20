@@ -6,9 +6,8 @@ import nl.hsac.fitnesse.util.RandomUtil;
 /**
  * To select a country and parse the iban request to the proper class
  */
-public class IbanUtil {
+public class IbanGenerator {
     private final RandomUtil RANDOM_UTIL = new RandomUtil();
-
 
     public String generateIban(String country, String bankCode) {
         String iban;
@@ -18,32 +17,32 @@ public class IbanUtil {
 
         switch (country) {
             case "BE":
-                BEIban beIban = new BEIban();
-                iban = beIban.generateBEIban(country, bankCode);
+                BEIbanGenerator beIbanGenerator = new BEIbanGenerator();
+                iban = beIbanGenerator.generateBEIban(country, bankCode);
                 return iban;
             case "CH":
-                CHIban chIban = new CHIban();
-                iban = chIban.generateCHIban(country, bankCode);
+                CHIbanGenerator chIbanGenerator = new CHIbanGenerator();
+                iban = chIbanGenerator.generateCHIban(country, bankCode);
                 return iban;
             case "DE":
-                DEIban deIban = new DEIban();
-                iban = deIban.generateDEIban(country, bankCode);
+                DEIbanGenerator deIbanGenerator = new DEIbanGenerator();
+                iban = deIbanGenerator.generateDEIban(country, bankCode);
                 return iban;
             case "NL":
-                NLIban nlIban = new NLIban();
-                iban = nlIban.generateNLIban(country, bankCode);
+                NLIbanGenerator nlIbanGenerator = new NLIbanGenerator();
+                iban = nlIbanGenerator.generateNLIban(country, bankCode);
                 return iban;
             case "LU":
-                LUIban luIban = new LUIban();
-                iban = luIban.generateLUIban(country, bankCode);
+                LUIbanGenerator luIbanGenerator = new LUIbanGenerator();
+                iban = luIbanGenerator.generateLUIban(country, bankCode);
                 return iban;
             case "DK":
-                DKIban dkIban = new DKIban();
-                iban = dkIban.generateDKIban(country, bankCode);
+                DKIbanGenerator dkIbanGenerator = new DKIbanGenerator();
+                iban = dkIbanGenerator.generateDKIban(country, bankCode);
                 return iban;
             case "AT":
-                ATIban atIban = new ATIban();
-                iban = atIban.generateATIban(country, bankCode);
+                ATIbanGenerator atIbanGenerator = new ATIbanGenerator();
+                iban = atIbanGenerator.generateATIban(bankCode);
                 return iban;
             default:
                 throw new IllegalArgumentException("This country code is unknown");
@@ -51,12 +50,40 @@ public class IbanUtil {
     }
 
     private String[] countryCodes = {
-            "NL",
-            "BE",
-            "DE",
-            "CH",
-            "LU",
-            "DK"
+            "NL",   //Netherlands
+            "BE",   //Belgium
+            "DE",   //Denmark
+            "CH",   //Switzerland
+            "LU",   //Luxembourg
+            "DK",   //Denmark
+            "BG",   //Bulgaria
+            "HR",   //Croatia
+            "CY",   //Cyprus
+            "CZ",   //Czech Republic
+            "EE",   //Estonia
+            "FI",   //Finland
+            "FR",   //France
+            "GI",   //Gibraltar
+            "GR",   //Greece
+            "HU",   //Hungary
+            "IS",   //Iceland
+            "IE",   //Ireland
+            "IT",   //Italy
+            "LV",   //Latvia
+            "LI",   //Liechtenstein
+            "LT",   //Lithuania
+            "MT",   //Malta
+            "MC",   //Monaco
+            "NO",   //Norway
+            "PL",   //Poland
+            "PT",   //Portugal
+            "RO",   //Romania
+            "SM",   //San Marino
+            "SK",   //Slovakia
+            "SI",   //Slovenia
+            "ES",   //Spain
+            "SE",   //Sweden
+            "GB",   //United Kingdom
     };
 
     // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
@@ -88,17 +115,20 @@ public class IbanUtil {
         return (int)Long.parseLong(part)%97;
     }
 
-    //Validator if the requested bank is listed in the supplied array
+    //Validator to check if the requested bank is listed in the supplied array
     //If the string is empty, select a random bank
+    //Else check if the bankcode exists in the supplied array and make sure it has the right length
     //If the string does not exist, throw an exception
-    public String getBankCode(String bankCode, String[] bankCodesArray) {
+    public String getBankCode(String bankCode, String[] bankCodesArray, int length, String bankCodeType) {
         if (bankCode.equals("")) {
-            bankCode = RANDOM_UTIL.randomElement(bankCodesArray);
+            bankCode = padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), length);
+
         } else {
             boolean bankCodeValid = false;
             for (String c : bankCodesArray) {
                 if (c == bankCode) {
                     bankCodeValid = true;
+                    bankCode = padWithStartingZeros(bankCode, length);
                     break;
                 }
             }
@@ -121,6 +151,19 @@ public class IbanUtil {
 
         return toBePadded;
     }
+
+
+    public String getRandomStringNumeric(int length) {
+        String permittedAccountDigits = "0123456789";
+        return RANDOM_UTIL.randomString(permittedAccountDigits, length);
+    }
+
+    public String getRandomStringAlfaNumeric(int length) {
+        String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return RANDOM_UTIL.randomString(permittedAccountDigits, length);
+    }
+
+
 
 
 

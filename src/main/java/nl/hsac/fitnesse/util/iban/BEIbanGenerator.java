@@ -6,9 +6,9 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a Belgium IBAN.
  */
 
-public class BEIban {
+public class BEIbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
+    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
@@ -22,19 +22,19 @@ public class BEIban {
             country = "BE";
         }
 
-        bankCode = ibanUtil.getBankCode(bankCode, BEBankCodes);
+        bankCode = ibanGenerator.getBankCode(bankCode, BEBankCodes);
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 7);
 
         String accountInclBank = bankCode + accountNumber;
-        String accountControlNumber = String.valueOf(IbanUtil.mod97(accountInclBank));
+        String accountControlNumber = String.valueOf(IbanGenerator.mod97(accountInclBank));
         if (accountControlNumber.length() == 1) {
             accountControlNumber = "0" + accountControlNumber;
         }
 
-        String baseIbanStr = bankCode + accountNumber + accountControlNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String baseIbanStr = bankCode + accountNumber + accountControlNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }

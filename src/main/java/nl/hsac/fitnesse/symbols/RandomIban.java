@@ -9,7 +9,7 @@ import nl.hsac.fitnesse.util.iban.*;
  */
 
 public class RandomIban extends SymbolBase implements Rule, Translation {
-    private static final IbanUtil IBAN_UTIL = new IbanUtil();
+    private static final IbanGenerator IBAN_UTIL = new IbanGenerator();
     private static final String COUNTRY = "countryCode";
     private static final String BANK = "bankCode";
 

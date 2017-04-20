@@ -6,9 +6,9 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a German IBAN.
  */
 
-public class DEIban {
+public class DEIbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
+    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
@@ -22,14 +22,14 @@ public class DEIban {
             country = "DE";
         }
 
-        bankCode = ibanUtil.getBankCode(bankCode, DEBankCodes);
+        bankCode = ibanGenerator.getBankCode(bankCode, DEBankCodes);
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 10);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
 
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }

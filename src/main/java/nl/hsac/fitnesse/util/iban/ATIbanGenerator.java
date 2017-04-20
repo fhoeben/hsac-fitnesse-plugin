@@ -6,9 +6,8 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a German IBAN.
  */
 
-public class ATIban {
+public class ATIbanGenerator extends IbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
 
     /**
      * Generates random number to create IBAN.
@@ -16,34 +15,49 @@ public class ATIban {
      * @return random Austrian IBAN.
      */
 
-    public String generateATIban(String country, String bankCode) {
+    public String generateATIban(String bankCode) {
 
-        if (country.equals("")) {
-            country = "AT";
+        String countryCode = "AT";
+        int accountLength = 11;
+        String accountCodeType = "N";
+        int bankCodeLength = 5;
+        String bankCodeType = "N";
+
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+
+
+        return buildIban(bankCode, countryCode, bankCodeLength, accountLength, bankCodeList, bankCodeType);
+
+    }
+
+    public String buildIban(String bankCode, String countryCode, int bankCodeLength,
+                            int accountLength, String[] bankCodeList, String bankCodeType) {
+
+        if (bankCodeList.length == 0) {
+            if (bankCodeType.equals("N")) {
+                bankCode = "";
+            }
         }
 
-        bankCode = ibanUtil.getBankCode(bankCode, ATBankCodes);
-        bankCode = ibanUtil.padWithStartingZeros(bankCode, 5);
 
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 11);
+        String accountNumber = getRandomStringNumeric(accountLength);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
+        String baseIbanStr = stringToNumbersIso13616(bankCode + accountNumber + countryCode) + "00";
 
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }
 
-        return country + controlNr + bankCode + accountNumber;
-
+        return countryCode + controlNr + bankCode + accountNumber;
     }
+
 
     /**
      * Array of Austrian Bank codes
      */
 
-    public String[] ATBankCodes = {
+    public String[] bankCodeList = {
             "52300",    //Addiko Bank AG
             "20320",    //Allgemeine Sparkasse Oberösterreich BankAG
             "20315",    //Allgemeine Sparkasse Oberösterreich BankAG

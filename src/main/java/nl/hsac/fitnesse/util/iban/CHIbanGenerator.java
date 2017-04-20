@@ -6,9 +6,9 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a Swiss IBAN.
  */
 
-public class CHIban {
+public class CHIbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
+    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
@@ -22,16 +22,16 @@ public class CHIban {
             country = "CH";
         }
 
-        bankCode = ibanUtil.getBankCode(bankCode, CHBankCodes);
-        bankCode = ibanUtil.padWithStartingZeros(bankCode, 5);
+        bankCode = ibanGenerator.getBankCode(bankCode, CHBankCodes);
+        bankCode = ibanGenerator.padWithStartingZeros(bankCode, 5);
 
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 12);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
 
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }

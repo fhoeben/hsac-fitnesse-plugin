@@ -9,10 +9,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests AT Iban generator.
+ * Tests BEIbanGenerator.
  */
-public class ATIbanTest {
-    private final ATIban generator = new ATIban();
+public class DEIbanGeneratorTest {
+    private final DEIbanGenerator generator = new DEIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -24,9 +24,9 @@ public class ATIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateATIban("", "");
-            assertEquals("Got: " + result, 20, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='A' && result.charAt(1)=='T');
+            String result = generator.generateDEIban("", "");
+            assertEquals("Got: " + result, 22, result.length());
+            assertTrue("Got: " + result, result.charAt(0)=='D' && result.charAt(1)=='E');
         }
     }
 
@@ -36,8 +36,8 @@ public class ATIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateATIban("AT", "");
-            assertEquals("Got: " + result, 20, result.length());
+            String result = generator.generateDEIban("DE", "");
+            assertEquals("Got: " + result, 22, result.length());
         }
     }
 
@@ -47,9 +47,9 @@ public class ATIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.ATBankCodes);
-            String result = generator.generateATIban("AT", bic);
-            assertEquals("Got: " + result, 20, result.length());
+            String bic = RANDOM_UTIL.randomElement(generator.DEBankCodes);
+            String result = generator.generateDEIban("DE", bic);
+            assertEquals("Got: " + result, 22, result.length());
         }
     }
 
@@ -59,7 +59,7 @@ public class ATIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateATIban("", "666");
+        generator.generateDEIban("", "666");
     }
 
 }

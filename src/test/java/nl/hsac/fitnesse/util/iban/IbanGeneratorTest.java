@@ -12,10 +12,10 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests BsnUtil.
  */
-public class IbanUtilTest {
-    private final IbanUtil ibanUtil = new IbanUtil();
+public class IbanGeneratorTest {
+    private final IbanGenerator ibanGenerator = new IbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-    private final NLIban generator = new NLIban();
+    private final NLIbanGenerator generator = new NLIbanGenerator();
 
 
     @Rule
@@ -27,7 +27,7 @@ public class IbanUtilTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String result = ibanUtil.generateIban("", "");
+            String result = ibanGenerator.generateIban("", "");
             assertTrue("Got: " + result, result.length() > 15);
         }
     }
@@ -38,7 +38,7 @@ public class IbanUtilTest {
     @Test
     public void testCountry() {
         for (int i = 0; i < 100; i++) {
-            String result = ibanUtil.generateIban("DE", "");
+            String result = ibanGenerator.generateIban("DE", "");
             assertEquals("Got: " + result, 22, result.length());
         }
     }
@@ -50,7 +50,7 @@ public class IbanUtilTest {
     public void testCountryBank() {
         for (int i = 0; i < 100; i++) {
             String bic = RANDOM_UTIL.randomElement(generator.NlBankCodes);
-            String result = ibanUtil.generateIban("NL", bic);
+            String result = ibanGenerator.generateIban("NL", bic);
             assertEquals("Got: " + result, 18, result.length());
         }
     }
@@ -61,7 +61,7 @@ public class IbanUtilTest {
     @Test
     public void testErrorCountryCode() {
         exception.expect(IllegalArgumentException.class);
-        ibanUtil.generateIban("ZZ", "");
+        ibanGenerator.generateIban("ZZ", "");
     }
 
     /**
@@ -69,12 +69,13 @@ public class IbanUtilTest {
      */
     @Test
     public void testLettersToNumbers() {
-        testLettersToNumbersCall("AA", "1010");
+        testLettersToNumbersCall("ABNA", "10112310");
         testLettersToNumbersCall("AB", "1011");
         testLettersToNumbersCall("ZZ", "3535");
         testLettersToNumbersCall("pp", "2525");
         testLettersToNumbersCall("As", "1028");
         testLettersToNumbersCall("nL", "2321");
+        testLettersToNumbersCall("73", "73");
     }
 
     /**
@@ -108,23 +109,23 @@ public void testPaddingWithStartingZeros(){
     @Test
     public void testErrorPaddingWithZeros() {
         exception.expect(IllegalArgumentException.class);
-        ibanUtil.padWithStartingZeros("ZZ", 1);
+        ibanGenerator.padWithStartingZeros("ZZ", 1);
     }
 
 
 
     private void testPadWithStartingZeros(String string, int desiredLength){
-        String result = ibanUtil.padWithStartingZeros(string, desiredLength);
+        String result = ibanGenerator.padWithStartingZeros(string, desiredLength);
         assertEquals("Got" + result, result.length(), desiredLength );
 }
 
     private void testLettersToNumbersCall(String letters, String result) {
-        String numbers = ibanUtil.stringToNumbersIso13616(letters);
+        String numbers = ibanGenerator.stringToNumbersIso13616(letters);
         assertEquals("Got: " + numbers, result, numbers);
     }
 
     private void countrySelectTest(String countryCode, int expectedIbanLength) {
-        String result = ibanUtil.generateIban(countryCode, "");
+        String result = ibanGenerator.generateIban(countryCode, "");
         assertEquals("Got: " + result, expectedIbanLength, result.length());
         assertTrue("Got: " + result, result.charAt(0) == countryCode.charAt(0) && result.charAt(1) == countryCode.charAt(1));
     }

@@ -6,12 +6,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Tests BEIban.
+ * Tests CH Iban generator.
  */
-public class BEIbanTest {
-    private final BEIban generator = new BEIban();
+public class CHIbanGeneratorTest {
+    private final CHIbanGenerator generator = new CHIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -23,8 +24,9 @@ public class BEIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateBEIban("", "");
-            assertEquals("Got: " + result, 16, result.length());
+            String result = generator.generateCHIban("", "");
+            assertEquals("Got: " + result, 21, result.length());
+            assertTrue("Got: " + result, result.charAt(0)=='C' && result.charAt(1)=='H');
         }
     }
 
@@ -34,8 +36,8 @@ public class BEIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateBEIban("BE", "");
-            assertEquals("Got: " + result, 16, result.length());
+            String result = generator.generateCHIban("CH", "");
+            assertEquals("Got: " + result, 21, result.length());
         }
     }
 
@@ -45,9 +47,9 @@ public class BEIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.BEBankCodes);
-            String result = generator.generateBEIban("BE", bic);
-            assertEquals("Got: " + result, 16, result.length());
+            String bic = RANDOM_UTIL.randomElement(generator.CHBankCodes);
+            String result = generator.generateCHIban("CH", bic);
+            assertEquals("Got: " + result, 21, result.length());
         }
     }
 
@@ -57,7 +59,7 @@ public class BEIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateBEIban("", "654");
+        generator.generateCHIban("", "666");
     }
 
 }

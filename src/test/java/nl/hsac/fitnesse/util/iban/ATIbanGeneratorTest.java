@@ -6,12 +6,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Tests LUIban.
+ * Tests AT Iban generator.
  */
-public class LUIbanTest {
-    private final LUIban generator = new LUIban();
+public class ATIbanGeneratorTest {
+    private final ATIbanGenerator generator = new ATIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -23,8 +24,9 @@ public class LUIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateLUIban("", "");
+            String result = generator.generateATIban("", "");
             assertEquals("Got: " + result, 20, result.length());
+            assertTrue("Got: " + result, result.charAt(0)=='A' && result.charAt(1)=='T');
         }
     }
 
@@ -34,7 +36,7 @@ public class LUIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateLUIban("LU", "");
+            String result = generator.generateATIban("AT", "");
             assertEquals("Got: " + result, 20, result.length());
         }
     }
@@ -45,8 +47,8 @@ public class LUIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.LUBankCodes);
-            String result = generator.generateLUIban("LU", bic);
+            String bic = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = generator.generateATIban("AT", bic);
             assertEquals("Got: " + result, 20, result.length());
         }
     }
@@ -57,7 +59,7 @@ public class LUIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateLUIban("", "666");
+        generator.generateATIban("", "666");
     }
 
 }

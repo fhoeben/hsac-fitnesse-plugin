@@ -6,13 +6,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Tests DK Iban generator.
+ * Tests BEIbanGenerator.
  */
-public class DKIbanTest {
-    private final DKIban generator = new DKIban();
+public class BEIbanGeneratorTest {
+    private final BEIbanGenerator generator = new BEIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -24,9 +23,8 @@ public class DKIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDKIban("", "");
-            assertEquals("Got: " + result, 18, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='D' && result.charAt(1)=='K');
+            String result = generator.generateBEIban("", "");
+            assertEquals("Got: " + result, 16, result.length());
         }
     }
 
@@ -36,8 +34,8 @@ public class DKIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDKIban("DK", "");
-            assertEquals("Got: " + result, 18, result.length());
+            String result = generator.generateBEIban("BE", "");
+            assertEquals("Got: " + result, 16, result.length());
         }
     }
 
@@ -47,9 +45,9 @@ public class DKIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.DKBankCodes);
-            String result = generator.generateDKIban("DK", bic);
-            assertEquals("Got: " + result, 18, result.length());
+            String bic = RANDOM_UTIL.randomElement(generator.BEBankCodes);
+            String result = generator.generateBEIban("BE", bic);
+            assertEquals("Got: " + result, 16, result.length());
         }
     }
 
@@ -59,7 +57,7 @@ public class DKIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateDKIban("", "666");
+        generator.generateBEIban("", "654");
     }
 
 }

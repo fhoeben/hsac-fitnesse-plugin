@@ -9,8 +9,8 @@ import static org.junit.Assert.*;
 /**
  * Tests BsnUtil.
  */
-public class NLIbanTest {
-    private final NLIban generator = new NLIban();
+public class NLIbanGeneratorTest {
+    private final NLIbanGenerator generator = new NLIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule

@@ -9,10 +9,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests CH Iban generator.
+ * Tests DK Iban generator.
  */
-public class CHIbanTest {
-    private final CHIban generator = new CHIban();
+public class DKIbanGeneratorTest {
+    private final DKIbanGenerator generator = new DKIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     @Rule
@@ -24,9 +24,9 @@ public class CHIbanTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateCHIban("", "");
-            assertEquals("Got: " + result, 21, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='C' && result.charAt(1)=='H');
+            String result = generator.generateDKIban("", "");
+            assertEquals("Got: " + result, 18, result.length());
+            assertTrue("Got: " + result, result.charAt(0)=='D' && result.charAt(1)=='K');
         }
     }
 
@@ -36,8 +36,8 @@ public class CHIbanTest {
     @Test
     public void testNoBankCode() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateCHIban("CH", "");
-            assertEquals("Got: " + result, 21, result.length());
+            String result = generator.generateDKIban("DK", "");
+            assertEquals("Got: " + result, 18, result.length());
         }
     }
 
@@ -47,9 +47,9 @@ public class CHIbanTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.CHBankCodes);
-            String result = generator.generateCHIban("CH", bic);
-            assertEquals("Got: " + result, 21, result.length());
+            String bic = RANDOM_UTIL.randomElement(generator.DKBankCodes);
+            String result = generator.generateDKIban("DK", bic);
+            assertEquals("Got: " + result, 18, result.length());
         }
     }
 
@@ -59,7 +59,7 @@ public class CHIbanTest {
     @Test
     public void testErrorBankCode() {
         exception.expect(IllegalArgumentException.class);
-        generator.generateCHIban("", "666");
+        generator.generateDKIban("", "666");
     }
 
 }

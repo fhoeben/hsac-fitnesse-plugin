@@ -5,9 +5,9 @@ import nl.hsac.fitnesse.util.RandomUtil;
 /**
  * Helpers for IBAN.
  */
-public class NLIban {
+public class NLIbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
+    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
@@ -20,7 +20,7 @@ public class NLIban {
         if (country.equals("")) {
             country = "NL";
         }
-        bankCode = ibanUtil.getBankCode(bankCode, NlBankCodes);
+        bankCode = ibanGenerator.getBankCode(bankCode, NlBankCodes);
 
         String bban = "";
         int Nr10 = 0;
@@ -57,8 +57,8 @@ public class NLIban {
         bban += Nr2;
         bban += Nr1;
 
-        String baseIbanStr = ibanUtil.stringToNumbersIso13616(bankCode.toUpperCase()) + bban + ibanUtil.stringToNumbersIso13616(country.toUpperCase()) + "00";
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String baseIbanStr = ibanGenerator.stringToNumbersIso13616(bankCode.toUpperCase()) + bban + ibanGenerator.stringToNumbersIso13616(country.toUpperCase()) + "00";
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }

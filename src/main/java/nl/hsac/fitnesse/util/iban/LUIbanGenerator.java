@@ -6,9 +6,9 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a Luxembourg IBAN.
  */
 
-public class LUIban {
+public class LUIbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanUtil ibanUtil = new IbanUtil();
+    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
@@ -22,14 +22,14 @@ public class LUIban {
             country = "LU";
         }
 
-        bankCode = ibanUtil.getBankCode(bankCode, LUBankCodes);
+        bankCode = ibanGenerator.getBankCode(bankCode, LUBankCodes);
 
         String permittedAccountDigits = "0123456789";
         String accountNumber = randomUtil.randomString(permittedAccountDigits, 13);
 
-        String baseIbanStr = bankCode + accountNumber + ibanUtil.stringToNumbersIso13616(country) + "00";
+        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
 
-        String controlNr = String.valueOf(98 - IbanUtil.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
         }
