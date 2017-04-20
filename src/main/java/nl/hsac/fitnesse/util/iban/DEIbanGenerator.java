@@ -1,40 +1,29 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Generates a German IBAN.
  */
 
-public class DEIbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
+public class DEIbanGenerator extends IbanGenerator {
 
     /**
      * Generates random number to create IBAN.
      *
      * @return random German IBAN.
      */
+    public String generateDEIban(String bankCode) {
 
-    public String generateDEIban(String country, String bankCode) {
+        String countryCode = "DE";
+        int accountLength = 10;
+        String accountCodeType = "N";
+        int bankCodeLength = 8;
+        String bankCodeType = "N";
 
-        if (country.equals("")) {
-            country = "DE";
-        }
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String account = getAccount(accountLength, accountCodeType);
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
-        bankCode = ibanGenerator.getBankCode(bankCode, DEBankCodes);
-
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 10);
-
-        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
-
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
-
-        return country + controlNr + bankCode + accountNumber;
+        return countryCode + controlNr + bankCode + account;
 
     }
 
@@ -42,7 +31,7 @@ public class DEIbanGenerator {
      * Array of German Bank codes
      */
 
-    public String[] DEBankCodes = {
+    public String[] bankCodeList = {
             "10000000",    //Bundesbank
             "10010010",    //Postbank
             "10010111",    //SEB

@@ -24,20 +24,9 @@ public class ATIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateATIban("", "");
+            String result = generator.generateATIban("");
             assertEquals("Got: " + result, 20, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='A' && result.charAt(1)=='T');
-        }
-    }
-
-    /**
-     * Tests generation without bankCode.
-     */
-    @Test
-    public void testNoBankCode() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateATIban("AT", "");
-            assertEquals("Got: " + result, 20, result.length());
+            assertTrue("Got: " + result, result.startsWith("AT"));
         }
     }
 
@@ -47,19 +36,9 @@ public class ATIbanGeneratorTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateATIban("AT", bic);
+            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = generator.generateATIban(bankCode);
             assertEquals("Got: " + result, 20, result.length());
         }
     }
-
-    /**
-     * Tests error code on unknown bank code.
-     */
-    @Test
-    public void testErrorBankCode() {
-        exception.expect(IllegalArgumentException.class);
-        generator.generateATIban("", "666");
-    }
-
 }

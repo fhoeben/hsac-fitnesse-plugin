@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests BsnUtil.
+ * Tests IbanUtil.
  */
 public class IbanGeneratorTest {
     private final IbanGenerator ibanGenerator = new IbanGenerator();
@@ -40,6 +40,7 @@ public class IbanGeneratorTest {
         for (int i = 0; i < 100; i++) {
             String result = ibanGenerator.generateIban("DE", "");
             assertEquals("Got: " + result, 22, result.length());
+            assertTrue("Got: " + result, result.startsWith("DE"));
         }
     }
 
@@ -49,8 +50,8 @@ public class IbanGeneratorTest {
     @Test
     public void testCountryBank() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.NlBankCodes);
-            String result = ibanGenerator.generateIban("NL", bic);
+            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = ibanGenerator.generateIban("NL", bankCode);
             assertEquals("Got: " + result, 18, result.length());
         }
     }

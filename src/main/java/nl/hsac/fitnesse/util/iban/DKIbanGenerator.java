@@ -1,41 +1,28 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Generates a Danish IBAN.
  */
 
-public class DKIbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
+public class DKIbanGenerator extends IbanGenerator{
 
     /**
      * Generates random number to create IBAN.
      *
      * @return random Danish IBAN.
      */
+    public String generateDKIban(String bankCode) {
+        String countryCode = "DK";
+        int accountLength = 10;
+        String accountCodeType = "N";
+        int bankCodeLength = 4;
+        String bankCodeType = "N";
 
-    public String generateDKIban(String country, String bankCode) {
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String account = getAccount(accountLength, accountCodeType);
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
-        if (country.equals("")) {
-            country = "DK";
-        }
-
-        bankCode = ibanGenerator.getBankCode(bankCode, DKBankCodes);
-        bankCode = ibanGenerator.padWithStartingZeros(bankCode, 4);
-
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 10);
-
-        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
-
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
-
-        return country + controlNr + bankCode + accountNumber;
+        return countryCode + controlNr + bankCode + account;
 
     }
 
@@ -44,7 +31,7 @@ public class DKIbanGenerator {
      * Array of Danish Bank codes
      */
 
-    public String[] DKBankCodes = {
+    public String[] bankCodeList = {
             "40",    //NordeaNordea Vordingborg Afdeling
             "41",    //NordeaNordea Vordingborg Afdeling
             "42",    //NordeaNordea Vordingborg Afdeling

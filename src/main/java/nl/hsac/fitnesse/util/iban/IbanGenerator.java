@@ -10,83 +10,76 @@ public class IbanGenerator {
     private final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     public String generateIban(String country, String bankCode) {
-        String iban;
         if (country.equals("")) {
             country = RANDOM_UTIL.randomElement(countryCodes);
         }
 
+
         switch (country) {
             case "BE":
-                BEIbanGenerator beIbanGenerator = new BEIbanGenerator();
-                iban = beIbanGenerator.generateBEIban(country, bankCode);
-                return iban;
+                return new BEIbanGenerator().generateBEIban(bankCode);
             case "CH":
-                CHIbanGenerator chIbanGenerator = new CHIbanGenerator();
-                iban = chIbanGenerator.generateCHIban(country, bankCode);
-                return iban;
+                return new CHIbanGenerator().generateCHIban(bankCode);
             case "DE":
-                DEIbanGenerator deIbanGenerator = new DEIbanGenerator();
-                iban = deIbanGenerator.generateDEIban(country, bankCode);
-                return iban;
-            case "NL":
-                NLIbanGenerator nlIbanGenerator = new NLIbanGenerator();
-                iban = nlIbanGenerator.generateNLIban(country, bankCode);
-                return iban;
-            case "LU":
-                LUIbanGenerator luIbanGenerator = new LUIbanGenerator();
-                iban = luIbanGenerator.generateLUIban(country, bankCode);
-                return iban;
+                return new DEIbanGenerator().generateDEIban(bankCode);
             case "DK":
-                DKIbanGenerator dkIbanGenerator = new DKIbanGenerator();
-                iban = dkIbanGenerator.generateDKIban(country, bankCode);
-                return iban;
+                return new DKIbanGenerator().generateDKIban(bankCode);
+            case "LU":
+                return new LUIbanGenerator().generateLUIban(bankCode);
+            case "NL":
+                return new NLIbanGenerator().generateNLIban(bankCode);
             case "AT":
-                ATIbanGenerator atIbanGenerator = new ATIbanGenerator();
-                iban = atIbanGenerator.generateATIban(bankCode);
-                return iban;
+                return new ATIbanGenerator().generateATIban(bankCode);
             default:
-                throw new IllegalArgumentException("This country code is unknown");
+                throw new IllegalArgumentException("The given country code " + country + " is not (yet) implemented");
         }
     }
 
-    private String[] countryCodes = {
-            "NL",   //Netherlands
+    String[] countryCodes = {
+            "AT",     //Austria
             "BE",   //Belgium
-            "DE",   //Denmark
+//            "BG",   //Bulgaria
             "CH",   //Switzerland
-            "LU",   //Luxembourg
+//            "CY",   //Cyprus
+//            "CZ",   //Czech Republic
+            "DE",   //Germany
             "DK",   //Denmark
-            "BG",   //Bulgaria
-            "HR",   //Croatia
-            "CY",   //Cyprus
-            "CZ",   //Czech Republic
-            "EE",   //Estonia
-            "FI",   //Finland
-            "FR",   //France
-            "GI",   //Gibraltar
-            "GR",   //Greece
-            "HU",   //Hungary
-            "IS",   //Iceland
-            "IE",   //Ireland
-            "IT",   //Italy
-            "LV",   //Latvia
-            "LI",   //Liechtenstein
-            "LT",   //Lithuania
-            "MT",   //Malta
-            "MC",   //Monaco
-            "NO",   //Norway
-            "PL",   //Poland
-            "PT",   //Portugal
-            "RO",   //Romania
-            "SM",   //San Marino
-            "SK",   //Slovakia
-            "SI",   //Slovenia
-            "ES",   //Spain
-            "SE",   //Sweden
-            "GB",   //United Kingdom
+//            "EE",   //Estonia
+//            "ES",   //Spain
+//            "FI",   //Finland
+//            "FR",   //France
+//            "GB",   //United Kingdom
+//            "GI",   //Gibraltar
+//            "GR",   //Greece
+//            "HR",   //Croatia
+//            "HU",   //Hungary
+//            "IE",   //Ireland
+//            "IS",   //Iceland
+//            "IT",   //Italy
+//            "LI",   //Liechtenstein
+//            "LT",   //Lithuania
+            "LU",   //Luxembourg
+//            "LV",   //Latvia
+//            "MC",   //Monaco
+//            "MT",   //Malta
+            "NL",   //Netherlands
+//            "NO",   //Norway
+//            "PL",   //Poland
+//            "PT",   //Portugal
+//            "RO",   //Romania
+//            "SE",   //Sweden
+//            "SI",   //Slovenia
+//            "SK",   //Slovakia
+//            "SM",   //San Marino
+
     };
 
-    // Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
+    /**
+     * Convert a capital letter into digits: A -> 10 ... Z -> 35 (ISO 13616).
+     *
+     * @param str
+     * @return
+     */
     public String stringToNumbersIso13616(String str) {
         char[] letters = str.toUpperCase().toCharArray();
         String result = "";
@@ -99,53 +92,64 @@ public class IbanGenerator {
         return result;
     }
 
-    //Calculate the control number using the mod97 method
+    /**
+     * Calculate the control number using the mod97 method
+     *
+     * @param modString
+     * @return
+     */
     public static int mod97(String modString) {
         String part = "";
         int modPart;
 
-        for (int i = 0; i < modString.length(); i++){
+        for (int i = 0; i < modString.length(); i++) {
             if (part.length() < 9)
                 part = part + modString.charAt(i);
             else {
-                modPart = (int)Long.parseLong(part)%97;
+                modPart = (int) Long.parseLong(part) % 97;
                 part = Integer.toString(modPart) + modString.charAt(i);
             }
         }
-        return (int)Long.parseLong(part)%97;
+        return (int) Long.parseLong(part) % 97;
     }
 
-    //Validator to check if the requested bank is listed in the supplied array
-    //If the string is empty, select a random bank
-    //Else check if the bankcode exists in the supplied array and make sure it has the right length
-    //If the string does not exist, throw an exception
-    public String getBankCode(String bankCode, String[] bankCodesArray, int length, String bankCodeType) {
-        if (bankCode.equals("")) {
-            bankCode = padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), length);
-
+    /**
+     * To supply a bankcode based on the bankcode properties and availability of a list
+     * It does not check if the bankcode supplied is found in a bankcode list as this might be a new or undocumented bank
+     *
+     * @param bankCode
+     * @param bankCodesArray
+     * @param bankCodeLength
+     * @param bankCodeType
+     * @return
+     */
+    public String getBankCode(String bankCode, String[] bankCodesArray, int bankCodeLength, String bankCodeType) {
+        if (bankCode.length() == 0) {
+            if (bankCodesArray.length > 0) {
+                return padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), bankCodeLength);
+            } else if (bankCodeType.equals("N")) {
+                return getRandomStringNumeric(bankCodeLength);
+            } else {
+                return getRandomStringAlfaNumeric(bankCodeLength);
+            }
+        } else if (bankCode.length() < bankCodeLength) {
+            return padWithStartingZeros(bankCode, bankCodeLength);
+        } else if (bankCode.length() > bankCodeLength) {
+            throw new IllegalArgumentException("The supplied bankcode is longer than the Iban specification allows for");
         } else {
-            boolean bankCodeValid = false;
-            for (String c : bankCodesArray) {
-                if (c == bankCode) {
-                    bankCodeValid = true;
-                    bankCode = padWithStartingZeros(bankCode, length);
-                    break;
-                }
-            }
-            if (bankCodeValid == false) {
-                throw new IllegalArgumentException("This bank code is unknown");
-            }
+            return bankCode;
         }
-        return bankCode;
     }
 
-    //method for padding a bankcode or other String with zero's to meet a desired length
-    public String padWithStartingZeros(String toBePadded, int requiredLength){
-        if (toBePadded.length() > requiredLength){
+    /**
+     * method for padding a bankcode or other String with zero's to meet a desired length
+     */
+    public String padWithStartingZeros(String toBePadded, int requiredLength) {
+        if (toBePadded.length() > requiredLength) {
             throw new IllegalArgumentException("The string to be padded is longer than the requested length");
         }
 
-        while(requiredLength>toBePadded.length()){
+        while (requiredLength > toBePadded.length()) {
             toBePadded = "0" + toBePadded;
         }
 
@@ -153,20 +157,55 @@ public class IbanGenerator {
     }
 
 
+    /**
+     * @param length
+     * @return
+     */
     public String getRandomStringNumeric(int length) {
         String permittedAccountDigits = "0123456789";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
 
+    /**
+     * @param length
+     * @return
+     */
     public String getRandomStringAlfaNumeric(int length) {
         String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
 
+    /**
+     * @param accountLength
+     * @param accountCodeType
+     * @return
+     */
+    public String getAccount(int accountLength, String accountCodeType) {
+        String accountNumber;
+        if (accountCodeType.equals("N")) {
+            accountNumber = getRandomStringNumeric(accountLength);
+        } else {
+            accountNumber = getRandomStringAlfaNumeric(accountLength);
+        }
+        return accountNumber;
+    }
 
+    /**
+     * @param bankCode
+     * @param account
+     * @param countryCode
+     * @return
+     */
+    public String getControlNumber(String bankCode, String account, String countryCode) {
+        String baseIbanStr = stringToNumbersIso13616(bankCode + account + countryCode) + "00";
+        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
 
+        if (controlNr.length() == 1) {
+            controlNr = "0" + controlNr;
+        }
 
-
+        return controlNr;
+    }
 
 
 }

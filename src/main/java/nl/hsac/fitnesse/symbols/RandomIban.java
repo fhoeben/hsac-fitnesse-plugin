@@ -9,7 +9,7 @@ import nl.hsac.fitnesse.util.iban.*;
  */
 
 public class RandomIban extends SymbolBase implements Rule, Translation {
-    private static final IbanGenerator IBAN_UTIL = new IbanGenerator();
+    private static final IbanGenerator IBAN_GENERATOR = new IbanGenerator();
     private static final String COUNTRY = "countryCode";
     private static final String BANK = "bankCode";
 
@@ -32,7 +32,7 @@ public class RandomIban extends SymbolBase implements Rule, Translation {
     public String toTarget(Translator translator, Symbol symbol) {
         String country = symbol.getProperty(COUNTRY, "");
         String bankCode = symbol.getProperty(BANK, "");
-        return IBAN_UTIL.generateIban(country, bankCode);
+        return IBAN_GENERATOR.generateIban(country, bankCode);
     }
 
 }

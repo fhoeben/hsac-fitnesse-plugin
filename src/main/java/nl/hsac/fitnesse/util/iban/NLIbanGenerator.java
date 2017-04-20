@@ -5,24 +5,25 @@ import nl.hsac.fitnesse.util.RandomUtil;
 /**
  * Helpers for IBAN.
  */
-public class NLIbanGenerator {
+public class NLIbanGenerator extends IbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
 
     /**
      * Generates random number to create IBAN.
      * BBAN gen based on: http://testnummers.nl/bank.js
+     *
      * @return random IBAN.
      */
 
-    public String generateNLIban(String country, String bankCode) {
+    public String generateNLIban(String bankCode) {
+        String countryCode = "NL";
 
-        if (country.equals("")) {
-            country = "NL";
-        }
-        bankCode = ibanGenerator.getBankCode(bankCode, NlBankCodes);
+        int bankCodeLength = 4;
+        String bankCodeType = "A";
 
-        String bban = "";
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+
+        String account = "";
         int Nr10 = 0;
         int Nr9 = randomUtil.random(3);
         int Nr8 = randomUtil.random(10);
@@ -46,99 +47,92 @@ public class NLIbanGenerator {
                 Nr1 = 1;
             }
         }
-        bban += Nr10;
-        bban += Nr9;
-        bban += Nr8;
-        bban += Nr7;
-        bban += Nr6;
-        bban += Nr5;
-        bban += Nr4;
-        bban += Nr3;
-        bban += Nr2;
-        bban += Nr1;
+        account += Nr10;
+        account += Nr9;
+        account += Nr8;
+        account += Nr7;
+        account += Nr6;
+        account += Nr5;
+        account += Nr4;
+        account += Nr3;
+        account += Nr2;
+        account += Nr1;
 
-        String baseIbanStr = ibanGenerator.stringToNumbersIso13616(bankCode.toUpperCase()) + bban + ibanGenerator.stringToNumbersIso13616(country.toUpperCase()) + "00";
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
-        return country.toUpperCase() + controlNr + bankCode.toUpperCase() + bban;
+        String controlNr = getControlNumber(bankCode, account, countryCode);
+
+        return countryCode + controlNr + bankCode + account;
 
     }
 
-    /**
-     * Enum of Dutch BIC codes
-     */
-
-    public String[] NlBankCodes = {
-        "ABNA", // ABN AMRO BANK
-        "FTSB", // ABN AMRO BANK (ex FORTIS BANK)
-        "AEGO", // AEGON BANK
-        "ANAA", // ALLIANZ NEDERLAND ASSET MANAGEMENT
-        "ANDL", // ANADOLUBANK
-        "ARBN", // ACHMEA BANK
-        "ARSN", // ARGENTA SPAARBANK
-        "ARTE", // GE ARTESIA BANK
-        "ASNB", // ASN BANK
-        "ASRB", // ASR BANK
-        "ATBA", // AMSTERDAM TRADE BANK
-        "BBRU", // ING BELGIE, BREDA
-        "BCDM", // BANQUE CHAABI DU MAROC
-        "BCIT", // INTESA SANPAOLO
-        "BICK", // BINCKBANK
-        "BKCH", // BANK OF CHINA
-        "BKMG", // BANK MENDES GANS
-        "BLGW", // BLG WONEN
-        "BMEU", // BMCE EUROSERVICES
-        "BNGH", // BANK NEDERLANDSE GEMEENTEN
-        "BNPA", // BNP PARIBAS
-        "BOFA", // BANK OF AMERICA
-        "BOFS", // BANK OF SCOTLAND, AMSTERDAM
-        "BOTK", // BANK OF TOKYO-MITSUBISHI UFJ
-        "CHAS", // JPMORGAN CHASE
-        "CITC", // CITCO BANK
-        "CITI", // CITIBANK INTERNATIONAL
-        "COBA", // COMMERZBANK
-        "DEUT", // DEUTSCHE BANK (bij alle SEPA transacties)
-        "DHBN", // DEMIR-HALK BANK
-        "DLBK", // DELTA LLOYD BANK
-        "DNIB", // NIBC BANK
-        "FBHL", // CREDIT EUROPE BANK
-        "FLOR", // DE NEDERLANDSCHE BANK
-        "FRBK", // FRIESLAND BANK
-        "FRGH", // FGH BANK
-        "FVLB", // F. VAN LANSCHOT BANKIERS
-        "GILL", // THEODOOR GILISSEN
-        "HAND", // SVENSKA HANDELSBANKEN
-        "HHBA", // HOF HOORNEMAN BANKIERS
-        "HSBC", // HSBC BANK
-        "ICBK", // INDUSTRIAL & COMMERCIAL BANK OF CHINA
-        "INGB", // ING BANK
-        "INSI", // INSINGER DE BEAUFORT
-        "ISBK", // ISBANK
-        "KABA", // YAPI KREDI BANK
-        "KASA", // KAS BANK
-        "KNAB", // KNAB
-        "KOEX", // KOREA EXCHANGE BANK
-        "KRED", // KBC BANK
-        "LOCY", // LOMBARD ODIER DARIER HENTSCH & CIE
-        "LOYD", // LLOYDS TSB BANK
-        "LPLN", // LEASEPLAN CORPORATION
-        "MHCB", // MIZUHO CORPORATE BANK
-        "NNBA", // NATIONALE-NEDERLANDEN BANK
-        "NWAB", // NEDERLANDSE WATERSCHAPSBANK
-        "OVBN", // LEVOB BANK
-        "RABO", // RABOBANK
-        "RBOS", // ROYAL BANK OF SCOTLAND
-        "RBRB", // REGIOBANK
-        "SNSB", // SNS BANK
-        "SOGE", // SOCIETE GENERALE
-        "STAL", // STAALBANKIERS
-        "TEBU", // THE ECONOMY BANK
-        "TRIO", // TRIODOS BANK
-        "UBSW", // UBS BANK
-        "UGBI", // GARANTIBANK INTERNATIONAL
-        "VOWA", // VOLKSWAGEN BANK
-        "ZWLB"  // ZWITSERLEVENBANK
+    public String[] bankCodeList = {
+            "ABNA", // ABN AMRO BANK
+            "FTSB", // ABN AMRO BANK (ex FORTIS BANK)
+            "AEGO", // AEGON BANK
+            "ANAA", // ALLIANZ NEDERLAND ASSET MANAGEMENT
+            "ANDL", // ANADOLUBANK
+            "ARBN", // ACHMEA BANK
+            "ARSN", // ARGENTA SPAARBANK
+            "ARTE", // GE ARTESIA BANK
+            "ASNB", // ASN BANK
+            "ASRB", // ASR BANK
+            "ATBA", // AMSTERDAM TRADE BANK
+            "BBRU", // ING BELGIE, BREDA
+            "BCDM", // BANQUE CHAABI DU MAROC
+            "BCIT", // INTESA SANPAOLO
+            "BICK", // BINCKBANK
+            "BKCH", // BANK OF CHINA
+            "BKMG", // BANK MENDES GANS
+            "BLGW", // BLG WONEN
+            "BMEU", // BMCE EUROSERVICES
+            "BNGH", // BANK NEDERLANDSE GEMEENTEN
+            "BNPA", // BNP PARIBAS
+            "BOFA", // BANK OF AMERICA
+            "BOFS", // BANK OF SCOTLAND, AMSTERDAM
+            "BOTK", // BANK OF TOKYO-MITSUBISHI UFJ
+            "CHAS", // JPMORGAN CHASE
+            "CITC", // CITCO BANK
+            "CITI", // CITIBANK INTERNATIONAL
+            "COBA", // COMMERZBANK
+            "DEUT", // DEUTSCHE BANK (bij alle SEPA transacties)
+            "DHBN", // DEMIR-HALK BANK
+            "DLBK", // DELTA LLOYD BANK
+            "DNIB", // NIBC BANK
+            "FBHL", // CREDIT EUROPE BANK
+            "FLOR", // DE NEDERLANDSCHE BANK
+            "FRBK", // FRIESLAND BANK
+            "FRGH", // FGH BANK
+            "FVLB", // F. VAN LANSCHOT BANKIERS
+            "GILL", // THEODOOR GILISSEN
+            "HAND", // SVENSKA HANDELSBANKEN
+            "HHBA", // HOF HOORNEMAN BANKIERS
+            "HSBC", // HSBC BANK
+            "ICBK", // INDUSTRIAL & COMMERCIAL BANK OF CHINA
+            "INGB", // ING BANK
+            "INSI", // INSINGER DE BEAUFORT
+            "ISBK", // ISBANK
+            "KABA", // YAPI KREDI BANK
+            "KASA", // KAS BANK
+            "KNAB", // KNAB
+            "KOEX", // KOREA EXCHANGE BANK
+            "KRED", // KBC BANK
+            "LOCY", // LOMBARD ODIER DARIER HENTSCH & CIE
+            "LOYD", // LLOYDS TSB BANK
+            "LPLN", // LEASEPLAN CORPORATION
+            "MHCB", // MIZUHO CORPORATE BANK
+            "NNBA", // NATIONALE-NEDERLANDEN BANK
+            "NWAB", // NEDERLANDSE WATERSCHAPSBANK
+            "OVBN", // LEVOB BANK
+            "RABO", // RABOBANK
+            "RBOS", // ROYAL BANK OF SCOTLAND
+            "RBRB", // REGIOBANK
+            "SNSB", // SNS BANK
+            "SOGE", // SOCIETE GENERALE
+            "STAL", // STAALBANKIERS
+            "TEBU", // THE ECONOMY BANK
+            "TRIO", // TRIODOS BANK
+            "UBSW", // UBS BANK
+            "UGBI", // GARANTIBANK INTERNATIONAL
+            "VOWA", // VOLKSWAGEN BANK
+            "ZWLB"  // ZWITSERLEVENBANK
     };
 }

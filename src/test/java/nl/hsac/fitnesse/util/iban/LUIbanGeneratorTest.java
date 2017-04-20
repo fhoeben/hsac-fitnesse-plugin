@@ -14,27 +14,13 @@ public class LUIbanGeneratorTest {
     private final LUIbanGenerator generator = new LUIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     /**
      * Tests generation without parameters.
      */
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateLUIban("", "");
-            assertEquals("Got: " + result, 20, result.length());
-        }
-    }
-
-    /**
-     * Tests generation without bankCode.
-     */
-    @Test
-    public void testNoBankCode() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateLUIban("LU", "");
+            String result = generator.generateLUIban("");
             assertEquals("Got: " + result, 20, result.length());
         }
     }
@@ -45,19 +31,9 @@ public class LUIbanGeneratorTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.LUBankCodes);
-            String result = generator.generateLUIban("LU", bic);
+            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = generator.generateLUIban(bankCode);
             assertEquals("Got: " + result, 20, result.length());
         }
     }
-
-    /**
-     * Tests error code on unknown bank code.
-     */
-    @Test
-    public void testErrorBankCode() {
-        exception.expect(IllegalArgumentException.class);
-        generator.generateLUIban("", "666");
-    }
-
 }

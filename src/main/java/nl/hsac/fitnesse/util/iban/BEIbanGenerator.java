@@ -1,14 +1,10 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Generates a Belgium IBAN.
  */
 
-public class BEIbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
+public class BEIbanGenerator extends IbanGenerator {
 
     /**
      * Generates random number to create IBAN.
@@ -16,31 +12,27 @@ public class BEIbanGenerator {
      * @return random Belgian IBAN.
      */
 
-    public String generateBEIban(String country, String bankCode) {
+    public String generateBEIban(String bankCode) {
+        String countryCode = "BE";
+        int accountLength = 7;
+        String accountCodeType = "N";
+        int bankCodeLength = 3;
+        String bankCodeType = "N";
 
-        if (country.equals("")) {
-            country = "BE";
-        }
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String account = getAccount(accountLength, accountCodeType);
 
-        bankCode = ibanGenerator.getBankCode(bankCode, BEBankCodes);
-
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 7);
-
-        String accountInclBank = bankCode + accountNumber;
+        //Specific to Belgium is the account control number that is set here and added to the end of the account number
+        String accountInclBank = bankCode + account;
         String accountControlNumber = String.valueOf(IbanGenerator.mod97(accountInclBank));
         if (accountControlNumber.length() == 1) {
             accountControlNumber = "0" + accountControlNumber;
         }
+        account = account + accountControlNumber;
 
-        String baseIbanStr = bankCode + accountNumber + accountControlNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
-        return country + controlNr + bankCode + accountNumber + accountControlNumber;
-
+        return countryCode + controlNr + bankCode + account;
     }
 
 
@@ -48,7 +40,7 @@ public class BEIbanGenerator {
      * Array of Belgian Bank codes
      */
 
-    public String[] BEBankCodes = {
+    public String[] bankCodeList = {
             "111",   //ABK Bank
             "509",   //ABN AMRO Bank N.V.
             "639",   //ABN AMRO Bank N.V.

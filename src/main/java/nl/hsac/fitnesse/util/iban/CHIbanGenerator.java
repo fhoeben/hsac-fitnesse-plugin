@@ -1,14 +1,10 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Generates a Swiss IBAN.
  */
 
-public class CHIbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
+public class CHIbanGenerator extends IbanGenerator{
 
     /**
      * Generates random number to create IBAN.
@@ -16,28 +12,18 @@ public class CHIbanGenerator {
      * @return random Swiss IBAN.
      */
 
-    public String generateCHIban(String country, String bankCode) {
+    public String generateCHIban(String bankCode) {
+        String countryCode = "CH";
+        int accountLength = 12;
+        String accountCodeType = "N";
+        int bankCodeLength = 5;
+        String bankCodeType = "N";
 
-        if (country.equals("")) {
-            country = "CH";
-        }
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String account = getAccount(accountLength, accountCodeType);
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
-        bankCode = ibanGenerator.getBankCode(bankCode, CHBankCodes);
-        bankCode = ibanGenerator.padWithStartingZeros(bankCode, 5);
-
-
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 12);
-
-        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
-
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
-
-        return country + controlNr + bankCode + accountNumber;
-
+        return countryCode + controlNr + bankCode + account;
     }
 
 
@@ -45,7 +31,7 @@ public class CHIbanGenerator {
      * Array of Swiss Bank codes
      */
 
-    public String[] CHBankCodes = {
+    public String[] bankCodeList = {
             "100", //Schweizerische Nationalbank
             "110", //Schweizerische Nationalbank
             "115", //Schweizerische Nationalbank

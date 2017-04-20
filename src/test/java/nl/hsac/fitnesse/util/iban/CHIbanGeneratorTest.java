@@ -24,20 +24,9 @@ public class CHIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateCHIban("", "");
+            String result = generator.generateCHIban("");
             assertEquals("Got: " + result, 21, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='C' && result.charAt(1)=='H');
-        }
-    }
-
-    /**
-     * Tests generation without bankCode.
-     */
-    @Test
-    public void testNoBankCode() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateCHIban("CH", "");
-            assertEquals("Got: " + result, 21, result.length());
+            assertTrue("Got: " + result, result.startsWith("CH"));
         }
     }
 
@@ -47,19 +36,9 @@ public class CHIbanGeneratorTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.CHBankCodes);
-            String result = generator.generateCHIban("CH", bic);
+            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = generator.generateCHIban(bankCode);
             assertEquals("Got: " + result, 21, result.length());
         }
     }
-
-    /**
-     * Tests error code on unknown bank code.
-     */
-    @Test
-    public void testErrorBankCode() {
-        exception.expect(IllegalArgumentException.class);
-        generator.generateCHIban("", "666");
-    }
-
 }

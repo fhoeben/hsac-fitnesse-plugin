@@ -6,7 +6,7 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * Generates a Luxembourg IBAN.
  */
 
-public class LUIbanGenerator {
+public class LUIbanGenerator extends IbanGenerator {
     private RandomUtil randomUtil = new RandomUtil();
     private IbanGenerator ibanGenerator = new IbanGenerator();
 
@@ -16,25 +16,18 @@ public class LUIbanGenerator {
      * @return random Luxembourg IBAN.
      */
 
-    public String generateLUIban(String country, String bankCode) {
+    public String generateLUIban(String bankCode) {
+        String countryCode = "LU";
+        int accountLength = 13;
+        String accountCodeType = "A";
+        int bankCodeLength = 3;
+        String bankCodeType = "N";
 
-        if (country.equals("")) {
-            country = "LU";
-        }
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String account = getAccount(accountLength, accountCodeType);
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
-        bankCode = ibanGenerator.getBankCode(bankCode, LUBankCodes);
-
-        String permittedAccountDigits = "0123456789";
-        String accountNumber = randomUtil.randomString(permittedAccountDigits, 13);
-
-        String baseIbanStr = bankCode + accountNumber + ibanGenerator.stringToNumbersIso13616(country) + "00";
-
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
-        if (controlNr.length() == 1) {
-            controlNr = "0" + controlNr;
-        }
-
-        return country + controlNr + bankCode + accountNumber;
+        return countryCode + controlNr + bankCode + account;
 
     }
 
@@ -43,7 +36,7 @@ public class LUIbanGenerator {
      * Array of Luxembourg Bank codes
      */
 
-    public String[] LUBankCodes = {
+    public String[] bankCodeList = {
             "001",    //Banque et Caisse d'Epargne de l'Etat, Luxembourg
             "002",    //Banque Internationale à Luxembourg S.A.
             "003",    //BGL BNP Paribas S.A.

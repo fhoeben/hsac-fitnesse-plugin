@@ -15,29 +15,15 @@ public class DEIbanGeneratorTest {
     private final DEIbanGenerator generator = new DEIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     /**
      * Tests generation without parameters.
      */
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban("", "");
+            String result = generator.generateDEIban("");
             assertEquals("Got: " + result, 22, result.length());
-            assertTrue("Got: " + result, result.charAt(0)=='D' && result.charAt(1)=='E');
-        }
-    }
-
-    /**
-     * Tests generation without bankCode.
-     */
-    @Test
-    public void testNoBankCode() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban("DE", "");
-            assertEquals("Got: " + result, 22, result.length());
+            assertTrue("Got: " + result, result.startsWith("DE"));
         }
     }
 
@@ -47,19 +33,22 @@ public class DEIbanGeneratorTest {
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
-            String bic = RANDOM_UTIL.randomElement(generator.DEBankCodes);
-            String result = generator.generateDEIban("DE", bic);
+            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String result = generator.generateDEIban(bankCode);
             assertEquals("Got: " + result, 22, result.length());
         }
     }
 
     /**
-     * Tests error code on unknown bank code.
+     * Tests generation using fictional bank code.
      */
     @Test
-    public void testErrorBankCode() {
-        exception.expect(IllegalArgumentException.class);
-        generator.generateDEIban("", "666");
+    public void testGenerateNewBank() {
+        for (int i = 0; i < 100; i++) {
+            String result = generator.generateDEIban(generator.getRandomStringNumeric(8));
+            assertEquals("Got: " + result, 22, result.length());
+        }
     }
+
 
 }
