@@ -34,6 +34,16 @@ public class IbanGenerator {
                 return new EEIbanGenerator().generateIban(bankCode);
             case "ES":
                 return new ESIbanGenerator().generateIban(bankCode);
+            case "FI":
+                return new FIIbanGenerator().generateIban(bankCode);
+            case "FR":
+                return new FRIbanGenerator().generateIban(bankCode);
+            case "GB":
+                return new GBIbanGenerator().generateIban(bankCode);
+            case "GI":
+                return new GIIbanGenerator().generateIban(bankCode);
+            case "GR":
+                return new GRIbanGenerator().generateIban(bankCode);
             case "LU":
                 return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
@@ -46,7 +56,7 @@ public class IbanGenerator {
     }
 
     String[] countryCodes = {
-            "AT",     //Austria
+            "AT",   //Austria
             "BE",   //Belgium
             "BG",   //Bulgaria
             "CH",   //Switzerland
@@ -56,11 +66,11 @@ public class IbanGenerator {
             "DK",   //Denmark
             "EE",   //Estonia
             "ES",   //Spain
-//            "FI",   //Finland
-//            "FR",   //France
-//            "GB",   //United Kingdom
-//            "GI",   //Gibraltar
-//            "GR",   //Greece
+            "FI",   //Finland
+            "FR",   //France
+            "GB",   //United Kingdom
+            "GI",   //Gibraltar
+            "GR",   //Greece
 //            "HR",   //Croatia
 //            "HU",   //Hungary
 //            "IE",   //Ireland
@@ -139,6 +149,8 @@ public class IbanGenerator {
                 return padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), bankCodeLength);
             } else if (bankCodeType.equals("N")) {
                 return getRandomStringNumeric(bankCodeLength);
+            } else if (bankCodeType.equals("A")) {
+                return getRandomStringAlfaOnly(bankCodeLength);
             } else {
                 return getRandomStringAlfaNumeric(bankCodeLength);
             }
@@ -180,6 +192,15 @@ public class IbanGenerator {
      * @param length
      * @return
      */
+    public String getRandomStringAlfaOnly(int length) {
+        String permittedAccountDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return RANDOM_UTIL.randomString(permittedAccountDigits, length);
+    }
+
+    /**
+     * @param length
+     * @return
+     */
     public String getRandomStringAlfaNumeric(int length) {
         String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
@@ -208,7 +229,7 @@ public class IbanGenerator {
      */
     public String getControlNumber(String bankCode, String account, String countryCode) {
         String baseIbanStr = stringToNumbersIso13616(bankCode + account + countryCode) + "00";
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - mod97(baseIbanStr));
 
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;

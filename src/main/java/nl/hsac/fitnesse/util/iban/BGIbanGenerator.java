@@ -16,11 +16,12 @@ public class BGIbanGenerator extends IbanGenerator {
 
         String countryCode = "BG";
         int accountLength = 8;
-        String accountCodeType = "A";
+        String accountCodeType = "M";
         int bankCodeLength = 4;
+        String bankCodeType = "A";
         String BranchAccountType = getRandomStringNumeric(6);
 
-        bankCode = getBGBankCode(bankCode, bankCodeList, bankCodeLength);
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
         String account = BranchAccountType + getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
