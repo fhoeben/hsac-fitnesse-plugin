@@ -1,9 +1,7 @@
 package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,7 +10,7 @@ import static org.junit.Assert.assertTrue;
  * Tests AT Iban generator.
  */
 public class ATIbanGeneratorTest {
-    ATIbanGenerator generator = new ATIbanGenerator();
+    private final ATIbanGenerator generator = new ATIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     /**
