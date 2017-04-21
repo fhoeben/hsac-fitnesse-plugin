@@ -7,11 +7,11 @@ import nl.hsac.fitnesse.util.RandomUtil;
  * To select a country and parse the iban request to the proper class
  */
 public class IbanGenerator {
-    private final RandomUtil RANDOM_UTIL = new RandomUtil();
+    protected final static RandomUtil RANDOM_UTIL = new RandomUtil();
 
     public String generateIban(String country, String bankCode) {
         if (country.equals("")) {
-            country = RANDOM_UTIL.randomElement(countryCodes);
+            country = RANDOM_UTIL.randomElement(COUNTRY_CODES);
         }
 
 
@@ -37,7 +37,7 @@ public class IbanGenerator {
         }
     }
 
-    String[] countryCodes = {
+    final static String[] COUNTRY_CODES = {
             "AT",     //Austria
             "BE",   //Belgium
             "BG",   //Bulgaria
@@ -82,7 +82,7 @@ public class IbanGenerator {
      * @param str
      * @return
      */
-    public String stringToNumbersIso13616(String str) {
+    String stringToNumbersIso13616(String str) {
         char[] letters = str.toUpperCase().toCharArray();
         String result = "";
         String capitals = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -100,7 +100,7 @@ public class IbanGenerator {
      * @param modString
      * @return
      */
-    public static int mod97(String modString) {
+    protected static int mod97(String modString) {
         String part = "";
         int modPart;
 
@@ -125,7 +125,7 @@ public class IbanGenerator {
      * @param bankCodeType
      * @return
      */
-    public String getBankCode(String bankCode, String[] bankCodesArray, int bankCodeLength, String bankCodeType) {
+    protected String getBankCode(String bankCode, String[] bankCodesArray, int bankCodeLength, String bankCodeType) {
         if (bankCode.length() == 0) {
             if (bankCodesArray.length > 0) {
                 return padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), bankCodeLength);
@@ -146,7 +146,7 @@ public class IbanGenerator {
     /**
      * method for padding a bankcode or other String with zero's to meet a desired length
      */
-    public String padWithStartingZeros(String toBePadded, int requiredLength) {
+    String padWithStartingZeros(String toBePadded, int requiredLength) {
         if (toBePadded.length() > requiredLength) {
             throw new IllegalArgumentException("The string to be padded is longer than the requested length");
         }
@@ -163,7 +163,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    public String getRandomStringNumeric(int length) {
+    String getRandomStringNumeric(int length) {
         String permittedAccountDigits = "0123456789";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
@@ -172,7 +172,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    public String getRandomStringAlfaNumeric(int length) {
+    String getRandomStringAlfaNumeric(int length) {
         String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
@@ -182,7 +182,7 @@ public class IbanGenerator {
      * @param accountCodeType
      * @return
      */
-    public String getAccount(int accountLength, String accountCodeType) {
+    protected String getAccount(int accountLength, String accountCodeType) {
         String accountNumber;
         if (accountCodeType.equals("N")) {
             accountNumber = getRandomStringNumeric(accountLength);
@@ -198,7 +198,7 @@ public class IbanGenerator {
      * @param countryCode
      * @return
      */
-    public String getControlNumber(String bankCode, String account, String countryCode) {
+    protected String getControlNumber(String bankCode, String account, String countryCode) {
         String baseIbanStr = stringToNumbersIso13616(bankCode + account + countryCode) + "00";
         String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
 
@@ -208,6 +208,4 @@ public class IbanGenerator {
 
         return controlNr;
     }
-
-
 }
