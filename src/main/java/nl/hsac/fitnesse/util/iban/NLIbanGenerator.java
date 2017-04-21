@@ -10,8 +10,6 @@ public class NLIbanGenerator extends IbanGenerator {
 
     /**
      * Generates random number to create IBAN.
-     * BBAN gen based on: http://testnummers.nl/bank.js
-     *
      * @return random IBAN.
      */
 
@@ -22,7 +20,18 @@ public class NLIbanGenerator extends IbanGenerator {
         String bankCodeType = "A";
 
         bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
+        String account = getAccount();
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
+        return countryCode + controlNr + bankCode + account;
+
+    }
+
+    /**
+     * BBAN gen based on: http://testnummers.nl/bank.js
+     * @return random NL account number (aka BBAN).
+     */
+    private String getAccount() {
         String account = "";
         int Nr10 = 0;
         int Nr9 = randomUtil.random(3);
@@ -57,11 +66,7 @@ public class NLIbanGenerator extends IbanGenerator {
         account += Nr3;
         account += Nr2;
         account += Nr1;
-
-        String controlNr = getControlNumber(bankCode, account, countryCode);
-
-        return countryCode + controlNr + bankCode + account;
-
+        return account;
     }
 
     public final static String[] BANK_CODE_LIST = {
