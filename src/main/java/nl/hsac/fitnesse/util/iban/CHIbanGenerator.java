@@ -19,7 +19,7 @@ public class CHIbanGenerator extends IbanGenerator{
         int bankCodeLength = 5;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -30,8 +30,7 @@ public class CHIbanGenerator extends IbanGenerator{
     /**
      * Array of Swiss Bank codes
      */
-
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "100", //Schweizerische Nationalbank
             "110", //Schweizerische Nationalbank
             "115", //Schweizerische Nationalbank

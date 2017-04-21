@@ -1,46 +1,29 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-public class NLIbanGeneratorTest {
-    private final NLIbanGenerator generator = new NLIbanGenerator();
-    private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-
-    /**
-     * Tests generation without parameters.
-     */
-    @Test
-    public void testNoParam() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateIban("");
-            assertEquals("Got: " + result, 18, result.length());
-            assertTrue("Got: " + result, result.startsWith("NL"));
-        }
+public class NLIbanGeneratorTest extends AbstractIbanGeneratorTest {
+    @Override
+    protected IbanGenerator createGenerator() {
+        return new NLIbanGenerator();
     }
 
-    /**
-     * Tests basic generation.
-     */
-    @Test
-    public void testGenerate() {
-        for (int i = 0; i < 100; i++) {
-            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateIban(bankCode);
-            assertEquals("Got: " + result, 18, result.length());
-        }
+    @Override
+    protected String getCountryCode() {
+        return "NL";
     }
 
-    /**
-     * Tests generation using fictional bank code.
-     */
-    @Test
-    public void testGenerateNewBank() {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateIban(generator.getRandomStringAlfaNumeric(4));
-            assertEquals("Got: " + result, 18, result.length());
-        }
+    @Override
+    protected String[] getPossibleBankCodes() {
+        return NLIbanGenerator.BANK_CODE_LIST;
     }
+
+    @Override
+    protected String createRandomNewBankCode() {
+        return generator.getRandomStringAlfaNumeric(4);
+    }
+
+    @Override
+    protected int getExpectedLength() {
+        return 18;
+    }
+
 }

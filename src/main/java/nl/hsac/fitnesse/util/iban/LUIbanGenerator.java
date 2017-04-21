@@ -23,7 +23,7 @@ public class LUIbanGenerator extends IbanGenerator {
         int bankCodeLength = 3;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -36,7 +36,7 @@ public class LUIbanGenerator extends IbanGenerator {
      * Array of Luxembourg Bank codes
      */
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "001",    //Banque et Caisse d'Epargne de l'Etat, Luxembourg
             "002",    //Banque Internationale à Luxembourg S.A.
             "003",    //BGL BNP Paribas S.A.

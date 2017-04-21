@@ -18,7 +18,7 @@ public class DKIbanGenerator extends IbanGenerator{
         int bankCodeLength = 4;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -31,7 +31,7 @@ public class DKIbanGenerator extends IbanGenerator{
      * Array of Danish Bank codes
      */
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "40",    //NordeaNordea Vordingborg Afdeling
             "41",    //NordeaNordea Vordingborg Afdeling
             "42",    //NordeaNordea Vordingborg Afdeling

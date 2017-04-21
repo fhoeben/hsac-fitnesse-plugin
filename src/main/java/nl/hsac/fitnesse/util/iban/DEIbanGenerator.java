@@ -19,7 +19,7 @@ public class DEIbanGenerator extends IbanGenerator {
         int bankCodeLength = 8;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -27,7 +27,7 @@ public class DEIbanGenerator extends IbanGenerator {
 
     }
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "10000000",    //Bundesbank
             "10010010",    //Postbank
             "10010111",    //SEB

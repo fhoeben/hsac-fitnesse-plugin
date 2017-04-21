@@ -19,7 +19,7 @@ public class BEIbanGenerator extends IbanGenerator {
         int bankCodeLength = 3;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
 
         //Specific to Belgium is the account control number that is set here and added to the end of the account number
@@ -40,7 +40,7 @@ public class BEIbanGenerator extends IbanGenerator {
      * Array of Belgian Bank codes
      */
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "111",   //ABK Bank
             "509",   //ABN AMRO Bank N.V.
             "639",   //ABN AMRO Bank N.V.

@@ -21,7 +21,7 @@ public class NLIbanGenerator extends IbanGenerator {
         int bankCodeLength = 4;
         String bankCodeType = "A";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
 
         String account = "";
         int Nr10 = 0;
@@ -64,7 +64,7 @@ public class NLIbanGenerator extends IbanGenerator {
 
     }
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "ABNA", // ABN AMRO BANK
             "FTSB", // ABN AMRO BANK (ex FORTIS BANK)
             "AEGO", // AEGON BANK

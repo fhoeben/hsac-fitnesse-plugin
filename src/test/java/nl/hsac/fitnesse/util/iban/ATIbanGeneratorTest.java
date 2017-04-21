@@ -1,63 +1,31 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 /**
  * Tests AT Iban generator.
  */
-public class ATIbanGeneratorTest {
-    private final ATIbanGenerator generator = new ATIbanGenerator();
-    private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-
-    /**
-     * Tests generation without parameters.
-     * Check length
-     */
-    @Test
-    public void testNoParamLengthTest() {
-        LengthTest("", 20);
+public class ATIbanGeneratorTest extends AbstractIbanGeneratorTest {
+    @Override
+    protected IbanGenerator createGenerator() {
+        return new ATIbanGenerator();
     }
 
-    /**
-     * Tests generation without parameters.
-     * Check countrycode prefix
-     */
-    @Test
-    public void testNoParamPrefixTest() {
-        prefixTest("", "AT");
+    @Override
+    protected String getCountryCode() {
+        return "AT";
     }
 
-    /**
-     * Tests generation using a random bankcode from the bankcode list.
-     */
-    @Test
-    public void testGenerate() {
-        String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-        includingBankcodeTest(bankCode, 20);
+    @Override
+    protected String[] getPossibleBankCodes() {
+        return ATIbanGenerator.BANK_CODE_LIST;
     }
 
-    private void includingBankcodeTest(String bankCode, int length) {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateIban(bankCode);
-            assertEquals("Got: " + result, length, result.length());
-        }
+    @Override
+    protected String createRandomNewBankCode() {
+        return generator.getRandomStringNumeric(5);
     }
 
-    private void LengthTest(String bankcode, int length) {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateIban(bankcode);
-            assertEquals("Got: " + result, length, result.length());
-        }
-    }
-
-    private void prefixTest(String bankcode, String prefix) {
-        for (int i = 0; i < 100; i++) {
-            String result = generator.generateIban(bankcode);
-            assertTrue("Got: " + result, result.startsWith(prefix));
-        }
+    @Override
+    protected int getExpectedLength() {
+        return 20;
     }
 }

@@ -15,7 +15,7 @@ public class ATIbanGenerator extends IbanGenerator {
         int bankCodeLength = 5;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -26,7 +26,7 @@ public class ATIbanGenerator extends IbanGenerator {
      * Array of Austrian Bank codes
      */
 
-    public String[] bankCodeList = {
+    public final static String[] BANK_CODE_LIST = {
             "52300",    //Addiko Bank AG
             "20320",    //Allgemeine Sparkasse Oberösterreich BankAG
             "20315",    //Allgemeine Sparkasse Oberösterreich BankAG

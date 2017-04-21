@@ -48,7 +48,7 @@ public class IbanGeneratorTest {
     @Test
     public void testCountryBank() {
         for (int i = 0; i < 100; i++) {
-            String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
+            String bankCode = RANDOM_UTIL.randomElement(generator.BANK_CODE_LIST);
             String result = ibanGenerator.generateIban("NL", bankCode);
             assertEquals("Got: " + result, 18, result.length());
         }
