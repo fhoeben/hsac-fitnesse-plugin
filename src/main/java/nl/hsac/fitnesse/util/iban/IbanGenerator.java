@@ -30,6 +30,10 @@ public class IbanGenerator {
                 return new DEIbanGenerator().generateIban(bankCode);
             case "DK":
                 return new DKIbanGenerator().generateIban(bankCode);
+            case "EE":
+                return new EEIbanGenerator().generateIban(bankCode);
+            case "ES":
+                return new ESIbanGenerator().generateIban(bankCode);
             case "LU":
                 return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
@@ -50,8 +54,8 @@ public class IbanGenerator {
             "CZ",   //Czech Republic
             "DE",   //Germany
             "DK",   //Denmark
-//            "EE",   //Estonia
-//            "ES",   //Spain
+            "EE",   //Estonia
+            "ES",   //Spain
 //            "FI",   //Finland
 //            "FR",   //France
 //            "GB",   //United Kingdom

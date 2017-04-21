@@ -1,19 +1,19 @@
 package nl.hsac.fitnesse.util.iban;
 
-public class CZIbanGenerator extends IbanGenerator {
+public class EEIbanGenerator extends IbanGenerator {
 
     /**
      * Generates random number to create IBAN.
      *
-     * @return random IBAN.
+     * @return random Estonian IBAN.
      */
 
     public String generateIban(String bankCode) {
 
-        String countryCode = "CZ";
-        int accountLength = 16;
+        String countryCode = "EE";
+        int accountLength = 14;
         String accountCodeType = "N";
-        int bankCodeLength = 4;
+        int bankCodeLength = 2;
         String bankCodeType = "N";
 
         bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);

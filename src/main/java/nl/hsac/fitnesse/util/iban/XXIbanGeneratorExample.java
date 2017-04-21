@@ -1,14 +1,11 @@
 package nl.hsac.fitnesse.util.iban;
 
-/**
- * Created by Koen on 20-4-2017.
- */
 public class XXIbanGeneratorExample extends IbanGenerator {
 
     /**
      * Generates random number to create IBAN.
      *
-     * @return random Austrian IBAN.
+     * @return random IBAN.
      */
 
     public String generateIban(String bankCode) {
