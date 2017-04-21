@@ -1,13 +1,9 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Helpers for IBAN.
  */
 public class NLIbanGenerator extends IbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-
     /**
      * Generates random number to create IBAN.
      * @return random IBAN.
@@ -24,7 +20,6 @@ public class NLIbanGenerator extends IbanGenerator {
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
         return countryCode + controlNr + bankCode + account;
-
     }
 
     /**
@@ -34,14 +29,14 @@ public class NLIbanGenerator extends IbanGenerator {
     private String getAccount() {
         String account = "";
         int Nr10 = 0;
-        int Nr9 = randomUtil.random(3);
-        int Nr8 = randomUtil.random(10);
-        int Nr7 = randomUtil.random(10);
-        int Nr6 = randomUtil.random(10);
-        int Nr5 = randomUtil.random(10);
-        int Nr4 = randomUtil.random(10);
-        int Nr3 = randomUtil.random(10);
-        int Nr2 = randomUtil.random(10);
+        int Nr9 = RANDOM_UTIL.random(3);
+        int Nr8 = RANDOM_UTIL.random(10);
+        int Nr7 = RANDOM_UTIL.random(10);
+        int Nr6 = RANDOM_UTIL.random(10);
+        int Nr5 = RANDOM_UTIL.random(10);
+        int Nr4 = RANDOM_UTIL.random(10);
+        int Nr3 = RANDOM_UTIL.random(10);
+        int Nr2 = RANDOM_UTIL.random(10);
         int Nr1;
 
         double tmpNr = 9 * Nr9 + 8 * Nr8 + 7 * Nr7 + 6 * Nr6 + 5 * Nr5 + 4 * Nr4 + 3 * Nr3 + 2 * Nr2;

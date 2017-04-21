@@ -1,14 +1,9 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Created by Koen on 20-4-2017.
  */
 public class BGIbanGenerator extends IbanGenerator {
-    private final RandomUtil RANDOM_UTIL = new RandomUtil();
-
-
     /**
      * Generates random number to create IBAN.
      *

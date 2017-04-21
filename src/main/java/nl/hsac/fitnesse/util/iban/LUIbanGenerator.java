@@ -1,15 +1,10 @@
 package nl.hsac.fitnesse.util.iban;
 
-import nl.hsac.fitnesse.util.RandomUtil;
-
 /**
  * Generates a Luxembourg IBAN.
  */
 
 public class LUIbanGenerator extends IbanGenerator {
-    private RandomUtil randomUtil = new RandomUtil();
-    private IbanGenerator ibanGenerator = new IbanGenerator();
-
     /**
      * Generates random number to create IBAN.
      *
