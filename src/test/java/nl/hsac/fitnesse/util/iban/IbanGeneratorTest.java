@@ -5,7 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,7 +15,6 @@ public class IbanGeneratorTest {
     private final IbanGenerator ibanGenerator = new IbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
     private final NLIbanGenerator generator = new NLIbanGenerator();
-
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -96,13 +94,13 @@ public class IbanGeneratorTest {
     /**
      * Tests country specific generation.
      */
-@Test
-public void testPaddingWithStartingZeros(){
-    testPadWithStartingZeros("BankCode", 10);
-    testPadWithStartingZeros("BankCode", 8);
-    testPadWithStartingZeros("BankCode", 100);
-    testPadWithStartingZeros("", 10);
-}
+    @Test
+    public void testPaddingWithStartingZeros() {
+        testPadWithStartingZeros("BankCode", 10);
+        testPadWithStartingZeros("BankCode", 8);
+        testPadWithStartingZeros("BankCode", 100);
+        testPadWithStartingZeros("", 10);
+    }
 
     /**
      * Tests error code on desired length smaller than string to be padded
@@ -113,12 +111,10 @@ public void testPaddingWithStartingZeros(){
         ibanGenerator.padWithStartingZeros("ZZ", 1);
     }
 
-
-
-    private void testPadWithStartingZeros(String string, int desiredLength){
+    private void testPadWithStartingZeros(String string, int desiredLength) {
         String result = ibanGenerator.padWithStartingZeros(string, desiredLength);
-        assertEquals("Got" + result, result.length(), desiredLength );
-}
+        assertEquals("Got" + result, result.length(), desiredLength);
+    }
 
     private void testLettersToNumbersCall(String letters, String result) {
         String numbers = ibanGenerator.stringToNumbersIso13616(letters);
@@ -128,7 +124,7 @@ public void testPaddingWithStartingZeros(){
     private void countrySelectTest(String countryCode, int expectedIbanLength) {
         String result = ibanGenerator.generateIban(countryCode, "");
         assertEquals("Got: " + result, expectedIbanLength, result.length());
-        assertTrue("Got: " + result, result.charAt(0) == countryCode.charAt(0) && result.charAt(1) == countryCode.charAt(1));
+        assertTrue("Got: " + result, result.startsWith(countryCode));
     }
 
 }
