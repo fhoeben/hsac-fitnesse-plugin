@@ -12,7 +12,7 @@ public class CHIbanGenerator extends IbanGenerator{
      * @return random Swiss IBAN.
      */
 
-    public String generateCHIban(String bankCode) {
+    public String generateIban(String bankCode) {
         String countryCode = "CH";
         int accountLength = 12;
         String accountCodeType = "N";

@@ -1,15 +1,13 @@
 package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests BEIbanGenerator.
+ * Tests DEIbanGenerator.
  */
 public class DEIbanGeneratorTest {
     private final DEIbanGenerator generator = new DEIbanGenerator();
@@ -21,7 +19,7 @@ public class DEIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban("");
+            String result = generator.generateIban("");
             assertEquals("Got: " + result, 22, result.length());
             assertTrue("Got: " + result, result.startsWith("DE"));
         }
@@ -34,7 +32,7 @@ public class DEIbanGeneratorTest {
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
             String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateDEIban(bankCode);
+            String result = generator.generateIban(bankCode);
             assertEquals("Got: " + result, 22, result.length());
         }
     }
@@ -45,7 +43,7 @@ public class DEIbanGeneratorTest {
     @Test
     public void testGenerateNewBank() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDEIban(generator.getRandomStringNumeric(8));
+            String result = generator.generateIban(generator.getRandomStringNumeric(8));
             assertEquals("Got: " + result, 22, result.length());
         }
     }

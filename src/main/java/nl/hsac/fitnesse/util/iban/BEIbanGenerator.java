@@ -12,7 +12,7 @@ public class BEIbanGenerator extends IbanGenerator {
      * @return random Belgian IBAN.
      */
 
-    public String generateBEIban(String bankCode) {
+    public String generateIban(String bankCode) {
         String countryCode = "BE";
         int accountLength = 7;
         String accountCodeType = "N";

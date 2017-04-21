@@ -11,7 +11,7 @@ public class DKIbanGenerator extends IbanGenerator{
      *
      * @return random Danish IBAN.
      */
-    public String generateDKIban(String bankCode) {
+    public String generateIban(String bankCode) {
         String countryCode = "DK";
         int accountLength = 10;
         String accountCodeType = "N";

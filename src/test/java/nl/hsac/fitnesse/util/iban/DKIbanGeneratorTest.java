@@ -15,16 +15,13 @@ public class DKIbanGeneratorTest {
     private final DKIbanGenerator generator = new DKIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     /**
      * Tests generation without parameters.
      */
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateDKIban("");
+            String result = generator.generateIban("");
             assertEquals("Got: " + result, 18, result.length());
             assertTrue("Got: " + result, result.startsWith("DK"));
         }
@@ -37,7 +34,7 @@ public class DKIbanGeneratorTest {
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
             String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateDKIban(bankCode);
+            String result = generator.generateIban(bankCode);
             assertEquals("Got: " + result, 18, result.length());
         }
     }

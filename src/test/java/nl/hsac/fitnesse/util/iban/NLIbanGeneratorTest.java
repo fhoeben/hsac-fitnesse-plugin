@@ -1,15 +1,10 @@
 package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
-/**
- * Tests BsnUtil.
- */
 public class NLIbanGeneratorTest {
     private final NLIbanGenerator generator = new NLIbanGenerator();
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
@@ -20,7 +15,7 @@ public class NLIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateNLIban("");
+            String result = generator.generateIban("");
             assertEquals("Got: " + result, 18, result.length());
             assertTrue("Got: " + result, result.startsWith("NL"));
         }
@@ -33,7 +28,7 @@ public class NLIbanGeneratorTest {
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
             String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateNLIban(bankCode);
+            String result = generator.generateIban(bankCode);
             assertEquals("Got: " + result, 18, result.length());
         }
     }
@@ -44,7 +39,7 @@ public class NLIbanGeneratorTest {
     @Test
     public void testGenerateNewBank() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateNLIban(generator.getRandomStringAlfaNumeric(4));
+            String result = generator.generateIban(generator.getRandomStringAlfaNumeric(4));
             assertEquals("Got: " + result, 18, result.length());
         }
     }

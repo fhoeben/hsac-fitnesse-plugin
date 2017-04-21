@@ -7,11 +7,11 @@ package nl.hsac.fitnesse.util.iban;
 public class DEIbanGenerator extends IbanGenerator {
 
     /**
-     * Generates random number to create IBAN.
+     * Generates random number to create German IBAN.
      *
      * @return random German IBAN.
      */
-    public String generateDEIban(String bankCode) {
+    public String generateIban(String bankCode) {
 
         String countryCode = "DE";
         int accountLength = 10;
@@ -26,10 +26,6 @@ public class DEIbanGenerator extends IbanGenerator {
         return countryCode + controlNr + bankCode + account;
 
     }
-
-    /**
-     * Array of German Bank codes
-     */
 
     public String[] bankCodeList = {
             "10000000",    //Bundesbank

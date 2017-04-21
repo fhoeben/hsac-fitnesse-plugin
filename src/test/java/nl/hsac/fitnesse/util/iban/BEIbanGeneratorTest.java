@@ -19,7 +19,7 @@ public class BEIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateBEIban("");
+            String result = generator.generateIban("");
             assertEquals("Got: " + result, 16, result.length());
             assertTrue("Got: " + result, result.startsWith("BE"));
 
@@ -33,7 +33,7 @@ public class BEIbanGeneratorTest {
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
             String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateBEIban(bankCode);
+            String result = generator.generateIban(bankCode);
             assertEquals("Got: " + result, 16, result.length());
         }
     }

@@ -17,19 +17,21 @@ public class IbanGenerator {
 
         switch (country) {
             case "BE":
-                return new BEIbanGenerator().generateBEIban(bankCode);
+                return new BEIbanGenerator().generateIban(bankCode);
+            case "BG":
+                return new BGIbanGenerator().generateIban(bankCode);
             case "CH":
-                return new CHIbanGenerator().generateCHIban(bankCode);
+                return new CHIbanGenerator().generateIban(bankCode);
             case "DE":
-                return new DEIbanGenerator().generateDEIban(bankCode);
+                return new DEIbanGenerator().generateIban(bankCode);
             case "DK":
-                return new DKIbanGenerator().generateDKIban(bankCode);
+                return new DKIbanGenerator().generateIban(bankCode);
             case "LU":
-                return new LUIbanGenerator().generateLUIban(bankCode);
+                return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
-                return new NLIbanGenerator().generateNLIban(bankCode);
+                return new NLIbanGenerator().generateIban(bankCode);
             case "AT":
-                return new ATIbanGenerator().generateATIban(bankCode);
+                return new ATIbanGenerator().generateIban(bankCode);
             default:
                 throw new IllegalArgumentException("The given country code " + country + " is not (yet) implemented");
         }
@@ -38,7 +40,7 @@ public class IbanGenerator {
     String[] countryCodes = {
             "AT",     //Austria
             "BE",   //Belgium
-//            "BG",   //Bulgaria
+            "BG",   //Bulgaria
             "CH",   //Switzerland
 //            "CY",   //Cyprus
 //            "CZ",   //Czech Republic

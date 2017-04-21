@@ -16,7 +16,7 @@ public class LUIbanGenerator extends IbanGenerator {
      * @return random Luxembourg IBAN.
      */
 
-    public String generateLUIban(String bankCode) {
+    public String generateIban(String bankCode) {
         String countryCode = "LU";
         int accountLength = 13;
         String accountCodeType = "A";

@@ -1,9 +1,7 @@
 package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +18,7 @@ public class LUIbanGeneratorTest {
     @Test
     public void testNoParam() {
         for (int i = 0; i < 100; i++) {
-            String result = generator.generateLUIban("");
+            String result = generator.generateIban("");
             assertEquals("Got: " + result, 20, result.length());
         }
     }
@@ -32,7 +30,7 @@ public class LUIbanGeneratorTest {
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
             String bankCode = RANDOM_UTIL.randomElement(generator.bankCodeList);
-            String result = generator.generateLUIban(bankCode);
+            String result = generator.generateIban(bankCode);
             assertEquals("Got: " + result, 20, result.length());
         }
     }

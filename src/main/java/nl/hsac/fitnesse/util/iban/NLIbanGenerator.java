@@ -15,7 +15,7 @@ public class NLIbanGenerator extends IbanGenerator {
      * @return random IBAN.
      */
 
-    public String generateNLIban(String bankCode) {
+    public String generateIban(String bankCode) {
         String countryCode = "NL";
 
         int bankCodeLength = 4;

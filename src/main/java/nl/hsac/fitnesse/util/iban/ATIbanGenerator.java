@@ -7,7 +7,7 @@ public class ATIbanGenerator extends IbanGenerator {
      * @param bankCode
      * @return random Austrian IBAN
      */
-    public String generateATIban(String bankCode) {
+    public String generateIban(String bankCode) {
 
         String countryCode = "AT";
         int accountLength = 11;
