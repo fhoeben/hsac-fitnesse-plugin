@@ -20,26 +20,26 @@ public class BEIbanGenerator extends IbanGenerator {
         String bankCodeType = "N";
 
         bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
-        String account = getAccount(accountLength, accountCodeType);
+        String account = getAccount(accountLength, accountCodeType, bankCode);
+        String controlNr = getControlNumber(bankCode, account, countryCode);
 
+        return countryCode + controlNr + bankCode + account;
+    }
+
+    private String getAccount(int accountLength, String accountCodeType, String bankCode) {
+        String account = getAccount(accountLength, accountCodeType);
         //Specific to Belgium is the account control number that is set here and added to the end of the account number
         String accountInclBank = bankCode + account;
         String accountControlNumber = String.valueOf(IbanGenerator.mod97(accountInclBank));
         if (accountControlNumber.length() == 1) {
             accountControlNumber = "0" + accountControlNumber;
         }
-        account = account + accountControlNumber;
-
-        String controlNr = getControlNumber(bankCode, account, countryCode);
-
-        return countryCode + controlNr + bankCode + account;
+        return account + accountControlNumber;
     }
-
 
     /**
      * Array of Belgian Bank codes
      */
-
     public final static String[] BANK_CODE_LIST = {
             "111",   //ABK Bank
             "509",   //ABN AMRO Bank N.V.
