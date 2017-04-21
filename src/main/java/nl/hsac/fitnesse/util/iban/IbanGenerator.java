@@ -22,6 +22,10 @@ public class IbanGenerator {
                 return new BGIbanGenerator().generateIban(bankCode);
             case "CH":
                 return new CHIbanGenerator().generateIban(bankCode);
+            case "CY":
+                return new CYIbanGenerator().generateIban(bankCode);
+            case "CZ":
+                return new CZIbanGenerator().generateIban(bankCode);
             case "DE":
                 return new DEIbanGenerator().generateIban(bankCode);
             case "DK":
@@ -42,8 +46,8 @@ public class IbanGenerator {
             "BE",   //Belgium
             "BG",   //Bulgaria
             "CH",   //Switzerland
-//            "CY",   //Cyprus
-//            "CZ",   //Czech Republic
+            "CY",   //Cyprus
+            "CZ",   //Czech Republic
             "DE",   //Germany
             "DK",   //Denmark
 //            "EE",   //Estonia
