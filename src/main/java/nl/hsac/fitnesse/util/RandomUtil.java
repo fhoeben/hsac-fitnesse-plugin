@@ -39,7 +39,7 @@ public class RandomUtil {
 
     /**
      * Picks and returns a random value from the supplied array.
-     * Does not work in int[]
+     * Does not work for arrays of 'primitives' (e.g. int[] or byte[]).
      *
      * @param elements the array from which a value will be picked.
      * @return random element from the array of values.
