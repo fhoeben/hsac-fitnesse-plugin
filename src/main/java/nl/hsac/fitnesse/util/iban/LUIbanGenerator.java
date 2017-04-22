@@ -14,7 +14,7 @@ public class LUIbanGenerator extends IbanGenerator {
     public String generateIban(String bankCode) {
         String countryCode = "LU";
         int accountLength = 13;
-        String accountCodeType = "A";
+        String accountCodeType = "M";
         int bankCodeLength = 3;
         String bankCodeType = "N";
 

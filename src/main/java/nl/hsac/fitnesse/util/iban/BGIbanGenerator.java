@@ -1,9 +1,11 @@
 package nl.hsac.fitnesse.util.iban;
 
-/**
- * Created by Koen on 20-4-2017.
- */
+import nl.hsac.fitnesse.util.RandomUtil;
+
 public class BGIbanGenerator extends IbanGenerator {
+    private final RandomUtil RANDOM_UTIL = new RandomUtil();
+
+
     /**
      * Generates random number to create IBAN.
      *
@@ -14,11 +16,12 @@ public class BGIbanGenerator extends IbanGenerator {
 
         String countryCode = "BG";
         int accountLength = 8;
-        String accountCodeType = "A";
+        String accountCodeType = "M";
         int bankCodeLength = 4;
+        String bankCodeType = "A";
         String BranchAccountType = getRandomStringNumeric(6);
 
-        bankCode = getBGBankCode(bankCode, bankCodeList, bankCodeLength);
+        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
         String account = BranchAccountType + getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 

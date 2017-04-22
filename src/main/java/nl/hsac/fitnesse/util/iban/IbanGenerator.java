@@ -22,10 +22,30 @@ public class IbanGenerator {
                 return new BGIbanGenerator().generateIban(bankCode);
             case "CH":
                 return new CHIbanGenerator().generateIban(bankCode);
+            case "CY":
+                return new CYIbanGenerator().generateIban(bankCode);
+            case "CZ":
+                return new CZIbanGenerator().generateIban(bankCode);
             case "DE":
                 return new DEIbanGenerator().generateIban(bankCode);
             case "DK":
                 return new DKIbanGenerator().generateIban(bankCode);
+            case "EE":
+                return new EEIbanGenerator().generateIban(bankCode);
+            case "ES":
+                return new ESIbanGenerator().generateIban(bankCode);
+            case "FI":
+                return new FIIbanGenerator().generateIban(bankCode);
+            case "FR":
+                return new FRIbanGenerator().generateIban(bankCode);
+            case "GB":
+                return new GBIbanGenerator().generateIban(bankCode);
+            case "GI":
+                return new GIIbanGenerator().generateIban(bankCode);
+            case "GR":
+                return new GRIbanGenerator().generateIban(bankCode);
+            case "HR":
+                return new HRIbanGenerator().generateIban(bankCode);
             case "LU":
                 return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
@@ -42,18 +62,18 @@ public class IbanGenerator {
             "BE",   //Belgium
             "BG",   //Bulgaria
             "CH",   //Switzerland
-//            "CY",   //Cyprus
-//            "CZ",   //Czech Republic
+            "CY",   //Cyprus
+            "CZ",   //Czech Republic
             "DE",   //Germany
             "DK",   //Denmark
-//            "EE",   //Estonia
-//            "ES",   //Spain
-//            "FI",   //Finland
-//            "FR",   //France
-//            "GB",   //United Kingdom
-//            "GI",   //Gibraltar
-//            "GR",   //Greece
-//            "HR",   //Croatia
+            "EE",   //Estonia
+            "ES",   //Spain
+            "FI",   //Finland
+            "FR",   //France
+            "GB",   //United Kingdom
+            "GI",   //Gibraltar
+            "GR",   //Greece
+            "HR",   //Croatia
 //            "HU",   //Hungary
 //            "IE",   //Ireland
 //            "IS",   //Iceland
@@ -131,6 +151,8 @@ public class IbanGenerator {
                 return padWithStartingZeros(RANDOM_UTIL.randomElement(bankCodesArray), bankCodeLength);
             } else if (bankCodeType.equals("N")) {
                 return getRandomStringNumeric(bankCodeLength);
+            } else if (bankCodeType.equals("A")) {
+                return getRandomStringAlfaOnly(bankCodeLength);
             } else {
                 return getRandomStringAlfaNumeric(bankCodeLength);
             }
@@ -146,7 +168,7 @@ public class IbanGenerator {
     /**
      * method for padding a bankcode or other String with zero's to meet a desired length
      */
-    String padWithStartingZeros(String toBePadded, int requiredLength) {
+     String padWithStartingZeros(String toBePadded, int requiredLength) {
         if (toBePadded.length() > requiredLength) {
             throw new IllegalArgumentException("The string to be padded is longer than the requested length");
         }
@@ -165,6 +187,15 @@ public class IbanGenerator {
      */
     String getRandomStringNumeric(int length) {
         String permittedAccountDigits = "0123456789";
+        return RANDOM_UTIL.randomString(permittedAccountDigits, length);
+    }
+
+    /**
+     * @param length
+     * @return
+     */
+     String getRandomStringAlfaOnly(int length) {
+        String permittedAccountDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
 
@@ -200,7 +231,7 @@ public class IbanGenerator {
      */
     protected String getControlNumber(String bankCode, String account, String countryCode) {
         String baseIbanStr = stringToNumbersIso13616(bankCode + account + countryCode) + "00";
-        String controlNr = String.valueOf(98 - IbanGenerator.mod97(baseIbanStr));
+        String controlNr = String.valueOf(98 - mod97(baseIbanStr));
 
         if (controlNr.length() == 1) {
             controlNr = "0" + controlNr;
