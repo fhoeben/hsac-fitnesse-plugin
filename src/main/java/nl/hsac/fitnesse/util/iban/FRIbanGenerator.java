@@ -22,7 +22,7 @@ public class FRIbanGenerator extends IbanGenerator {
         String account = getAccount(accountLength, accountCodeType);
         String accountEncoded = encodeAccount(account);
         String accountControl = bankCode + codeGuichet + accountEncoded + "00";
-        account = account + Integer.toString(mod97(accountControl));
+        account = codeGuichet + account + Integer.toString(mod97(accountControl));
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
         return countryCode + controlNr + bankCode + account;
@@ -34,7 +34,7 @@ public class FRIbanGenerator extends IbanGenerator {
         String chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String digit = "012345678912345678912345678923456789";
 
-        char[] letters = account.toUpperCase().toCharArray();
+        char[] letters = account.toCharArray();
         String result = "";
         for (int j = 0; j < letters.length; j++)
             for (int i = 0; i < chars.length(); i++)

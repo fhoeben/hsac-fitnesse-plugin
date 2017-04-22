@@ -18,8 +18,8 @@ public class ESIbanGenerator extends IbanGenerator {
         int bankCodeLength = 8;
         String bankCodeType = "N";
 
-        String checkDigit1 = checkDigit1(bankCode);
         bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        String checkDigit1 = checkDigit1(bankCode);
         String account = getAccount(accountLength, accountCodeType);
         String checkDigit2 = checkDigit2(account);
         account = checkDigit1 + checkDigit2 + account;

@@ -44,6 +44,8 @@ public class IbanGenerator {
                 return new GIIbanGenerator().generateIban(bankCode);
             case "GR":
                 return new GRIbanGenerator().generateIban(bankCode);
+            case "HR":
+                return new HRIbanGenerator().generateIban(bankCode);
             case "LU":
                 return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
@@ -71,7 +73,7 @@ public class IbanGenerator {
             "GB",   //United Kingdom
             "GI",   //Gibraltar
             "GR",   //Greece
-//            "HR",   //Croatia
+            "HR",   //Croatia
 //            "HU",   //Hungary
 //            "IE",   //Ireland
 //            "IS",   //Iceland
