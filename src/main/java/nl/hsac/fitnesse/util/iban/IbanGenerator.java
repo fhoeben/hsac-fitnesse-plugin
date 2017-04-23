@@ -16,6 +16,8 @@ public class IbanGenerator {
 
 
         switch (country) {
+            case "AT":
+                return new ATIbanGenerator().generateIban(bankCode);
             case "BE":
                 return new BEIbanGenerator().generateIban(bankCode);
             case "BG":
@@ -50,8 +52,6 @@ public class IbanGenerator {
                 return new LUIbanGenerator().generateIban(bankCode);
             case "NL":
                 return new NLIbanGenerator().generateIban(bankCode);
-            case "AT":
-                return new ATIbanGenerator().generateIban(bankCode);
             default:
                 throw new IllegalArgumentException("The given country code " + country + " is not (yet) implemented");
         }
@@ -168,7 +168,7 @@ public class IbanGenerator {
     /**
      * method for padding a bankcode or other String with zero's to meet a desired length
      */
-     String padWithStartingZeros(String toBePadded, int requiredLength) {
+    String padWithStartingZeros(String toBePadded, int requiredLength) {
         if (toBePadded.length() > requiredLength) {
             throw new IllegalArgumentException("The string to be padded is longer than the requested length");
         }
@@ -194,7 +194,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-     String getRandomStringAlfaOnly(int length) {
+    String getRandomStringAlfaOnly(int length) {
         String permittedAccountDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }

@@ -18,7 +18,7 @@ public class ESIbanGenerator extends IbanGenerator {
         int bankCodeLength = 8;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String checkDigit1 = checkDigit1(bankCode);
         String account = getAccount(accountLength, accountCodeType);
         String checkDigit2 = checkDigit2(account);
@@ -30,43 +30,53 @@ public class ESIbanGenerator extends IbanGenerator {
     }
 
     public String checkDigit1(String bankcode) {
-        int n1 = bankcode.charAt(0) * 4;
-        int n2 = bankcode.charAt(1) * 8;
-        int n3 = bankcode.charAt(2) * 5;
-        int n4 = bankcode.charAt(3) * 10;
-        int n5 = bankcode.charAt(4) * 9;
-        int n6 = bankcode.charAt(5) * 7;
-        int n7 = bankcode.charAt(6) * 3;
-        int n8 = bankcode.charAt(7) * 6;
-
-        int controlNumber = 11 - (n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8) % 11;
-        if (controlNumber == 10) {
-            controlNumber = 1;
-        }
+        int n1 = Character.getNumericValue(bankcode.charAt(0)) * 4;
+        int n2 = Character.getNumericValue(bankcode.charAt(1)) * 8;
+        int n3 = Character.getNumericValue(bankcode.charAt(2)) * 5;
+        int n4 = Character.getNumericValue(bankcode.charAt(3)) * 10;
+        int n5 = Character.getNumericValue(bankcode.charAt(4)) * 9;
+        int n6 = Character.getNumericValue(bankcode.charAt(5)) * 7;
+        int n7 = Character.getNumericValue(bankcode.charAt(6)) * 3;
+        int n8 = Character.getNumericValue(bankcode.charAt(7)) * 6;
+        int total = n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8;
+        int controlNumber = getESControlNumber(total);
 
         return Integer.toString(controlNumber);
     }
 
     public String checkDigit2(String account) {
-        int n1 = account.charAt(0) * 1;
-        int n2 = account.charAt(1) * 2;
-        int n3 = account.charAt(2) * 4;
-        int n4 = account.charAt(3) * 8;
-        int n5 = account.charAt(4) * 5;
-        int n6 = account.charAt(5) * 10;
-        int n7 = account.charAt(6) * 9;
-        int n8 = account.charAt(7) * 7;
-        int n9 = account.charAt(7) * 3;
-        int n10 = account.charAt(7) * 6;
-
-        int controlNumber = 11 - (n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10) % 11;
-        if (controlNumber == 10) {
-            controlNumber = 1;
-        }
+        int n1 = Character.getNumericValue(account.charAt(0)) * 1;
+        int n2 = Character.getNumericValue(account.charAt(1)) * 2;
+        int n3 = Character.getNumericValue(account.charAt(2)) * 4;
+        int n4 = Character.getNumericValue(account.charAt(3)) * 8;
+        int n5 = Character.getNumericValue(account.charAt(4)) * 5;
+        int n6 = Character.getNumericValue(account.charAt(5)) * 10;
+        int n7 = Character.getNumericValue(account.charAt(6)) * 9;
+        int n8 = Character.getNumericValue(account.charAt(7)) * 7;
+        int n9 = Character.getNumericValue(account.charAt(8)) * 3;
+        int n10 = Character.getNumericValue(account.charAt(9)) * 6;
+        int total = n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10;
+        int controlNumber = getESControlNumber(total);
 
         return Integer.toString(controlNumber);
 
     }
 
-    public String[] bankCodeList = {};
+    public int getESControlNumber(int total) {
+        int controlNumber = total / 11;
+        controlNumber = total - (controlNumber * 11);
+        controlNumber = 11 - controlNumber;
+
+        if (controlNumber > 9) {
+            controlNumber = controlNumber - 10;
+        }
+
+        return controlNumber;
+    }
+
+
+    public final static String[] BANK_CODE_LIST = {
+            "21000048"
+    };
+
 }
