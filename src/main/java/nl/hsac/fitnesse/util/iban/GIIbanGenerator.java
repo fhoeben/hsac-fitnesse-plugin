@@ -16,7 +16,7 @@ public class GIIbanGenerator extends IbanGenerator {
         int bankCodeLength = 4;
         String bankCodeType = "A";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -24,5 +24,9 @@ public class GIIbanGenerator extends IbanGenerator {
 
     }
 
-    public String[] bankCodeList = {};
+    //TODO get a list of gibraltar codes
+    public final static String[] BANK_CODE_LIST = {
+            "NWBK" //placeholder code
+    };
+
 }

@@ -16,7 +16,7 @@ public class HRIbanGenerator extends IbanGenerator {
         int bankCodeLength = 7;
         String bankCodeType = "N";
 
-        bankCode = getBankCode(bankCode, bankCodeList, bankCodeLength, bankCodeType);
+        bankCode = getBankCode(bankCode, BANK_CODE_LIST, bankCodeLength, bankCodeType);
         String account = getAccount(accountLength, accountCodeType);
         String controlNr = getControlNumber(bankCode, account, countryCode);
 
@@ -24,5 +24,9 @@ public class HRIbanGenerator extends IbanGenerator {
 
     }
 
-    public String[] bankCodeList = {};
+    //TODO get a list of Croatian codes
+    public final static String[] BANK_CODE_LIST = {
+            "1001005", //placeholder code
+    };
+
 }
