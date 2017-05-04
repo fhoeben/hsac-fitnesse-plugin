@@ -6,9 +6,9 @@ package nl.hsac.fitnesse.util.iban;
 public class NLIbanGenerator extends IbanGenerator {
     /**
      * Generates random number to create IBAN.
+     * @param bankCode bank code to (blank for random).
      * @return random IBAN.
      */
-
     public String generateIban(String bankCode) {
         String countryCode = "NL";
 

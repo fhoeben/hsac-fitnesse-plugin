@@ -6,9 +6,9 @@ package nl.hsac.fitnesse.util.iban;
 public class XXIbanGeneratorExample extends IbanGenerator {
 
     /**
+     * @param bankCode bank code to (blank for random).
      * @return random XX IBAN.
      */
-
     public String generateIban(String bankCode) {
         String countryCode = "XX";
         int accountLength = 11;

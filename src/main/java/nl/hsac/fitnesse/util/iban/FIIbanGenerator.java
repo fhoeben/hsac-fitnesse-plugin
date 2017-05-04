@@ -8,9 +8,9 @@ public class FIIbanGenerator extends IbanGenerator {
      * Similar to Germany, we choose to ignore this now.
      * Bankcode is including branch code
      *
+     * @param bankCode bank code to (blank for random).
      * @return random IBAN.
      */
-
     public String generateIban(String bankCode) {
 
         String countryCode = "FI";
