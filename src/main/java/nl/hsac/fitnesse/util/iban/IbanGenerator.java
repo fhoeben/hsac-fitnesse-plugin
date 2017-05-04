@@ -152,9 +152,9 @@ public class IbanGenerator {
             } else if (bankCodeType.equals("N")) {
                 return getRandomStringNumeric(bankCodeLength);
             } else if (bankCodeType.equals("A")) {
-                return getRandomStringAlfaOnly(bankCodeLength);
+                return getRandomStringAlphaOnly(bankCodeLength);
             } else {
-                return getRandomStringAlfaNumeric(bankCodeLength);
+                return getRandomStringAlphaNumeric(bankCodeLength);
             }
         } else if (bankCode.length() < bankCodeLength) {
             return padWithStartingZeros(bankCode, bankCodeLength);
@@ -194,7 +194,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    String getRandomStringAlfaOnly(int length) {
+    String getRandomStringAlphaOnly(int length) {
         String permittedAccountDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
@@ -203,7 +203,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    String getRandomStringAlfaNumeric(int length) {
+    String getRandomStringAlphaNumeric(int length) {
         String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
@@ -218,7 +218,7 @@ public class IbanGenerator {
         if (accountCodeType.equals("N")) {
             accountNumber = getRandomStringNumeric(accountLength);
         } else {
-            accountNumber = getRandomStringAlfaNumeric(accountLength);
+            accountNumber = getRandomStringAlphaNumeric(accountLength);
         }
         return accountNumber;
     }

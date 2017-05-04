@@ -21,7 +21,7 @@ public class GBIbanGeneratorTest extends AbstractIbanGeneratorTest {
 
     @Override
     protected String createRandomNewBankCode() {
-        return generator.getRandomStringAlfaOnly(4);
+        return generator.getRandomStringAlphaOnly(4);
     }
 
     @Override
