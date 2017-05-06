@@ -4,7 +4,7 @@ public class ATIbanGenerator extends IbanGenerator {
 
     /**
      *
-     * @param bankCode
+     * @param bankCode bank code to (blank for random).
      * @return random Austrian IBAN
      */
     public String generateIban(String bankCode) {

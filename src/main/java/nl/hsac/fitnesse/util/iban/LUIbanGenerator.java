@@ -8,9 +8,9 @@ public class LUIbanGenerator extends IbanGenerator {
     /**
      * Generates random number to create IBAN.
      *
+     * @param bankCode bank code to (blank for random).
      * @return random Luxembourg IBAN.
      */
-
     public String generateIban(String bankCode) {
         String countryCode = "LU";
         int accountLength = 13;

@@ -61,7 +61,6 @@ public abstract class AbstractIbanGeneratorTest {
             String bankCode = RANDOM_UTIL.randomElement(getPossibleBankCodes());
             String result = generator.generateIban(countryCode, bankCode);
             checkResultForCountryAndBankCode(countryCode, bankCode, result);
-            System.out.println(result);
         }
     }
 

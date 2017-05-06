@@ -117,8 +117,8 @@ public class IbanGenerator {
     /**
      * Calculate the control number using the mod97 method
      *
-     * @param modString
-     * @return
+     * @param modString string to calculate number for
+     * @return mod97 number
      */
     protected static int mod97(String modString) {
         String part = "";
@@ -139,11 +139,11 @@ public class IbanGenerator {
      * To supply a bankcode based on the bankcode properties and availability of a list
      * It does not check if the bankcode supplied is found in a bankcode list as this might be a new or undocumented bank
      *
-     * @param bankCode
-     * @param bankCodesArray
-     * @param bankCodeLength
-     * @param bankCodeType
-     * @return
+     * @param bankCode explicit bank code supplied.
+     * @param bankCodesArray all known bank codes.
+     * @param bankCodeLength length of bank codes for country.
+     * @param bankCodeType whether code must be Numeric or Alphanumeric or both
+     * @return bank code to use.
      */
     protected String getBankCode(String bankCode, String[] bankCodesArray, int bankCodeLength, String bankCodeType) {
         if (bankCode.length() == 0) {
@@ -152,9 +152,9 @@ public class IbanGenerator {
             } else if (bankCodeType.equals("N")) {
                 return getRandomStringNumeric(bankCodeLength);
             } else if (bankCodeType.equals("A")) {
-                return getRandomStringAlfaOnly(bankCodeLength);
+                return getRandomStringAlphaOnly(bankCodeLength);
             } else {
-                return getRandomStringAlfaNumeric(bankCodeLength);
+                return getRandomStringAlphaNumeric(bankCodeLength);
             }
         } else if (bankCode.length() < bankCodeLength) {
             return padWithStartingZeros(bankCode, bankCodeLength);
@@ -194,7 +194,7 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    String getRandomStringAlfaOnly(int length) {
+    String getRandomStringAlphaOnly(int length) {
         String permittedAccountDigits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
@@ -203,31 +203,31 @@ public class IbanGenerator {
      * @param length
      * @return
      */
-    String getRandomStringAlfaNumeric(int length) {
+    String getRandomStringAlphaNumeric(int length) {
         String permittedAccountDigits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         return RANDOM_UTIL.randomString(permittedAccountDigits, length);
     }
 
     /**
-     * @param accountLength
-     * @param accountCodeType
-     * @return
+     * @param accountLength length of number to generate
+     * @param accountCodeType N for numeric, A for alphanumeric
+     * @return random account number.
      */
     protected String getAccount(int accountLength, String accountCodeType) {
         String accountNumber;
         if (accountCodeType.equals("N")) {
             accountNumber = getRandomStringNumeric(accountLength);
         } else {
-            accountNumber = getRandomStringAlfaNumeric(accountLength);
+            accountNumber = getRandomStringAlphaNumeric(accountLength);
         }
         return accountNumber;
     }
 
     /**
-     * @param bankCode
-     * @param account
-     * @param countryCode
-     * @return
+     * @param bankCode bank code for control number.
+     * @param account account number for control number.
+     * @param countryCode country code.
+     * @return control number to use.
      */
     protected String getControlNumber(String bankCode, String account, String countryCode) {
         String baseIbanStr = stringToNumbersIso13616(bankCode + account + countryCode) + "00";

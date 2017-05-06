@@ -18,7 +18,7 @@ public class NLIbanGeneratorTest extends AbstractIbanGeneratorTest {
 
     @Override
     protected String createRandomNewBankCode() {
-        return generator.getRandomStringAlfaNumeric(4);
+        return generator.getRandomStringAlphaNumeric(4);
     }
 
     @Override

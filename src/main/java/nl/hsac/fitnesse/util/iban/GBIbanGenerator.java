@@ -7,9 +7,9 @@ public class GBIbanGenerator extends IbanGenerator {
      * Formally the UK has no check outside the bank and swift code, in practise each bank has it's own checksum
      * As with other country implementations that are not uniform, it is ignored here (and by the IBAN specifications)
      *
+     * @param bankCode bank code to (blank for random).
      * @return random IBAN.
      */
-
     public String generateIban(String bankCode) {
 
         String countryCode = "GB";

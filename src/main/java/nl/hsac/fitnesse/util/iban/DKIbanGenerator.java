@@ -9,6 +9,7 @@ public class DKIbanGenerator extends IbanGenerator{
     /**
      * Generates random number to create IBAN.
      *
+     * @param bankCode bank code to (blank for random).
      * @return random Danish IBAN.
      */
     public String generateIban(String bankCode) {

@@ -9,6 +9,7 @@ public class DEIbanGenerator extends IbanGenerator {
     /**
      * Generates random number to create German IBAN.
      *
+     * @param bankCode bank code to (blank for random).
      * @return random German IBAN.
      */
     public String generateIban(String bankCode) {

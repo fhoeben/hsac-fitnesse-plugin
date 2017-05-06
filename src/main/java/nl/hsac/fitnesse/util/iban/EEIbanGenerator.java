@@ -5,9 +5,9 @@ public class EEIbanGenerator extends IbanGenerator {
     /**
      * Generates random number to create IBAN.
      *
+     * @param bankCode bank code to (blank for random).
      * @return random Estonian IBAN.
      */
-
     public String generateIban(String bankCode) {
 
         String countryCode = "EE";

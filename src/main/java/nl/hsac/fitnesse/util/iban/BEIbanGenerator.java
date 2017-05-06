@@ -9,6 +9,7 @@ public class BEIbanGenerator extends IbanGenerator {
     /**
      * Generates random number to create IBAN.
      *
+     * @param bankCode bank code to (blank for random).
      * @return random Belgian IBAN.
      */
 

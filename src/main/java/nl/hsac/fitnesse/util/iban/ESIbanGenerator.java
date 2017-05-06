@@ -7,9 +7,9 @@ public class ESIbanGenerator extends IbanGenerator {
      * see https://docs.oracle.com/cd/E18727_01/doc.121/e13483/T359831T498954.htm
      * for explanation on the checksum calculations
      *
+     * @param bankCode bank code to (blank for random).
      * @return random IBAN.
      */
-
     public String generateIban(String bankCode) {
 
         String countryCode = "ES";
