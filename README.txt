@@ -2,7 +2,7 @@ Plugin to add some additional features to a FitNesse (http://fitnesse.org) wiki.
 
 Wiki symbols:
 - Relative dates: months or weekdays from today (extension on standard !today)
-- Random values: strings, numbers and Burger Service Numbers (Dutch social security numbers)
+- Random values: strings, numbers, International Bank Account Numbers and Burger Service Numbers (Dutch social security numbers)
 - Define default, allows a wiki variable whose value can be overridden using a system property.
 
 Slim tables:
