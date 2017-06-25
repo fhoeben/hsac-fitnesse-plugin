@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -42,9 +43,10 @@ public class RandomDomainTest {
     public void testGetRandomDomain() {
         for (int i = 0; i < 1000; i++) {
             int length = random.random(100) + 1; //considering a randomizer will generate non-inclusive from 0
-            String result = domain.getRandomDomain(length);
+            String result = domain.getRandomSecondLevelDomain(length);
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
-            assertTrue("Got: " + result + " on regex test " + i, result.matches("[abcdefghijklmnopqrstuvwxyz1234567890-]+"));
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[-.abcdefghijklmnopqrstuvwxyz1234567890]+"));
+            assertFalse("Got: " + result + " on regex test " + i, result.matches("(\\.)\\1+"));
         }
     }
 
@@ -57,7 +59,9 @@ public class RandomDomainTest {
             int length = random.random(95) + 5; //5 to use as minimal length for a hostname in email
             String result = RandomDomain.generateFullDomain(domain, length);
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
-            assertTrue("Got: " + result + " on regex test " + i, result.matches("[a-z0-9-]+" + "." + "[A-Z]+"));
+            assertTrue("Got: " + result + " on regex test " + i, result.matches("[-.a-z0-9]+" + "." + "[A-Z]+"));
+            assertFalse("Got: " + result + " on regex test " + i, result.matches("(\\.)\\1+"));
+
         }
     }
 

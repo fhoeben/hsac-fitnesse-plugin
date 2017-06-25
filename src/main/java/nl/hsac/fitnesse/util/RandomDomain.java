@@ -3,11 +3,37 @@ package nl.hsac.fitnesse.util;
 public class RandomDomain {
 
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-    private static final String PERMITTED = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    private static final String PERMITTED_NO_PERIOD = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    private static final String PERMITTED_PERIOD = "abcdefghijklmnopqrstuvwxyz1234567890-.";
 
 
-    public String getRandomDomain(int length) {
-        return RANDOM_UTIL.randomString(PERMITTED, length);
+    public String getRandomSecondLevelDomain(int length) {
+        String domain;
+        if (length < 4) {
+            domain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, length);
+        } else {
+            //first character cannot be a period
+            domain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
+
+            //first to second to last can contain a period, just not two in sequence
+            //this means looping and checking
+
+            for (int i = 1; i < length - 1; i++) {
+                String nextCharacter;
+                if (domain.charAt(domain.length() - 1) == '.') {
+                    nextCharacter = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
+                } else {
+                    nextCharacter = RANDOM_UTIL.randomString(PERMITTED_PERIOD, 1);
+
+                }
+
+                domain = domain + nextCharacter;
+            }
+
+            //last character cannot be a period either
+            domain = domain + RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
+        }
+        return domain;
     }
 
 
@@ -16,7 +42,7 @@ public class RandomDomain {
     }
 
     public static String generateFullDomain(RandomDomain randomDomain, int fullDomainLength) {
-        if (fullDomainLength < 5){
+        if (fullDomainLength < 5) {
             throw new IllegalArgumentException("Minimal possible domain length is 5 (2 character, a period, 2 characters)");
         }
 
@@ -28,7 +54,7 @@ public class RandomDomain {
             domainLength = fullDomainLength - tld.length() - 1; //minus 1 for the period between second level and top level domain
         }
 
-        String domain = randomDomain.getRandomDomain(domainLength);
+        String domain = randomDomain.getRandomSecondLevelDomain(domainLength);
         return domain + "." + tld;
     }
 
