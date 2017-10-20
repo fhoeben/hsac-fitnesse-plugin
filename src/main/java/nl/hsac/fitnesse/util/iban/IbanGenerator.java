@@ -2,12 +2,20 @@ package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.List;
+
 
 /**
  * To select a country and parse the iban request to the proper class
  */
 public class IbanGenerator {
-    protected final static RandomUtil RANDOM_UTIL = new RandomUtil();
+    private static final Charset UTF8 = Charset.forName("utf-8");
+    protected static final RandomUtil RANDOM_UTIL = new RandomUtil();
 
     public String generateIban(String country, String bankCode) {
         if (country.equals("")) {
@@ -238,5 +246,16 @@ public class IbanGenerator {
         }
 
         return controlNr;
+    }
+
+    protected static String[] readLines(String resourceFile) {
+        URL resource = IbanGenerator.class.getResource("/iban/" + resourceFile);
+        File codesFile = new File(resource.getFile());
+        try {
+            List<String> allCodes = Files.readAllLines(codesFile.toPath(), UTF8);
+            return allCodes.toArray(new String[allCodes.size()]);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
