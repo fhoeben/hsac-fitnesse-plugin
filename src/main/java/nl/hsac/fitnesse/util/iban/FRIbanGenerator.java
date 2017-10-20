@@ -50,11 +50,13 @@ public class FRIbanGenerator extends IbanGenerator {
 
         char[] letters = account.toCharArray();
         String result = "";
-        for (char letter : letters)
-            for (int i = 0; i < chars.length(); i++)
+        for (char letter : letters) {
+            for (int i = 0; i < chars.length(); i++) {
                 if (letter == chars.charAt(i)) {
                     result = result + digit.charAt(i);
                 }
+            }
+        }
         return result;
     }
 
