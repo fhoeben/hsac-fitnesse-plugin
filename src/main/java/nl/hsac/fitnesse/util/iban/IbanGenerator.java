@@ -2,12 +2,13 @@ package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -249,11 +250,11 @@ public class IbanGenerator {
     }
 
     protected static String[] readLines(String resourceFile) {
-        URL resource = IbanGenerator.class.getResource("/iban/" + resourceFile);
-        File codesFile = new File(resource.getFile());
-        try {
-            List<String> allCodes = Files.readAllLines(codesFile.toPath(), UTF8);
-            return allCodes.toArray(new String[allCodes.size()]);
+        try (InputStream resource = IbanGenerator.class.getResourceAsStream("/iban/" + resourceFile)) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource, UTF8))) {
+                List<String> allCodes = reader.lines().collect(Collectors.toList());
+                return allCodes.toArray(new String[allCodes.size()]);
+            }
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
