@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -250,7 +252,7 @@ public class IbanGenerator {
     }
 
     protected static String[] readLines(String resourceFile) {
-        try (InputStream resource = IbanGenerator.class.getResourceAsStream("/iban/" + resourceFile)) {
+        try (InputStream resource = getResourceAsStream(resourceFile)) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource, UTF8))) {
                 List<String> allCodes = reader.lines().collect(Collectors.toList());
                 return allCodes.toArray(new String[allCodes.size()]);
@@ -258,5 +260,22 @@ public class IbanGenerator {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    protected static InputStream getResourceAsStream(String resourceFile) throws IOException {
+        ClassLoader classLoader = IbanGenerator.class.getClassLoader();
+        Enumeration<URL> resources = classLoader.getResources("iban/" + resourceFile);
+        URL resource = null;
+        while (resources.hasMoreElements()) {
+            URL r = resources.nextElement();
+            // prefer file:// so a file placed on classpath wins from a packaged one
+            if (resource == null || "file".equals(r.getProtocol())) {
+                resource = r;
+            }
+        }
+        if (resource == null) {
+            throw new IllegalStateException("No resource found: " + resourceFile);
+        }
+        return resource.openStream();
     }
 }
