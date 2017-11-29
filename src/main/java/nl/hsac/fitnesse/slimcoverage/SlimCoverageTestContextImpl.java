@@ -5,7 +5,6 @@ package nl.hsac.fitnesse.slimcoverage;
 import fitnesse.testsystems.TestPage;
 import fitnesse.testsystems.slim.SlimTestContextImpl;
 import fitnesse.testsystems.slim.tables.ScenarioTable;
-import fitnesse.testsystems.slim.tables.UsageHelper;
 
 public class SlimCoverageTestContextImpl extends SlimTestContextImpl {
     private final SlimScenarioUsagePer usage;
@@ -46,7 +45,6 @@ public class SlimCoverageTestContextImpl extends SlimTestContextImpl {
 
     protected String getGroupName(ScenarioTable scenarioTable) {
         String name = scenarioTable.getName();
-        UsageHelper.resolveArguments(scenarioTable);
         int inputCount = scenarioTable.getInputs().size();
         int outputCount = scenarioTable.getOutputs().size();
         String keyPattern;
