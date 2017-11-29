@@ -7,6 +7,7 @@ import fitnesse.testsystems.slim.tables.ScenarioTable;
 import fitnesse.testsystems.slim.tables.SlimAssertion;
 import fitnesse.testsystems.slim.tables.SlimTable;
 import fitnesse.testsystems.slim.tables.SyntaxError;
+import nl.hsac.fitnesse.slimcoverage.SlimCoverageTestContextImpl;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
@@ -73,7 +74,13 @@ public class AutoArgScenarioTable extends ScenarioTable {
 
     private void addNestedScenarioArguments(Set<String> found, boolean addInputs, String cellContent) {
         String scenarioName = cellContent.substring(0, cellContent.length() - 1);
-        ScenarioTable scenario = getTestContext().getScenario(scenarioName);
+        SlimTestContext testContext = getTestContext();
+        ScenarioTable scenario;
+        if (testContext instanceof SlimCoverageTestContextImpl) {
+            scenario = ((SlimCoverageTestContextImpl) testContext).getScenarioNoCount(scenarioName);
+        } else {
+            scenario = testContext.getScenario(scenarioName);
+        }
         if (scenario != null) {
             Set<String> scenarioArgs = addInputs ? scenario.getInputs() : scenario.getOutputs();
             found.addAll(scenarioArgs);
