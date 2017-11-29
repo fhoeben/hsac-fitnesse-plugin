@@ -1,0 +1,23 @@
+---
+Test
+---
+
+|table template|T0                  |
+|check         |clone symbol|@{P0}|0|
+|$P6=          |clone symbol|@{P1}  |
+
+|table template|T1                  |
+|check         |clone symbol|@{P3}|3|
+|$P4=          |clone symbol|@{P1}  |
+|T0;                                |
+
+|table template|T2                |
+|T1;                              |
+|$P5=          |clone symbol|@{P2}|
+
+
+|script|
+
+|T2                     |
+|P0|P1|P2|P3|P4?|P5?|P6?|
+|0 |1 |2 |3 |1  |2  |1  |
