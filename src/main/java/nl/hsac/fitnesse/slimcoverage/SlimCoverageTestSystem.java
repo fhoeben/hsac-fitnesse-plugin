@@ -105,7 +105,8 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     protected void reportScenarioUsage() {
-        WikiPageDummy pageDummy = new WikiPageDummy("Scenario Usage Report", "Scenario Usage Report Content", null);
+        WikiPageDummy dummyRoot = new WikiPageDummy("Scenario Usage Report Parent", "Scenario Usage Report Parent Content", null);
+        WikiPageDummy pageDummy = new WikiPageDummy("ScenarioUsageReport", "Scenario Usage Report Content", dummyRoot);
         WikiTestPage testPage = new WikiTestPage(pageDummy);
         testStarted(testPage);
         // ensure we have a single test passed, which is sometimes a requirement
