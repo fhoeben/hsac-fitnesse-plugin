@@ -1,0 +1,6 @@
+---
+Suite
+---
+!contents -R2 -g -p -f -h
+
+!define TEST_SYSTEM {slimCoverage}

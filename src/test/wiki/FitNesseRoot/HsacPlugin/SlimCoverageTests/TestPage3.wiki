@@ -1,0 +1,17 @@
+---
+Test
+---
+
+|scenario|S2 _ and _|p, q|
+|S1;     |@{p}      |@{q}|
+
+|scenario|S3  |p|and|q|
+|S1;     |@{p}|@{q}   |
+
+|script         |
+|S5             |
+|S1     |1      |
+|S4;    |1|2    |
+|S2     |3|and|4|
+|S3     |5|and|6|
+|S3 and;|7|8    |
