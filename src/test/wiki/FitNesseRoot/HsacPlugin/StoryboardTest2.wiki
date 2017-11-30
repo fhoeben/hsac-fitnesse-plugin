@@ -1,0 +1,23 @@
+---
+Test
+---
+
+|import                      |
+|nl.hsac.fitnesse.slim.tables|
+
+|scenario|hallo _     |name                       |
+|check   |clone symbol|@{name}      |@{name}      |
+|$resp=  |clone symbol|Hello @{name}              |
+|check   |clone symbol|Hello @{name}|Hello @{name}|
+
+|storyboard|sample screenshot fixture    |
+|check     |clone symbol|a    |a         |
+|check     |clone symbol|b    |b         |
+|hallo     |John                         |
+|check     |clone symbol|$resp|Hello John|
+
+
+|hallo          |
+|name|resp?     |
+|Pete|Hello Pete|
+|Jim |Hello Jim |

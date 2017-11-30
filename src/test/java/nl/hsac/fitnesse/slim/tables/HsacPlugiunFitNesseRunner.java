@@ -34,7 +34,9 @@ public class HsacPlugiunFitNesseRunner extends FitNesseRunner {
             super.run(notifier);
         } finally {
             checkHtmlResultContent(notifier, "usageCheck", "ScenarioUsageReport.html");
-            checkHtmlResultContent(notifier, "storyboardCheck", "HsacPlugin.StoryboardTest.html");
+
+            checkHtmlResultContent(notifier, "storyboardCheck1", "HsacPlugin.StoryboardTest1.html");
+            checkHtmlResultContent(notifier, "storyboardCheck2", "HsacPlugin.StoryboardTest2.html");
         }
     }
 

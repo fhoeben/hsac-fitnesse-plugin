@@ -67,7 +67,7 @@ public class StoryboardTable extends ScriptTable {
         assertions.add(screenshotAssertion);
     }
 
-    private int addScreenshotColumn(int row) {
+    protected int addScreenshotColumn(int row) {
         table.addColumnToRow(row, "");
         return table.getColumnCountInRow(row) - 1;
     }
