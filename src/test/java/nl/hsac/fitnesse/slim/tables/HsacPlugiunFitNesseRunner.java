@@ -33,17 +33,22 @@ public class HsacPlugiunFitNesseRunner extends FitNesseRunner {
         try {
             super.run(notifier);
         } finally {
-            Class<?> aClass = getTestClass().getJavaClass();
-            try {
-                String expectedUsageReport = FileUtil.getFileContent("src/test/resources/ExpectedScenarioUsageReport.html");
-                String actualUsageReport = FileUtil.getFileContent(getOutputDir(aClass) + "/ScenarioUsageReport.html");
-                if(!expectedUsageReport.equals(actualUsageReport)) {
-                    ComparisonFailure e = new ComparisonFailure("Unexpected content in scenario usage report", expectedUsageReport, actualUsageReport);
-                    notifier.fireTestFailure(new Failure(Description.createTestDescription(aClass, "usageCheck"), e));
-                }
-            } catch (InitializationError | IOException e) {
-                notifier.fireTestFailure(new Failure(Description.createTestDescription(aClass, "usageCheck"), e));
+            checkHtmlResultContent(notifier, "usageCheck", "ScenarioUsageReport.html");
+            checkHtmlResultContent(notifier, "storyboardCheck", "HsacPlugin.StoryboardTest.html");
+        }
+    }
+
+    private void checkHtmlResultContent(RunNotifier notifier, String name, String actualFile) {
+        Class<?> aClass = getTestClass().getJavaClass();
+        try {
+            String expectedUsageReport = FileUtil.getFileContent("src/test/resources/Expected." + actualFile);
+            String actualUsageReport = FileUtil.getFileContent(getOutputDir(aClass) + "/" + actualFile);
+            if(!expectedUsageReport.equals(actualUsageReport)) {
+                ComparisonFailure e = new ComparisonFailure("Unexpected content in: " + actualFile, expectedUsageReport, actualUsageReport);
+                notifier.fireTestFailure(new Failure(Description.createTestDescription(aClass, name), e));
             }
+        } catch (InitializationError | IOException e) {
+            notifier.fireTestFailure(new Failure(Description.createTestDescription(aClass, name), e));
         }
     }
 
