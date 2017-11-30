@@ -21,3 +21,5 @@
 |show    |clone symbol|@{q}|
 |S1      |@{p}             |
 
+|scenario|my unneeded scenario|
+|        |not used            |
