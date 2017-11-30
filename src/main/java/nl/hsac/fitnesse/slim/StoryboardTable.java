@@ -56,18 +56,30 @@ public class StoryboardTable extends ScriptTable {
 
     @Override
     protected List<SlimAssertion> invokeAction(int startingCol, int endingCol, int row, SlimExpectation expectation) {
-        updateCounters();
-        String screenshotName = getScreenshotName(row);
-        List<SlimAssertion> realAssertions = super.invokeAction(startingCol, endingCol, row, expectation);
-        Instruction instruction = callFunction(getTableType() + "Actor", getActionName(), screenshotName);
-        table.addColumnToRow(row, "");
-        int screenshotColumn = table.getColumnCountInRow(row) - 1;
-        SlimAssertion screenshotAssertion = makeAssertion(instruction, new ScreenshotExpectation(screenshotColumn, row));
-        realAssertions.add(screenshotAssertion);
-        return realAssertions;
+        List<SlimAssertion> assertions = super.invokeAction(startingCol, endingCol, row, expectation);
+        addScreenshotAssertionForRow(assertions, row);
+        return assertions;
     }
 
-    private void updateCounters() {
+    protected void addScreenshotAssertionForRow(List<SlimAssertion> assertions, int row) {
+        int screenshotColumn = addScreenshotColumn(row);
+        SlimAssertion screenshotAssertion = createAssertionForTakeScreenshot(screenshotColumn, row);
+        assertions.add(screenshotAssertion);
+    }
+
+    private int addScreenshotColumn(int row) {
+        table.addColumnToRow(row, "");
+        return table.getColumnCountInRow(row) - 1;
+    }
+
+    protected SlimAssertion createAssertionForTakeScreenshot(int screenshotColumn, int row) {
+        updateCounters();
+        String screenshotName = getScreenshotName(row);
+        Instruction instruction = callFunction(getTableType() + "Actor", getActionName(), screenshotName);
+        return makeAssertion(instruction, new ScreenshotExpectation(screenshotColumn, row));
+    }
+
+    protected void updateCounters() {
         String topTable = id.split("\\.")[0];
         if (!topTable.equals(lastTop)) {
             lastTop = topTable;
@@ -83,17 +95,18 @@ public class StoryboardTable extends ScriptTable {
                                 getStoryboardCounter(), getScreenshotCounter());
     }
 
-    private class ScreenshotExpectation extends RowExpectation {
+    protected class ScreenshotExpectation extends RowExpectation {
         ScreenshotExpectation(int col, int row) {
             super(col, row);
         }
 
         @Override
         protected SlimTestResult createEvaluationMessage(String actual, String expected) {
+            int row = getRow();
             try {
-                table.substitute(getCol(), getRow(), actual);
+                table.substitute(getCol(), row, actual);
             } catch (Throwable t) {
-                table.substitute(getCol(), getRow(), actual + ": " + t.getMessage());
+                table.substitute(getCol(), row, actual + ": " + t.getMessage());
             }
             return SlimTestResult.plain();
         }
