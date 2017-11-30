@@ -10,6 +10,7 @@ import org.junit.runners.model.InitializationError;
 /**
  * Custom jUnitRunner which allows us to run tests with slim coverage, without the run failing because we added an extra
  * page.
+ * This is no longer needed once a fitnesse release including https://github.com/unclebob/fitnesse/pull/1105 is used.
  */
 public class HsacPlugiunFitNesseRunner extends FitNesseRunner {
     public HsacPlugiunFitNesseRunner(Class<?> suiteClass) throws InitializationError {
