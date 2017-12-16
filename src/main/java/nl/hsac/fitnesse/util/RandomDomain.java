@@ -7,37 +7,23 @@ public class RandomDomain {
     private static final String PERMITTED_PERIOD = "abcdefghijklmnopqrstuvwxyz1234567890-.";
 
 
-    public String getRandomSecondLevelDomain(int length) {
-        String domain;
+    String getRandomSecondLevelDomain(int length) {
+        String secondLevelDomain;
         if (length < 4) {
-            domain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, length);
+            secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, length);
         } else {
-            //first character cannot be a period
-            domain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
-
-            //first to second to last can contain a period, just not two in sequence
-            //this means looping and checking
-
-            for (int i = 1; i < length - 1; i++) {
-                String nextCharacter;
-                if (domain.charAt(domain.length() - 1) == '.') {
-                    nextCharacter = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
-                } else {
-                    nextCharacter = RANDOM_UTIL.randomString(PERMITTED_PERIOD, 1);
-
-                }
-
-                domain = domain + nextCharacter;
+            secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_PERIOD, length);
+            while (secondLevelDomain.contains("..") ||
+                    secondLevelDomain.endsWith(".") ||
+                    secondLevelDomain.startsWith(".")) {
+                secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_PERIOD, length);
             }
-
-            //last character cannot be a period either
-            domain = domain + RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, 1);
         }
-        return domain;
+        return secondLevelDomain;
     }
 
 
-    public String getRandomTld() {
+    String getRandomTld() {
         return RANDOM_UTIL.randomElement(tlds.values()).toString();
     }
 

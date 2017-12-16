@@ -46,7 +46,9 @@ public class RandomDomainTest {
             String result = domain.getRandomSecondLevelDomain(length);
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
             assertTrue("Got: " + result + " on regex test " + i, result.matches("[-.abcdefghijklmnopqrstuvwxyz1234567890]+"));
-            assertFalse("Got: " + result + " on regex test " + i, result.matches("(\\.)\\1+"));
+            assertFalse("Got: " + result + " test " + i, result.startsWith("."));
+            assertFalse("Got: " + result + " test " + i, result.contains(".."));
+            assertFalse("Got: " + result + " test " + i, result.endsWith("."));
         }
     }
 
@@ -61,6 +63,7 @@ public class RandomDomainTest {
             assertTrue("Got: " + result + " on test " + i, result.length() <= 100);
             assertTrue("Got: " + result + " on regex test " + i, result.matches("[-.a-z0-9]+" + "." + "[A-Z]+"));
             assertFalse("Got: " + result + " on regex test " + i, result.matches("(\\.)\\1+"));
+            assertFalse("Got: " + result + " on regex test " + i, result.matches("^[.]"));
 
         }
     }
