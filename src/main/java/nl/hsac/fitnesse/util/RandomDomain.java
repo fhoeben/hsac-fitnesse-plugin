@@ -3,20 +3,32 @@ package nl.hsac.fitnesse.util;
 public class RandomDomain {
 
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
-    private static final String PERMITTED = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    private static final String PERMITTED_NO_PERIOD = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    private static final String PERMITTED_PERIOD = "abcdefghijklmnopqrstuvwxyz1234567890-.";
 
 
-    public String getRandomDomain(int length) {
-        return RANDOM_UTIL.randomString(PERMITTED, length);
+    String getRandomSecondLevelDomain(int length) {
+        String secondLevelDomain;
+        if (length < 4) {
+            secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_NO_PERIOD, length);
+        } else {
+            secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_PERIOD, length);
+            while (secondLevelDomain.contains("..") ||
+                    secondLevelDomain.endsWith(".") ||
+                    secondLevelDomain.startsWith(".")) {
+                secondLevelDomain = RANDOM_UTIL.randomString(PERMITTED_PERIOD, length);
+            }
+        }
+        return secondLevelDomain;
     }
 
 
-    public String getRandomTld() {
+    String getRandomTld() {
         return RANDOM_UTIL.randomElement(tlds.values()).toString();
     }
 
     public static String generateFullDomain(RandomDomain randomDomain, int fullDomainLength) {
-        if (fullDomainLength < 5){
+        if (fullDomainLength < 5) {
             throw new IllegalArgumentException("Minimal possible domain length is 5 (2 character, a period, 2 characters)");
         }
 
@@ -28,7 +40,7 @@ public class RandomDomain {
             domainLength = fullDomainLength - tld.length() - 1; //minus 1 for the period between second level and top level domain
         }
 
-        String domain = randomDomain.getRandomDomain(domainLength);
+        String domain = randomDomain.getRandomSecondLevelDomain(domainLength);
         return domain + "." + tld;
     }
 
