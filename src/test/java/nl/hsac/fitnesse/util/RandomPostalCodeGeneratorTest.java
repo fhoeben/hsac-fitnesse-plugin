@@ -51,13 +51,6 @@ public class RandomPostalCodeGeneratorTest {
     }
 
     @Test
-    public void testRandomPostalCodeDenmark() {
-        for (int i = 0; i < 100; i++) {
-            testCountryCodeToLength("DK", 4);
-        }
-    }
-
-    @Test
     public void testRandomPostalCodeFrance() {
         for (int i = 0; i < 100; i++) {
             testCountryCodeToLength("FR", 5);
@@ -96,13 +89,6 @@ public class RandomPostalCodeGeneratorTest {
     public void testRandomPostalCodeNorway() {
         for (int i = 0; i < 100; i++) {
             testCountryCodeToLength("NO", 4);
-        }
-    }
-
-    @Test
-    public void testRandomPostalCodeSpain() {
-        for (int i = 0; i < 100; i++) {
-            testCountryCodeToLength("ES", 5);
         }
     }
 

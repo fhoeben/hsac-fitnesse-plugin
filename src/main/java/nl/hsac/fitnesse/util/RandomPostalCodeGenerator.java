@@ -1,56 +1,68 @@
 package nl.hsac.fitnesse.util;
 
-import com.mifmif.common.regex.Generex;
+import java.util.Random;
 
 public class RandomPostalCodeGenerator {
+    RandomUtil random = new RandomUtil();
+
+    private String getRandomStringNumbers(int length) {
+        return random.randomString("1234567890", length);
+    }
+
+    private String getRandomStringLetters(int length) {
+        return random.randomString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", length);
+    }
 
     public String getRandomPostalCodeString(String countryCode) {
         String result;
         switch (countryCode) {
             case "AU":
-                result = randomRegexString("\\d{4}");
+                result = getRandomStringNumbers(4);
                 break;
             case "BE":
-                result = randomRegexString("[1-9]\\d{3}");
+                result = random.randomString("123456789", 1) + getRandomStringNumbers(3);
                 break;
             case "BR":
-                result = randomRegexString("\\d{5}-?\\d{3}");
+                result = getRandomStringNumbers(5) +
+                        pickOne("", "-") +
+                        getRandomStringNumbers(3);
                 break;
             case "CA":
-                result = randomRegexString("[A-Z]\\d[A-Z][ -]?\\d[A-Z]\\d");
+                result = getRandomStringLetters(1) +
+                        getRandomStringNumbers(1) +
+                        getRandomStringLetters(1) +
+                        pickOne("-", " ") +
+                        getRandomStringNumbers(1) +
+                        getRandomStringLetters(1) +
+                        getRandomStringNumbers(1);
                 break;
             case "CH":
-                result = randomRegexString("[1-9]\\d{3}");
+                result = random.randomString("123456789", 1) + getRandomStringNumbers(3);
                 break;
             case "DE":
-                result = randomRegexString("\\d{5}");
-                break;
-            case "DK":
-                result = randomRegexString("[1-24-9]\\d{3}|3[0-8]\\d{2}");
-                break;
-            case "ES":
-                result = randomRegexString("(0[1-9]|[1-4]\\d|5[0-2])\\d{3}");
+                result = getRandomStringNumbers(5);
                 break;
             case "GL":
-                result = randomRegexString("39\\d{2}");
+                result = "39" + getRandomStringNumbers(2);
                 break;
             case "FR":
-                result = randomRegexString("([0-8]\\d|9[0-8])\\d{3}");
+                result = getRandomStringNumbers(5);
                 break;
             case "IT":
-                result = randomRegexString("\\d{5}");
+                result = getRandomStringNumbers(5);
                 break;
             case "NL":
-                result = randomRegexString("[1-9]\\d{3}([A-EGHJ-NPRTVWXZ][A-EGHJ-NPRSTVWXZ]|S[BCEGHJ-NPRTVWXZ])");
+                result = random.randomString("123456789", 1) +
+                        getRandomStringNumbers(3) +
+                        getRandomStringLetters(2);
                 break;
             case "NO":
-                result = randomRegexString("\\d{4}");
-                break;
-            case "UK":
-                result = randomRegexString("([A-Z]{1,2}\\d{1,2}[A-Z]?)(\\d[A-Z]{2})");
+                result = getRandomStringNumbers(4);
                 break;
             case "US":
-                result = randomRegexString("(\\d{5})(-\\d{4})?");
+                String result1 = getRandomStringNumbers(5);
+                String result2 = getRandomStringNumbers(5) + "-" + getRandomStringNumbers(4);
+                result = pickOne(result1, result2);
                 break;
             default:
                 result = "This country code is not available for random postal code generation";
@@ -58,11 +70,11 @@ public class RandomPostalCodeGenerator {
         return result;
     }
 
-    private String randomRegexString(String regex) {
-        Generex generex = new Generex(regex);
-        return generex.random();
+    private String pickOne(String result1, String result2) {
+        if (Math.random() < 0.5) {
+            return result1;
+        }
+        return result2;
     }
-
-
 }
 
