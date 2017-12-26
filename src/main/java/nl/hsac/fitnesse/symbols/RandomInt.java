@@ -36,6 +36,9 @@ public class RandomInt extends SymbolBase implements Rule, Translation {
             result = RANDOM_UTIL.random(Integer.MAX_VALUE);
         } else {
             String[] values = param.split(",");
+            if (values.length != 2) {
+                throw new IllegalArgumentException("No integer generated, two parameters required between the parentheses. Got: " + param);
+            }
             int min = parseInt(values[0]);
             int max = parseInt(values[1]);
             int randomBase = max - min;
