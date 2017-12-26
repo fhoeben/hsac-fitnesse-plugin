@@ -8,9 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Tests RandomPostalCodeGenerator.
- * The postal codes are checked on length only to validate teh switch
- * testing the correctness would be testing the Generex library
- * (for which the testing code is here: https://github.com/mifmif/Generex )
+ * The postal codes are checked on length only to validate the switch
  */
 public class RandomPostalCodeGeneratorTest {
     private final RandomPostalCodeGenerator postalCode = new RandomPostalCodeGenerator();

@@ -1,9 +1,7 @@
 package nl.hsac.fitnesse.util;
 
-import java.util.Random;
-
 public class RandomPostalCodeGenerator {
-    RandomUtil random = new RandomUtil();
+    private static RandomUtil random = new RandomUtil();
 
     private String getRandomStringNumbers(int length) {
         return random.randomString("1234567890", length);
@@ -71,7 +69,7 @@ public class RandomPostalCodeGenerator {
     }
 
     private String pickOne(String result1, String result2) {
-        if (Math.random() < 0.5) {
+        if (random.random(2) < 2) {
             return result1;
         }
         return result2;
