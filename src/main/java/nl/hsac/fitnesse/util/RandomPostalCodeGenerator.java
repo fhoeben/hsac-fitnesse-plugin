@@ -7,6 +7,10 @@ public class RandomPostalCodeGenerator {
         return random.randomString("1234567890", length);
     }
 
+    private String getRandomNonZeroNumber() {
+        return random.randomString("123456789", 1);
+    }
+
     private String getRandomStringLetters(int length) {
         return random.randomString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", length);
     }
@@ -18,7 +22,7 @@ public class RandomPostalCodeGenerator {
                 result = getRandomStringNumbers(4);
                 break;
             case "BE":
-                result = random.randomString("123456789", 1) + getRandomStringNumbers(3);
+                result = getRandomNonZeroNumber() + getRandomStringNumbers(3);
                 break;
             case "BR":
                 result = getRandomStringNumbers(5) +
@@ -35,7 +39,7 @@ public class RandomPostalCodeGenerator {
                         getRandomStringNumbers(1);
                 break;
             case "CH":
-                result = random.randomString("123456789", 1) + getRandomStringNumbers(3);
+                result = getRandomNonZeroNumber() + getRandomStringNumbers(3);
                 break;
             case "DE":
                 result = getRandomStringNumbers(5);
@@ -50,7 +54,7 @@ public class RandomPostalCodeGenerator {
                 result = getRandomStringNumbers(5);
                 break;
             case "NL":
-                result = random.randomString("123456789", 1) +
+                result = getRandomNonZeroNumber() +
                         getRandomStringNumbers(3) +
                         getRandomStringLetters(2);
                 break;
