@@ -62,10 +62,9 @@ public class RandomPostalCodeGenerator {
                 result = getRandomStringNumbers(4);
                 break;
             case "US":
-                if ("short".equals(pickOne("short", "long"))) {
-                    result = getRandomStringNumbers(5);
-                } else {
-                    result = getRandomStringNumbers(5) + "-" + getRandomStringNumbers(4);
+                result = getRandomStringNumbers(5);
+                if ("long".equals(pickOne("short", "long"))) {
+                    result = result + "-" + getRandomStringNumbers(4);
                 }
                 break;
             default:
