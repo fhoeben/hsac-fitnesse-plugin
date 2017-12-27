@@ -1,8 +1,6 @@
 package nl.hsac.fitnesse.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,9 +10,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class RandomPostalCodeGeneratorTest {
     private final RandomPostalCodeGenerator postalCode = new RandomPostalCodeGenerator();
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     private boolean resultEqualsLength(String result, int length) {
         return result.length() == length;
