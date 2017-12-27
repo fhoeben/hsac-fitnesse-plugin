@@ -27,6 +27,4 @@ public class RandomPostalCode extends SymbolBase implements Rule, Translation {
         String param = symbol.getProperty(COUNTRY_CODE, "NL");
         return RANDOM_POSTAL_CODE_GENERATOR.getRandomPostalCodeString(param);
     }
-
-
 }

@@ -104,6 +104,6 @@ public class RandomPostalCodeGeneratorTest {
 
     private void testCountryCodeToTwoLengths(String countryCode, int length1, int length2) {
         String result = postalCode.getRandomPostalCodeString(countryCode);
-        assertTrue("Got: " + result, resultEqualsLength(result, length1) | resultEqualsLength(result, length2));
+        assertTrue("Got: " + result, resultEqualsLength(result, length1) || resultEqualsLength(result, length2));
     }
 }
