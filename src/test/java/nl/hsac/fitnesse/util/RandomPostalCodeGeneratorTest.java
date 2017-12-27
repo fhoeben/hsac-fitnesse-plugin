@@ -36,15 +36,13 @@ public class RandomPostalCodeGeneratorTest {
 
     @Test
     public void testRandomPostalCodeBrazil() {
-        for (int i = 0; i < 100; i++) {
-            testCountryCodeToTwoLengths("BR", 8, 9);
-        }
+        checkCodeLengths("BR", 8, 9);
     }
 
     @Test
     public void testRandomPostalCanada() {
         for (int i = 0; i < 100; i++) {
-            testCountryCodeToTwoLengths("CA", 6, 7);
+            testCountryCodeToLength("CA", 7);
         }
     }
 
@@ -92,9 +90,7 @@ public class RandomPostalCodeGeneratorTest {
 
     @Test
     public void testRandomPostalCodeUnitedStates() {
-        for (int i = 0; i < 100; i++) {
-            testCountryCodeToTwoLengths("US", 5, 10);
-        }
+        checkCodeLengths("US", 5, 10);
     }
 
     private void testCountryCodeToLength(String countryCode, int length) {
@@ -102,8 +98,26 @@ public class RandomPostalCodeGeneratorTest {
         assertTrue("Got: " + result, resultEqualsLength(result, length));
     }
 
-    private void testCountryCodeToTwoLengths(String countryCode, int length1, int length2) {
+    private void checkCodeLengths(String countryCode, int length1, int length2) {
+        int length1Count = 0;
+        int length2Count = 0;
+        for (int i = 0; i < 100; i++) {
+            int length = testCountryCodeToTwoLengths(countryCode, length1, length2);
+            if (length == length1) {
+                length1Count++;
+            } else {
+                length2Count++;
+            }
+        }
+        assertTrue(countryCode + ": too few length1 codes: " + length1Count, length1Count > 30);
+        assertTrue(countryCode + ": too few length2 codes: " + length2Count, length2Count > 30);
+    }
+
+    private int testCountryCodeToTwoLengths(String countryCode, int length1, int length2) {
         String result = postalCode.getRandomPostalCodeString(countryCode);
-        assertTrue("Got: " + result, resultEqualsLength(result, length1) || resultEqualsLength(result, length2));
+        boolean hasLength1 = resultEqualsLength(result, length1);
+        boolean hasLength2 = resultEqualsLength(result, length2);
+        assertTrue("Got: " + result, hasLength1 || hasLength2);
+        return hasLength1 ? length1 : length2;
     }
 }
