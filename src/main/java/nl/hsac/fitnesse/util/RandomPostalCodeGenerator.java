@@ -69,7 +69,7 @@ public class RandomPostalCodeGenerator {
     }
 
     private String pickOne(String result1, String result2) {
-        if (random.random(2) < 2) {
+        if (random.random(2) < 1) {
             return result1;
         }
         return result2;
