@@ -75,10 +75,13 @@ public class RandomPostalCodeGenerator {
     }
 
     private String pickOne(String result1, String result2) {
-        if (random.random(2) < 1) {
-            return result1;
+        String result;
+        if (random.random(2) == 0) {
+            result = result1;
+        } else {
+            result = result2;
         }
-        return result2;
+        return result;
     }
 }
 
