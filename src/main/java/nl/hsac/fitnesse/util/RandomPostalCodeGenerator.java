@@ -58,9 +58,11 @@ public class RandomPostalCodeGenerator {
                 result = getRandomStringNumbers(4);
                 break;
             case "US":
-                String result1 = getRandomStringNumbers(5);
-                String result2 = getRandomStringNumbers(5) + "-" + getRandomStringNumbers(4);
-                result = pickOne(result1, result2);
+                if ("short".equals(pickOne("short", "long"))) {
+                    result = getRandomStringNumbers(5);
+                } else {
+                    result = getRandomStringNumbers(5) + "-" + getRandomStringNumbers(4);
+                }
                 break;
             default:
                 result = "This country code is not available for random postal code generation";
