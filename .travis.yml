@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+
+script: mvn test
+
+after_success:
+  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { python addServer.py; mvn -DskipTests deploy --settings ~/.m2/mySettings.xml; };"
