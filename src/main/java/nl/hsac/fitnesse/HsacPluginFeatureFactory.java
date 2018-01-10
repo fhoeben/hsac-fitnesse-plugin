@@ -53,6 +53,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         add(symbolProvider, new RandomIban());
         add(symbolProvider, new RandomPostalCode());
         add(symbolProvider, new DefineDefault());
+        add(symbolProvider, new DefineFromProperties());
     }
 
     private void add(SymbolProvider provider, SymbolType symbolType) {
