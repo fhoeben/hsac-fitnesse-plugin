@@ -14,18 +14,18 @@ public class DefineFromPropertiesTest {
 
     @Test
     public void resolveParamToURLFile() {
-        URL url = symbol.resolveParamToURL(".gitignore");
+        URL url = symbol.resolveParamToURL("test.properties");
         assertEquals("file", url.getProtocol());
         String path = url.getPath();
-        assertEndsWith("path", ".gitignore", path);
+        assertEndsWith("path", "test.properties", path);
     }
 
     @Test
     public void resolveParamToURLWithProtocol() {
-        URL url = symbol.resolveParamToURL("file:.gitignore");
+        URL url = symbol.resolveParamToURL("file:test.properties");
         assertEquals("file", url.getProtocol());
         String path = url.getPath();
-        assertEndsWith("path", ".gitignore", path);
+        assertEndsWith("path", "test.properties", path);
     }
 
     @Test
