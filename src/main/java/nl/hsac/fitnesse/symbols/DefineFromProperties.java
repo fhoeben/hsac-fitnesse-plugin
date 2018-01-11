@@ -56,7 +56,7 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
         return result;
     }
 
-    private URL resolveParamToURL(String param) {
+    URL resolveParamToURL(String param) {
         URL url;
         File f = new File(param);
         if (f.exists()) {
