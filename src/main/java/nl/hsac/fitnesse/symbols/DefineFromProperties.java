@@ -11,10 +11,13 @@ import fitnesse.wikitext.parser.SymbolType;
 import fitnesse.wikitext.parser.Translation;
 import fitnesse.wikitext.parser.Translator;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
@@ -41,24 +44,49 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
         if (!result.isNothing()) {
             String param = current.getProperty(FILE_NAME, null);
             if (param != null) {
-                File f = new File(param);
-                if (f.exists()) {
-                    if (f.isFile() && f.canRead()) {
-                        processPropertiesFile(current, parser, f);
-                    } else {
-                        current.putProperty(ERROR, "Unable to read: " + f.getAbsolutePath());
-                    }
-                } else {
-                    current.putProperty(ERROR, f.getAbsolutePath() + " does not exist");
+                try {
+                    URL url = resolveParamToURL(param);
+                    current.putProperty(FILE_NAME, url.toString());
+                    processPropertiesFile(current, parser, url);
+                } catch (IllegalArgumentException|IOException e) {
+                    current.putProperty(ERROR, e.toString());
                 }
             }
         }
         return result;
     }
 
-    private void processPropertiesFile(Symbol current, Parser parser, File f) {
+    private URL resolveParamToURL(String param) {
+        URL url;
+        File f = new File(param);
+        if (f.exists()) {
+            if (f.isFile() && f.canRead()) {
+                try {
+                    url = f.toURI().toURL();
+                } catch (MalformedURLException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            } else {
+                throw new IllegalArgumentException("Unable to read: " + f.getAbsolutePath());
+            }
+        } else {
+            URL classPathFile = getClass().getClassLoader().getResource(param);
+            if (classPathFile == null) {
+                try {
+                    url = new URL(param);
+                } catch (MalformedURLException e) {
+                    throw new IllegalArgumentException(f.getAbsolutePath() + " does not exist, and no resource on classpath: " + param);
+                }
+            } else {
+                url = classPathFile;
+            }
+        }
+        return url;
+    }
+
+    private void processPropertiesFile(Symbol current, Parser parser, URL url) throws IOException {
         Properties props = new Properties();
-        try (InputStreamReader iS = new InputStreamReader(new FileInputStream(f), UTF8)) {
+        try (Reader iS = new BufferedReader(new InputStreamReader(url.openStream(), UTF8))) {
             props.load(iS);
             for (String variableName : props.stringPropertyNames()) {
                 String variableValue = props.getProperty(variableName);
@@ -68,46 +96,43 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
                 row.add(variableName).add(variableValue);
                 current.add(row);
             }
-        } catch (IOException e) {
-            current.putProperty(ERROR, e.toString());
         }
     }
 
     @Override
     public String toTarget(Translator translator, Symbol symbol) {
-        String result = "Please supply filename of .properties file, between parentheses";
+        String result = "Please supply filename of .properties file (either local file or on classpath), between parentheses";
         String file = symbol.getProperty(FILE_NAME, null);
         if (file == null) {
             result = createSpanWithError(result);
         } else {
-            File f = new File(file);
             String error = symbol.getProperty(ERROR, null);
             if (error != null) {
                 result = createSpanWithError(error);
             } else {
-                result = toTarget(f, translator, symbol);
+                result = toTarget(file, translator, symbol);
             }
         }
         return result;
     }
 
-    private String toTarget(File propertiesFile, Translator translator, Symbol symbol) {
+    private String toTarget(String propertiesFileUrl, Translator translator, Symbol symbol) {
         HtmlTag table = new HtmlTag("table");
         addMetaClass(table);
-        createHeaderRow(propertiesFile, table);
+        createHeaderRow(propertiesFileUrl, table);
         for (Symbol child : symbol.getChildren()) {
             createPropertyRow(translator, child, table);
         }
         return table.html();
     }
 
-    private void createHeaderRow(File propertiesFile, HtmlTag table) {
+    private void createHeaderRow(String propertiesFileUrl, HtmlTag table) {
         HtmlTag headerRow = addRow(table);
         HtmlTag headingCell = new HtmlTag("td");
         headingCell.addAttribute("colspan", "2");
         headingCell.add(new HtmlText("variables defined"));
         HtmlTag span = new HtmlTag("span");
-        span.add(new HtmlText("(by " + propertiesFile.getAbsolutePath() + ")"));
+        span.add(new HtmlText("(by " + propertiesFileUrl + ")"));
         headingCell.add(span);
         headerRow.add(headingCell);
     }
