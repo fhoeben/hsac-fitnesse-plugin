@@ -32,8 +32,12 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
     private static final String ERROR = "PropertyFileReadError";
 
     public DefineFromProperties() {
-        super("DefineFromProperties");
-        wikiMatcher(new Matcher().startLineOrCell().string("!defineFromProperties"));
+        this("DefineFromProperties","!defineFromProperties");
+    }
+
+    public DefineFromProperties(String name, String wikiWord) {
+        super(name);
+        wikiMatcher(new Matcher().startLineOrCell().string(wikiWord));
         wikiRule(this);
         htmlTranslation(this);
     }
@@ -89,14 +93,19 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
         try (Reader iS = new BufferedReader(new InputStreamReader(url.openStream(), UTF8))) {
             props.load(iS);
             for (String variableName : props.stringPropertyNames()) {
-                String variableValue = props.getProperty(variableName);
-                parser.getPage().putVariable(variableName, variableValue);
+                String variableValue = handleProperty(parser, props, variableName);
 
                 Symbol row = new Symbol(SymbolType.SymbolList);
                 row.add(variableName).add(variableValue);
                 current.add(row);
             }
         }
+    }
+
+    protected String handleProperty(Parser parser, Properties props, String propertyName) {
+        String variableValue = props.getProperty(propertyName);
+        parser.getPage().putVariable(propertyName, variableValue);
+        return variableValue;
     }
 
     @Override

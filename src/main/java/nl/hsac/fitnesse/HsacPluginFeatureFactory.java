@@ -54,6 +54,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         add(symbolProvider, new RandomPostalCode());
         add(symbolProvider, new DefineDefault());
         add(symbolProvider, new DefineFromProperties());
+        add(symbolProvider, new DefineDefaultFromProperties());
     }
 
     private void add(SymbolProvider provider, SymbolType symbolType) {
