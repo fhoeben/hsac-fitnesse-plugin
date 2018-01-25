@@ -70,8 +70,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
     }
 
     private void addNestedScenarioArguments(Set<String> found, boolean addInputs, String cellContent) {
-        String scenarioName = cellContent.substring(0, cellContent.length() - 1);
-        scenarioName = Disgracer.disgraceClassName(scenarioName);
+        String scenarioName = getCalledScenarioName(cellContent);
         SlimTestContext testContext = getTestContext();
         ScenarioTable scenario;
         if (testContext instanceof SlimCoverageTestContextImpl) {
@@ -83,6 +82,11 @@ public class AutoArgScenarioTable extends ScenarioTable {
             Set<String> scenarioArgs = addInputs ? scenario.getInputs() : scenario.getOutputs();
             found.addAll(scenarioArgs);
         }
+    }
+
+    private String getCalledScenarioName(String cellContent) {
+        String scenarioName = cellContent.substring(0, cellContent.length() - 1);
+        return Disgracer.disgraceClassName(scenarioName);
     }
 
     private boolean maybeNestedScenario(int columnCount, String cellContent) {
