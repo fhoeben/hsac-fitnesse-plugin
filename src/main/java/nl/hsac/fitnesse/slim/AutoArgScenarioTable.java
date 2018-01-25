@@ -3,10 +3,7 @@ package nl.hsac.fitnesse.slim;
 import fitnesse.testsystems.TestExecutionException;
 import fitnesse.testsystems.slim.SlimTestContext;
 import fitnesse.testsystems.slim.Table;
-import fitnesse.testsystems.slim.tables.ScenarioTable;
-import fitnesse.testsystems.slim.tables.SlimAssertion;
-import fitnesse.testsystems.slim.tables.SlimTable;
-import fitnesse.testsystems.slim.tables.SyntaxError;
+import fitnesse.testsystems.slim.tables.*;
 import nl.hsac.fitnesse.slimcoverage.SlimCoverageTestContextImpl;
 
 import java.lang.reflect.Field;
@@ -74,6 +71,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
 
     private void addNestedScenarioArguments(Set<String> found, boolean addInputs, String cellContent) {
         String scenarioName = cellContent.substring(0, cellContent.length() - 1);
+        scenarioName = Disgracer.disgraceClassName(scenarioName);
         SlimTestContext testContext = getTestContext();
         ScenarioTable scenario;
         if (testContext instanceof SlimCoverageTestContextImpl) {
