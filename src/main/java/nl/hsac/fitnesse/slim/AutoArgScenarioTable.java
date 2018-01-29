@@ -6,7 +6,6 @@ import fitnesse.testsystems.slim.Table;
 import fitnesse.testsystems.slim.tables.*;
 import nl.hsac.fitnesse.slimcoverage.SlimCoverageTestContextImpl;
 
-import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -133,28 +132,12 @@ public class AutoArgScenarioTable extends ScenarioTable {
         }
     }
 
-    // TODO : Remove usage of reflective field access once https://github.com/unclebob/fitnesse/pull/1103 is released
-    private static final Field stField;
-
-    static {
-        try {
-            stField = ScenarioTestContext.class.getDeclaredField("this$0");
-            stField.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private AutoArgScenarioTable getCallingTable(ScenarioTestContext context) {
-        try {
-            ScenarioTable t = (ScenarioTable) stField.get(context);
-            if (t instanceof AutoArgScenarioTable) {
-                return (AutoArgScenarioTable) t;
-            } else {
-                return null;
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        ScenarioTable t = context.getScenarioTable();
+        if (t instanceof AutoArgScenarioTable) {
+            return (AutoArgScenarioTable) t;
+        } else {
+            return null;
         }
     }
 }
