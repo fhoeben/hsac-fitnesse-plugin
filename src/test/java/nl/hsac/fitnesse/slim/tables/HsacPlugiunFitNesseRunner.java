@@ -1,9 +1,6 @@
 package nl.hsac.fitnesse.slim.tables;
 
-import fitnesse.junit.DescriptionFactory;
 import fitnesse.junit.FitNesseRunner;
-import fitnesse.junit.JUnitRunNotifierResultsListener;
-import fitnesse.testrunner.MultipleTestsRunner;
 import org.junit.ComparisonFailure;
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
@@ -20,12 +17,6 @@ import java.io.IOException;
 public class HsacPlugiunFitNesseRunner extends FitNesseRunner {
     public HsacPlugiunFitNesseRunner(Class<?> suiteClass) throws InitializationError {
         super(suiteClass);
-    }
-
-    @Override
-    protected void addTestSystemListeners(RunNotifier notifier, MultipleTestsRunner testRunner, Class<?> suiteClass, DescriptionFactory descriptionFactory) {
-         // custom listener is no longer needed once a fitnesse release including https://github.com/unclebob/fitnesse/pull/1105 is used.
-        testRunner.addTestSystemListener(new CustomJUnitRunNotifierListener(notifier, suiteClass, descriptionFactory));
     }
 
     @Override
@@ -51,18 +42,6 @@ public class HsacPlugiunFitNesseRunner extends FitNesseRunner {
             }
         } catch (InitializationError | IOException e) {
             notifier.fireTestFailure(new Failure(Description.createTestDescription(aClass, name), e));
-        }
-    }
-
-    private static class CustomJUnitRunNotifierListener extends JUnitRunNotifierResultsListener {
-        public CustomJUnitRunNotifierListener(RunNotifier notifier, Class<?> mainClass, DescriptionFactory descriptionFactory) {
-            super(notifier, mainClass, descriptionFactory);
-        }
-
-        @Override
-        public void announceNumberTestsToRun(int testsToRun) {
-            // expect one more for the scenario usage report page
-            super.announceNumberTestsToRun(testsToRun + 1);
         }
     }
 }
