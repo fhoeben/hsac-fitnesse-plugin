@@ -42,32 +42,33 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
     }
 
     private String randomLicensePlate(String sideCode, String category) {
-
         int sideCodeToUse = Integer.parseInt(sideCode);
         if (sideCodeToUse > 14) {
             throw new IllegalArgumentException("Sidecodes > 14 are unsupported!");
         }
-        String pattern = sidecodePatterns().get(sideCodeToUse);
+        String licensePlate = sidecodePatterns().get(sideCodeToUse);
         String permitted = "BDFGHJKLMNPRSTVXZ";
+        String permittedFirstLetter = "FGHJKLNPRSTXZ";
 
         if (category.length() == 1) {
-            pattern = pattern.replaceFirst("@", category);
+            licensePlate = licensePlate.replaceFirst("@", category);
+        } else {
+            licensePlate = licensePlate.replaceFirst("@", RANDOM_UTIL.randomString(permittedFirstLetter, 1));
         }
-        while (pattern.contains("@")) {
-            pattern = pattern.replaceFirst("@", RANDOM_UTIL.randomString(permitted, 1));
+        while (licensePlate.contains("@")) {
+            licensePlate = licensePlate.replaceFirst("@", RANDOM_UTIL.randomString(permitted, 1));
         }
-        while (pattern.contains("#")) {
-            pattern = pattern.replaceFirst("#", RANDOM_UTIL.randomString("1234567890", 1));
+        while (licensePlate.contains("#")) {
+            licensePlate = licensePlate.replaceFirst("#", RANDOM_UTIL.randomString("1234567890", 1));
         }
-        return pattern;
-
+        return licensePlate;
     }
 
     private Map<Integer, String> sidecodePatterns() {
         Map<Integer, String> patterns = new HashMap<>();
 
         patterns.put(1, "@@-##-##"); //SideCode 1
-        patterns.put(2, "##-##-XX"); //SideCode 2
+        patterns.put(2, "##-##-@@"); //SideCode 2
         patterns.put(3, "##-@@-##"); //SideCode 3
         patterns.put(4, "@@-##-@@"); //SideCode 4
         patterns.put(5, "@@-@@-##"); //SideCode 5
@@ -80,7 +81,7 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
         patterns.put(12, "@-##-@@@");  //SideCode 12
         patterns.put(13, "#-@@-###");  //SideCode 13
         patterns.put(14, "###-@@-#"); //SideCode 14
+
         return patterns;
     }
-
 }
