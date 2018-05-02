@@ -44,8 +44,8 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
     private String randomLicensePlate(String sideCode, String category) {
 
         int sideCodeToUse = Integer.parseInt(sideCode);
-        if (sideCodeToUse < 4 || sideCodeToUse > 10) {
-            throw new IllegalArgumentException("Only sidecodes 4 to 10 are supported!");
+        if (sideCodeToUse > 14) {
+            throw new IllegalArgumentException("Sidecodes > 14 are unsupported!");
         }
         String pattern = sidecodePatterns().get(sideCodeToUse);
         String permitted = "BDFGHJKLMNPRSTVXZ";
@@ -65,13 +65,21 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
 
     private Map<Integer, String> sidecodePatterns() {
         Map<Integer, String> patterns = new HashMap<>();
-        patterns.put(4, "##-@@-##"); //SideCode 4
+
+        patterns.put(1, "@@-##-##"); //SideCode 1
+        patterns.put(2, "##-##-XX"); //SideCode 2
+        patterns.put(3, "##-@@-##"); //SideCode 3
+        patterns.put(4, "@@-##-@@"); //SideCode 4
         patterns.put(5, "@@-@@-##"); //SideCode 5
         patterns.put(6, "##-@@-@@"); //SideCode 6
         patterns.put(7, "##-@@@-#"); //SideCode 7
         patterns.put(8, "#-@@@-##");  //SideCode 8
         patterns.put(9, "@@-###-@");  //SideCode 9
         patterns.put(10, "@-###-@@"); //SideCode 10
+        patterns.put(11, "@@@-##-@"); //SideCode 11
+        patterns.put(12, "@-##-@@@");  //SideCode 12
+        patterns.put(13, "#-@@-###");  //SideCode 13
+        patterns.put(14, "###-@@-#"); //SideCode 14
         return patterns;
     }
 
