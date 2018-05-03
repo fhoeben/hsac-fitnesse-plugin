@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Generates random Dutch license plates.
  * Usage: !randomDutchLicensePlate (Category) (Sidecode)
- * Sidecodes 4-10 are supported (see: https://nl.wikipedia.org/wiki/Nederlands_kenteken)
+ * Sidecodes 1-14 are supported (see: https://nl.wikipedia.org/wiki/Nederlands_kenteken)
  * Sidecode 7 is used by default.
  * Category expects a single letter that is used as the first letter in the license plate
  * (f.e. D for mopeds, M for Motorcycle, V for light company cars, B for heavy company cars (>3500KG))
