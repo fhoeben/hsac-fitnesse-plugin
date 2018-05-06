@@ -12,7 +12,7 @@ import java.util.Map;
  * Sidecodes 1-14 are supported (see: https://nl.wikipedia.org/wiki/Nederlands_kenteken)
  * Sidecode 7 is used by default.
  * Category expects a single letter that is used as the first letter in the license plate
- * (f.e. D for mopeds, M for Motorcycle, V for light company cars, B for heavy company cars (>3500KG))
+ * (f.e. D for mopeds, M for Motorcycle, V for light company cars, B for heavy company cars (&gt;3500KG))
  */
 public class RandomDutchLicensePlate extends SymbolBase implements Rule, Translation {
 
