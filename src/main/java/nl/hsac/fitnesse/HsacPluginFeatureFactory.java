@@ -52,6 +52,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         add(symbolProvider, new RandomEmail());
         add(symbolProvider, new RandomIban());
         add(symbolProvider, new RandomPostalCode());
+        add(symbolProvider, new RandomDutchLicensePlate());
         add(symbolProvider, new DefineDefault());
         add(symbolProvider, new DefineFromProperties());
         add(symbolProvider, new DefineDefaultFromProperties());
