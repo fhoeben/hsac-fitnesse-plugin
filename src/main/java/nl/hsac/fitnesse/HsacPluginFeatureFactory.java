@@ -37,6 +37,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
     public void registerSymbolTypes(SymbolProvider symbolProvider) throws PluginException {
         super.registerSymbolTypes(symbolProvider);
         add(symbolProvider, new MonthsFromToday());
+        add(symbolProvider, new YearsFromToday());
         add(symbolProvider, new WeekDaysFromToday());
         add(symbolProvider, new DayOfWeek.Monday());
         add(symbolProvider, new DayOfWeek.Tuesday());
