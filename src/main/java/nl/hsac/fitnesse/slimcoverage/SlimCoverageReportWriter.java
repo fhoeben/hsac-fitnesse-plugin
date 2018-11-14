@@ -5,6 +5,32 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class SlimCoverageReportWriter {
+    private static final String COPY_TO_CLIPBOARD_JS =
+            "function elementContentsToClipboard(el) {" +
+                    "var selected = document.getSelection().rangeCount > 0? document.getSelection().getRangeAt(0):false;" +
+                    "var body = document.body, range, sel;" +
+                    "if (document.createRange && window.getSelection) {" +
+                    "range = document.createRange();" +
+                    "sel = window.getSelection();" +
+                    "sel.removeAllRanges();" +
+                    "try {" +
+                    "range.selectNodeContents(el);" +
+                    "sel.addRange(range);" +
+                    "} catch (e) {" +
+                    "range.selectNode(el);" +
+                    "sel.addRange(range);" +
+                    "}" +
+                    "document.execCommand('copy');" +
+                    "} else if (body.createTextRange) {" +
+                    "range = body.createTextRange();" +
+                    "range.moveToElementText(el);" +
+                    "range.select();" +
+                    "range.execCommand('copy');" +
+                    "}" +
+                    "document.getSelection().removeAllRanges();" +
+                    "if (selected) document.getSelection().addRange(selected);" +
+                    "}";
+
     private final SlimScenarioUsage usage;
     private final Consumer<String> outputWriter;
 
@@ -29,8 +55,10 @@ public class SlimCoverageReportWriter {
                 reportScenarioUsageNewline();
             }
 
+            writeJavaScript();
             reportScenarioUsageHeader("Total usage count per scenario:");
-            write("<table>");
+            writeCopyButton("totalUsageCountPerScenario");
+            write("<table id='totalUsageCountPerScenario'>");
             write("<tr><th>Scenario</th><th>Count</th></tr>");
             outputTableRows(totalUsage);
             write("</table>");
@@ -42,7 +70,8 @@ public class SlimCoverageReportWriter {
             reportScenarioUsageNewline();
 
             reportScenarioUsageHeader("Usage count per scenario per page:");
-            write("<table>");
+            writeCopyButton("usageCountPerScenarioPerPage");
+            write("<table id='usageCountPerScenarioPerPage'>");
             write("<tr><th>Page</th><th>Scenario</th><th>Count</th></tr>");
             for (SlimScenarioUsagePer usagePerPage : usage.getUsage()) {
                 String pageName = usagePerPage.getGroupName();
@@ -58,6 +87,22 @@ public class SlimCoverageReportWriter {
                 outputNestedList(overriddenPerPage);
             }
         }
+    }
+
+    protected void writeJavaScript() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("<script type='text/javascript'>");
+        builder.append(COPY_TO_CLIPBOARD_JS);
+        builder.append("</script>");
+        write(builder.toString());
+    }
+
+    protected void writeCopyButton(String idToCopy) {
+        StringBuilder output = new StringBuilder();
+        output.append("<input type='button' value='to clipboard' onclick=\"elementContentsToClipboard(document.getElementById('");
+        output.append(idToCopy);
+        output.append("'));\">");
+        write(output.toString());
     }
 
     protected void outputTableRows(Map<String, Integer> tableRows, String... prefixes) {
