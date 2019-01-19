@@ -5,7 +5,7 @@ Test
 |import                      |
 |nl.hsac.fitnesse.slim.tables|
 
-|scenario|hallo _     |name                       |
+|scenario|hallo _     |name, resp?                |
 |check   |clone symbol|@{name}      |@{name}      |
 |$resp=  |clone symbol|Hello @{name}              |
 |check   |clone symbol|Hello @{name}|Hello @{name}|
