@@ -35,9 +35,13 @@ public class SlimCoverageTestContextImpl extends SlimTestContextImpl {
 
     @Override
     public ScenarioTable getScenarioByPattern(String invokingString) {
-        ScenarioTable scenarioTable = super.getScenarioByPattern(invokingString);
+        ScenarioTable scenarioTable = getScenarioByPatternNoCount(invokingString);
         trackUsage(scenarioTable);
         return scenarioTable;
+    }
+
+    public ScenarioTable getScenarioByPatternNoCount(String invokingString) {
+        return super.getScenarioByPattern(invokingString);
     }
 
     protected void trackUsage(ScenarioTable scenarioTable) {

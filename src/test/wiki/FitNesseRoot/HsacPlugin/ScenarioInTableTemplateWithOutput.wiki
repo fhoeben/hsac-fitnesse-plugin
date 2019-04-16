@@ -1,0 +1,19 @@
+---
+Test
+Help: Tests https://github.com/fhoeben/hsac-fitnesse-plugin/issues/33
+---
+
+|scenario      |my division|numerator|and|denominator|makes|myResult2?|
+|setNumerator  |@numerator                                            |
+|setDenominator|@denominator                                          |
+|$myResult2=   |quotient                                              |
+
+|Library    |
+|eg.Division|
+
+|table template|test          |
+|my division   |10|and|2|makes|
+
+|test      |
+|myResult2?|
+|5.0       |

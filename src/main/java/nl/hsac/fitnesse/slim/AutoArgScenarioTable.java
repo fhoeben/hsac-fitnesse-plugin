@@ -3,7 +3,10 @@ package nl.hsac.fitnesse.slim;
 import fitnesse.testsystems.TestExecutionException;
 import fitnesse.testsystems.slim.SlimTestContext;
 import fitnesse.testsystems.slim.Table;
-import fitnesse.testsystems.slim.tables.*;
+import fitnesse.testsystems.slim.tables.ScenarioTable;
+import fitnesse.testsystems.slim.tables.SlimAssertion;
+import fitnesse.testsystems.slim.tables.SlimTable;
+import fitnesse.testsystems.slim.tables.SyntaxError;
 import nl.hsac.fitnesse.slimcoverage.SlimCoverageTestContextImpl;
 
 import java.util.LinkedHashSet;
@@ -57,19 +60,35 @@ public class AutoArgScenarioTable extends ScenarioTable {
         int rowCount = table.getRowCount();
         for (int row = 0; row < rowCount; row++) {
             int columnCount = table.getColumnCountInRow(row);
-            for (int column = 0; column < columnCount; column++) {
-                String cellContent = table.getCellContents(column, row);
-                if (!addAllMatches(pattern, found, cellContent)
-                        && maybeNestedScenario(columnCount, cellContent)) {
-                    addNestedScenarioArguments(found, pattern == ARG_PATTERN, cellContent);
+            ScenarioTable calledScenario = getCalledScenario(columnCount - 1, row);
+            if (calledScenario != null) {
+                addNestedScenarioArguments(found, pattern == ARG_PATTERN, calledScenario);
+            } else {
+                for (int column = 0; column < columnCount; column++) {
+                    String cellContent = table.getCellContents(column, row);
+                    addAllMatches(pattern, found, cellContent);
                 }
             }
         }
         return found;
     }
 
-    private void addNestedScenarioArguments(Set<String> found, boolean addInputs, String cellContent) {
-        String scenarioName = getCalledScenarioName(cellContent);
+    private ScenarioTable getCalledScenario(int lastCol, int row) {
+        String scenarioName = RowHelper.getScenarioNameFromAlternatingCells(table, lastCol, row);
+        ScenarioTable scenario = getScenarioByName(scenarioName);
+        if (scenario == null && lastCol == 0) {
+            String cellContents = table.getCellContents(0, row);
+            scenario = getScenarioByPattern(cellContents);
+        }
+        return scenario;
+    }
+
+    private void addNestedScenarioArguments(Set<String> found, boolean addInputs, ScenarioTable scenario) {
+        Set<String> scenarioArgs = addInputs ? scenario.getInputs() : scenario.getOutputs();
+        found.addAll(scenarioArgs);
+    }
+
+    private ScenarioTable getScenarioByName(String scenarioName) {
         SlimTestContext testContext = getTestContext();
         ScenarioTable scenario;
         if (testContext instanceof SlimCoverageTestContextImpl) {
@@ -77,19 +96,18 @@ public class AutoArgScenarioTable extends ScenarioTable {
         } else {
             scenario = testContext.getScenario(scenarioName);
         }
-        if (scenario != null) {
-            Set<String> scenarioArgs = addInputs ? scenario.getInputs() : scenario.getOutputs();
-            found.addAll(scenarioArgs);
+        return scenario;
+    }
+
+    private ScenarioTable getScenarioByPattern(String invokingString) {
+        SlimTestContext testContext = getTestContext();
+        ScenarioTable scenario;
+        if (testContext instanceof SlimCoverageTestContextImpl) {
+            scenario = ((SlimCoverageTestContextImpl) testContext).getScenarioByPatternNoCount(invokingString);
+        } else {
+            scenario = testContext.getScenarioByPattern(invokingString);
         }
-    }
-
-    private String getCalledScenarioName(String cellContent) {
-        String scenarioName = cellContent.substring(0, cellContent.length() - 1);
-        return Disgracer.disgraceClassName(scenarioName);
-    }
-
-    private boolean maybeNestedScenario(int columnCount, String cellContent) {
-        return columnCount == 1 && cellContent.endsWith(";");
+        return scenario;
     }
 
     private boolean addAllMatches(Pattern pattern, Set<String> found, String cellContent) {
