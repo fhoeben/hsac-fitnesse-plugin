@@ -53,7 +53,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
     }
 
     private Set<String> findArguments(Pattern pattern) {
-        Set<String> found = new LinkedHashSet<String>();
+        Set<String> found = new LinkedHashSet<>();
         int rowCount = table.getRowCount();
         for (int row = 0; row < rowCount; row++) {
             int columnCount = table.getColumnCountInRow(row);
