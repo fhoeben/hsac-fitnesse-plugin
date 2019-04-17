@@ -3,10 +3,7 @@ package nl.hsac.fitnesse.slim;
 import fitnesse.testsystems.TestExecutionException;
 import fitnesse.testsystems.slim.SlimTestContext;
 import fitnesse.testsystems.slim.Table;
-import fitnesse.testsystems.slim.tables.ScenarioTable;
-import fitnesse.testsystems.slim.tables.SlimAssertion;
-import fitnesse.testsystems.slim.tables.SlimTable;
-import fitnesse.testsystems.slim.tables.SyntaxError;
+import fitnesse.testsystems.slim.tables.*;
 import nl.hsac.fitnesse.slimcoverage.SlimCoverageTestContextImpl;
 
 import java.util.LinkedHashSet;
@@ -73,7 +70,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
     }
 
     private ScenarioTable getCalledScenario(int lastCol, int row) {
-        String scenarioName = RowHelper.getScenarioNameFromAlternatingCells(table, lastCol, row);
+        String scenarioName = ScriptTable.RowHelper.getScenarioNameFromAlternatingCells(table, lastCol, row);
         ScenarioTable scenario = getScenarioByName(scenarioName);
         if (scenario == null && lastCol == 0) {
             String cellContents = table.getCellContents(0, row);
