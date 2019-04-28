@@ -63,11 +63,10 @@ public class AutoArgScenarioTable extends ScenarioTable {
             ScenarioTable calledScenario = getCalledScenario(columnCount - 1, row);
             if (calledScenario != null) {
                 addNestedScenarioArguments(found, pattern == ARG_PATTERN, calledScenario);
-            } else {
-                for (int column = 0; column < columnCount; column++) {
-                    String cellContent = table.getCellContents(column, row);
-                    addAllMatches(pattern, found, cellContent);
-                }
+            }
+            for (int column = 0; column < columnCount; column++) {
+                String cellContent = table.getCellContents(column, row);
+                addAllMatches(pattern, found, cellContent);
             }
         }
         return found;
