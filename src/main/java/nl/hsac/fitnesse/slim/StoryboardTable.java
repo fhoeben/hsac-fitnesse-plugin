@@ -7,6 +7,7 @@ import fitnesse.testsystems.slim.results.SlimTestResult;
 import fitnesse.testsystems.slim.tables.ScriptTable;
 import fitnesse.testsystems.slim.tables.SlimAssertion;
 import fitnesse.testsystems.slim.tables.SlimExpectation;
+import fitnesse.testsystems.slim.tables.SyntaxError;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class StoryboardTable extends ScriptTable {
     }
 
     @Override
-    protected List<SlimAssertion> invokeAction(int startingCol, int endingCol, int row, SlimExpectation expectation) {
+    protected List<SlimAssertion> invokeAction(int startingCol, int endingCol, int row, SlimExpectation expectation) throws SyntaxError {
         List<SlimAssertion> assertions = super.invokeAction(startingCol, endingCol, row, expectation);
         addScreenshotAssertionForRow(assertions, row);
         return assertions;
