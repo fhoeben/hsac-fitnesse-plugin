@@ -58,7 +58,10 @@ public class AutoArgScenarioTable extends ScenarioTable {
         for (int row = 0; row < rowCount; row++) {
             int columnCount = table.getColumnCountInRow(row);
             ScenarioTable calledScenario = getCalledScenario(columnCount - 1, row);
-            if (calledScenario != null) {
+            if (calledScenario != null
+                    && (pattern == OUT_PATTERN // always add output parameters
+                    || isAutoArgCallWithoutParameters(calledScenario, columnCount)) // add input parameters also
+            ) {
                 addNestedScenarioArguments(found, pattern == ARG_PATTERN, calledScenario);
             }
             for (int column = 0; column < columnCount; column++) {
@@ -77,6 +80,10 @@ public class AutoArgScenarioTable extends ScenarioTable {
             scenario = getScenarioByPattern(cellContents);
         }
         return scenario;
+    }
+
+    private boolean isAutoArgCallWithoutParameters(ScenarioTable calledScenario, int columnCount) {
+        return calledScenario instanceof AutoArgScenarioTable && columnCount == 1;
     }
 
     private void addNestedScenarioArguments(Set<String> found, boolean addInputs, ScenarioTable scenario) {
