@@ -57,6 +57,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         add(symbolProvider, new DefineDefault());
         add(symbolProvider, new DefineFromProperties());
         add(symbolProvider, new DefineDefaultFromProperties());
+        add(symbolProvider, new Uuid());
     }
 
     private void add(SymbolProvider provider, SymbolType symbolType) {
