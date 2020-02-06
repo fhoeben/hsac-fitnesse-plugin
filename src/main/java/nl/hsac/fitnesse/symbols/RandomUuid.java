@@ -3,11 +3,11 @@ package nl.hsac.fitnesse.symbols;
 import fitnesse.wikitext.parser.*;
 import java.util.UUID;
 
-public class Uuid extends SymbolBase implements Rule, Translation {
+public class RandomUuid extends SymbolBase implements Rule, Translation {
 
-    public Uuid() {
+    public RandomUuid() {
         super("Uuid");
-        wikiMatcher(new Matcher().string("!uuid"));
+        wikiMatcher(new Matcher().string("!randomUuid"));
         wikiRule(this);
         htmlTranslation(this);
     }
