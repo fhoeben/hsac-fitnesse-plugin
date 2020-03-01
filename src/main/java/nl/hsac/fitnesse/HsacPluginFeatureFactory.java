@@ -1,8 +1,10 @@
 package nl.hsac.fitnesse;
 
+import fitnesse.FitNesseContext;
 import fitnesse.plugins.PluginException;
 import fitnesse.plugins.PluginFeatureFactoryBase;
 import fitnesse.testrunner.TestSystemFactoryRegistry;
+import fitnesse.testrunner.run.TestRunFactoryRegistry;
 import fitnesse.testsystems.slim.CustomComparatorRegistry;
 import fitnesse.testsystems.slim.tables.SlimTable;
 import fitnesse.testsystems.slim.tables.SlimTableFactory;
@@ -11,7 +13,23 @@ import fitnesse.wikitext.parser.SymbolType;
 import nl.hsac.fitnesse.slim.AutoArgScenarioTable;
 import nl.hsac.fitnesse.slim.StoryboardTable;
 import nl.hsac.fitnesse.slimcoverage.CoverageSlimTestSystemFactory;
-import nl.hsac.fitnesse.symbols.*;
+import nl.hsac.fitnesse.symbols.DayOfWeek;
+import nl.hsac.fitnesse.symbols.DefineDefault;
+import nl.hsac.fitnesse.symbols.DefineDefaultFromProperties;
+import nl.hsac.fitnesse.symbols.DefineFromProperties;
+import nl.hsac.fitnesse.symbols.LastDayOfMonth;
+import nl.hsac.fitnesse.symbols.MonthsFromToday;
+import nl.hsac.fitnesse.symbols.RandomBsn;
+import nl.hsac.fitnesse.symbols.RandomDutchLicensePlate;
+import nl.hsac.fitnesse.symbols.RandomEmail;
+import nl.hsac.fitnesse.symbols.RandomIban;
+import nl.hsac.fitnesse.symbols.RandomInt;
+import nl.hsac.fitnesse.symbols.RandomPostalCode;
+import nl.hsac.fitnesse.symbols.RandomString;
+import nl.hsac.fitnesse.symbols.RandomUuid;
+import nl.hsac.fitnesse.symbols.WeekDaysFromToday;
+import nl.hsac.fitnesse.symbols.YearsFromToday;
+import nl.hsac.fitnesse.testrun.TestResultsBasedTestRunFactory;
 
 public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
     private SlimTableFactory slimTableFactory;
@@ -75,6 +93,13 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
     public void registerTestSystemFactories(TestSystemFactoryRegistry testSystemFactoryRegistry) throws PluginException {
         this.testSystemFactoryRegistry = testSystemFactoryRegistry;
         registerSlimCoverageIfPossible();
+    }
+
+    @Override
+    public void registerTestRunFactories(TestRunFactoryRegistry runFactoryRegistry) throws PluginException {
+        FitNesseContext context = runFactoryRegistry.getContext();
+        TestResultsBasedTestRunFactory factory = new TestResultsBasedTestRunFactory(context);
+        runFactoryRegistry.addFactory(factory);
     }
 
     protected void registerSlimCoverageIfPossible() {
