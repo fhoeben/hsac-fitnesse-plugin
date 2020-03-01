@@ -1,8 +1,6 @@
 package nl.hsac.fitnesse.testrun;
 
-import fitnesse.util.partitioner.EqualLengthListPartitioner;
-import fitnesse.util.partitioner.ListPartitioner;
-import fitnesse.util.partitioner.MapBasedListPartitioner;
+import fitnesse.testrunner.run.PositionMapBasedWikiPagePartitioner;
 import fitnesse.wiki.WikiPage;
 
 import java.util.List;
@@ -12,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * Partitions pages based on provided DurationRecords.
  */
-public class DurationBasedWikiPagePartitioner implements ListPartitioner<WikiPage> {
+public class DurationBasedWikiPagePartitioner extends PositionMapBasedWikiPagePartitioner {
   private List<DurationRecord<String>> durationRecords;
 
   public DurationBasedWikiPagePartitioner(List<DurationRecord<String>> durationRecords) {
@@ -21,29 +19,27 @@ public class DurationBasedWikiPagePartitioner implements ListPartitioner<WikiPag
     }
   }
 
+  @Override
+  public List<List<WikiPage>> split(List<WikiPage> pages, int partitionCount) {
+    Map<String, Integer> positionMap = createPartitionMap(pages, partitionCount);
+    setPartitionMap(positionMap);
+    return super.split(pages, partitionCount);
+  }
+
+  protected Map<String, Integer> createPartitionMap(List<WikiPage> pages, int partitionCount) {
+    List<String> names = getFullPaths(pages);
+    return new PositionFinder<String>().getPositionMap(names, durationRecords, partitionCount);
+  }
+
+  protected List<String> getFullPaths(List<WikiPage> pages) {
+    return pages.stream().map(this::getFullPath).collect(Collectors.toList());
+  }
+
   public void setDurationRecords(List<DurationRecord<String>> durationRecords) {
     this.durationRecords = durationRecords;
   }
 
-  @Override
-  public List<List<WikiPage>> split(List<WikiPage> pages, int partitionCount) {
-    List<String> names = pages.stream().map(this::getName).collect(Collectors.toList());
-    Map<String, Integer> positionMap = new PositionFinder<String>().getPositionMap(names, durationRecords, partitionCount);
-    ListPartitioner<WikiPage> partitioner = createPartitioner(positionMap);
-    return partitioner.split(pages, partitionCount);
-  }
-
-  protected ListPartitioner<WikiPage> createPartitioner(Map<String, Integer> positionMap) {
-    return new MapBasedListPartitioner<>(this::getName, positionMap, this::handleUnknownPages);
-  }
-
-  protected String getName(WikiPage wikiPage) {
-    return wikiPage.getFullPath().toString();
-  }
-
-  protected List<List<WikiPage>> handleUnknownPages(
-    List<List<WikiPage>> partitionsFromFile,
-    List<WikiPage> pagesNotPresent) {
-    return new EqualLengthListPartitioner<WikiPage>().split(pagesNotPresent, partitionsFromFile.size());
+  public List<DurationRecord<String>> getDurationRecords() {
+    return durationRecords;
   }
 }
