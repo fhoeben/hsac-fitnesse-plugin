@@ -14,7 +14,7 @@ import java.util.Optional;
  * if it is present.
  */
 public class TestResultsBasedTestRunFactory extends FileBasedTestRunFactory {
-    public static final String SKIP_ARG = "ignoreTestResultsFile";
+    public static final String TEST_RESULTS_FILE_ARG = "testResultsFile";
 
     public TestResultsBasedTestRunFactory(FitNesseContext context) {
         super(context);
@@ -28,11 +28,13 @@ public class TestResultsBasedTestRunFactory extends FileBasedTestRunFactory {
 
     @Override
     protected Optional<File> getFile(List<WikiPage> pages) {
+        // if the test results file does not exist this factory cannot make a run
         return super.getFile(pages).filter(File::exists);
     }
 
     @Override
     protected String getFilename(List<WikiPage> pages) {
-        return pages.get(0).getVariable(SKIP_ARG) != null ? null : "test-results.csv";
+        String explicitFile = pages.get(0).getVariable(TEST_RESULTS_FILE_ARG);
+        return explicitFile == null ? "test-results.csv" : explicitFile;
     }
 }
