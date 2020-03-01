@@ -21,14 +21,9 @@ public class TestResultsBasedTestRunFactory extends FileBasedTestRunFactory {
     }
 
     @Override
-    protected ListPartitioner<WikiPage> createPartitioner(File f) {
-        List<DurationRecord<String>> durations = new TestResultCsvParser().parse(f);
-        return new DurationBasedWikiPagePartitioner(durations);
-    }
-
-    @Override
     protected Optional<File> getFile(List<WikiPage> pages) {
         // if the test results file does not exist this factory cannot make a run
+        // so we return empty optional so superclass knows we cannot run
         return super.getFile(pages).filter(File::exists);
     }
 
@@ -36,5 +31,15 @@ public class TestResultsBasedTestRunFactory extends FileBasedTestRunFactory {
     protected String getFilename(List<WikiPage> pages) {
         String explicitFile = pages.get(0).getVariable(TEST_RESULTS_FILE_ARG);
         return explicitFile == null ? "test-results.csv" : explicitFile;
+    }
+
+    @Override
+    protected ListPartitioner<WikiPage> createPartitioner(File f) {
+        List<DurationRecord<String>> durations = getDurationRecords(f);
+        return new DurationBasedWikiPagePartitioner(durations);
+    }
+
+    protected List<DurationRecord<String>> getDurationRecords(File f) {
+        return new TestResultCsvParser().parse(f);
     }
 }

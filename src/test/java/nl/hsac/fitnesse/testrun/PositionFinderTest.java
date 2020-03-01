@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PositionFinderTest {
-    private final static List<DurationRecord<String>> RECORDS = new TestResultCsvParser().parse("src/test/resources/test-results.csv");
+    private final static List<DurationRecord<String>> RECORDS = TestResultCsvParserTest.getDurationRecords();
 
     private final PositionFinder<String> finder = new PositionFinder<>();
 
