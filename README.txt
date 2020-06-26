@@ -14,6 +14,14 @@ Tool to determine usage of scenarios in Slim suite:
 - Run suite (the test will not actually call any fixtures)
 - An extra result (Scenario Usage Report) is added listing the scenarios which are never used, and some statistics on those that are used.
 
+Duration based test suite partitioner:
+Uses the test times recorded during a previous run to split a test suite in partitions.
+It tries to make partitions that all take the same amount of time, as opposed to the default FitNesse partitioner that aims for partitions with the same number of tests.
+To activate this places a file called 'test-results.csv' in the 'files' section of the wiki.
+It expects the file to be in the format created by hsac-fitnesse-fixtures' HtmlReportIndexGenerator, a sample can be found at https://github.com/fhoeben/hsac-fitnesse-plugin/blob/master/src/test/resources/test-results.csv.
+- Ensure FitNesseRoot/files/test-results.csv exists
+- Run each partition by adding 'partitionIndex=${INDEX}' and 'partitionCount=${COUNT}' parameters (where ${INDEX} is between 0 and ${COUNT}-1)
+
 
 This plugin is included in the FitNesse baseline installation of https://github.com/fhoeben/hsac-fitnesse-fixtures.
 After starting that installation Wiki pages demonstrating the use of this plugin can be opened:
