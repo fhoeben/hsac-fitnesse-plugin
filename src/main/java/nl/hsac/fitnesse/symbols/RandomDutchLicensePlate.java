@@ -47,7 +47,7 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
             throw new IllegalArgumentException("Sidecodes > 14 are unsupported!");
         }
         String licensePlate = sidecodePatterns().get(sideCodeToUse);
-        String permitted = "BDFGHJKLMNPRSTVXZ";
+        String permitted = "BGHJKLNPRSTVXZ";
         String permittedFirstLetter = "FGHJKLNPRSTXZ";
 
         if (category.length() == 1) {
