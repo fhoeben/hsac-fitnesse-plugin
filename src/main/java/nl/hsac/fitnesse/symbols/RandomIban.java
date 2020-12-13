@@ -1,7 +1,13 @@
 package nl.hsac.fitnesse.symbols;
 
-import fitnesse.wikitext.parser.*;
-import nl.hsac.fitnesse.util.iban.*;
+import fitnesse.wikitext.parser.Matcher;
+import fitnesse.wikitext.parser.Maybe;
+import fitnesse.wikitext.parser.Parser;
+import fitnesse.wikitext.parser.Rule;
+import fitnesse.wikitext.parser.Symbol;
+import fitnesse.wikitext.parser.Translation;
+import fitnesse.wikitext.parser.Translator;
+import nl.hsac.fitnesse.util.iban.IbanGenerator;
 
 /**
  * Symbol that creates a random  IBAN number for use in tests.
@@ -30,8 +36,8 @@ public class RandomIban extends SymbolBase implements Rule, Translation {
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
-        String country = symbol.getProperty(COUNTRY, "");
-        String bankCode = symbol.getProperty(BANK, "");
+        String country = symbol.findProperty(COUNTRY, "");
+        String bankCode = symbol.findProperty(BANK, "");
         return IBAN_GENERATOR.generateIban(country, bankCode);
     }
 

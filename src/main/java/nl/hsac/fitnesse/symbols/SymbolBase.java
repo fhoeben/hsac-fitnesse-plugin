@@ -28,7 +28,7 @@ public class SymbolBase extends SymbolType {
 
     protected int getProperty(Symbol symbol, String key, int defaultValue) {
         int result = defaultValue;
-        String property = symbol.getProperty(key, null);
+        String property = symbol.findProperty(key, null);
         if (property != null) {
             result = parseInt(property);
         }

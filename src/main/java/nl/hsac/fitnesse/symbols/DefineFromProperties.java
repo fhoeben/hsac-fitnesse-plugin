@@ -46,7 +46,7 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
     public Maybe<Symbol> parse(Symbol current, Parser parser) {
         Maybe<Symbol> result = storeParenthesisContent(current, parser, FILE_NAME);
         if (!result.isNothing()) {
-            String param = current.getProperty(FILE_NAME, null);
+            String param = current.findProperty(FILE_NAME, null);
             if (param != null) {
                 try {
                     URL url = resolveParamToURL(param);
@@ -111,11 +111,11 @@ public class DefineFromProperties extends SymbolBase implements Rule, Translatio
     @Override
     public String toTarget(Translator translator, Symbol symbol) {
         String result = "Please supply filename of .properties file (either local file or on classpath), between parentheses";
-        String file = symbol.getProperty(FILE_NAME, null);
+        String file = symbol.findProperty(FILE_NAME, null);
         if (file == null) {
             result = createSpanWithError(result);
         } else {
-            String error = symbol.getProperty(ERROR, null);
+            String error = symbol.findProperty(ERROR, null);
             if (error != null) {
                 result = createSpanWithError(error);
             } else {

@@ -31,7 +31,7 @@ public class RandomInt extends SymbolBase implements Rule, Translation {
 
     public String toTarget(Translator translator, Symbol symbol) {
         int result = 0;
-        String param = symbol.getProperty(RANDOM_MIN_MAX, null);
+        String param = symbol.findProperty(RANDOM_MIN_MAX, null);
         if (param == null) {
             result = RANDOM_UTIL.random(Integer.MAX_VALUE);
         } else {

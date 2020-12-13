@@ -41,9 +41,9 @@ public class RandomString extends SymbolBase implements Rule, Translation {
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
-        String param = symbol.getProperty(MIN_MAX_LENGTH, null);
-        String permitted = symbol.getProperty(CHARACTERS, DEFAULT_CHARS);
-        String prefix = symbol.getProperty(PREFIX, "");
+        String param = symbol.findProperty(MIN_MAX_LENGTH, null);
+        String permitted = symbol.findProperty(CHARACTERS, DEFAULT_CHARS);
+        String prefix = symbol.findProperty(PREFIX, "");
         int length = getStringLength(param, prefix);
         return prefix + RANDOM_UTIL.randomString(permitted, length);
     }

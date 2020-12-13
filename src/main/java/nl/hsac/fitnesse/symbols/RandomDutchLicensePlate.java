@@ -1,6 +1,12 @@
 package nl.hsac.fitnesse.symbols;
 
-import fitnesse.wikitext.parser.*;
+import fitnesse.wikitext.parser.Matcher;
+import fitnesse.wikitext.parser.Maybe;
+import fitnesse.wikitext.parser.Parser;
+import fitnesse.wikitext.parser.Rule;
+import fitnesse.wikitext.parser.Symbol;
+import fitnesse.wikitext.parser.Translation;
+import fitnesse.wikitext.parser.Translator;
 import nl.hsac.fitnesse.util.RandomUtil;
 
 import java.util.HashMap;
@@ -36,8 +42,8 @@ public class RandomDutchLicensePlate extends SymbolBase implements Rule, Transla
     }
 
     public String toTarget(Translator translator, Symbol symbol) {
-        String category = symbol.getProperty(CATEGORY, "");
-        String sideCode = symbol.getProperty(SIDECODE, "7");
+        String category = symbol.findProperty(CATEGORY, "");
+        String sideCode = symbol.findProperty(SIDECODE, "7");
         return randomLicensePlate(sideCode, category.toUpperCase());
     }
 
