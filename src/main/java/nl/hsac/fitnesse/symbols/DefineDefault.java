@@ -3,6 +3,8 @@ package nl.hsac.fitnesse.symbols;
 import fitnesse.html.HtmlTag;
 import fitnesse.wikitext.parser.*;
 
+import java.util.Optional;
+
 /**
  * Defines a variable value that will only be used if there is no system property with the same name.
  */
@@ -49,7 +51,8 @@ public class DefineDefault extends SymbolType implements Rule, Translation {
     private Maybe<String> copyVariableValue(Parser parser, Symbol next) {
         String fromVariableName = next.getContent();
         if (!ScanString.isVariableName(fromVariableName)) return Maybe.noString;
-        return parser.getVariableSource().findVariable(fromVariableName);
+        Optional<String> copiedValue = parser.getVariableSource().findVariable(fromVariableName);
+        return copiedValue.map(Maybe::new).orElseGet(() -> Maybe.nothingBecause("variable not present"));
     }
 
     private Maybe<String> parseVariableValue(Parser parser, Symbol next) {
