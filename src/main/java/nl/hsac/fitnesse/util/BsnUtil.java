@@ -23,7 +23,7 @@ public class BsnUtil {
         int Nr2 = randomUtil.random(10);
         int Nr1 = 0;
         int SofiNr = 0;
-        if ((Nr9 == 0) && (Nr8 == 0) && (Nr7 == 0)) {
+        if (Nr9 == 0 && Nr8 == 0) {
             Nr8 = 1;
         }
         SofiNr = 9 * Nr9 + 8 * Nr8 + 7 * Nr7 + 6 * Nr6 + 5 * Nr5 + 4 * Nr4 + 3 * Nr3 + 2 * Nr2;
@@ -64,6 +64,9 @@ public class BsnUtil {
         if (bsn.length() != 9) {
             return false;
         } else {
+            if(bsn.startsWith("00")){
+                return false;
+            }
             int checksum = 0;
             for (int i = 0; i < 8; i++) {
                 checksum += (Integer.parseInt(Character.toString(bsn.charAt(i))) * (9 - i));
