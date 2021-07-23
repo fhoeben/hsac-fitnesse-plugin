@@ -64,7 +64,7 @@ public class BsnUtil {
         if (bsn.length() != 9) {
             return false;
         } else {
-            if(bsn.startsWith("00")){
+            if (bsn.startsWith("00")) {
                 return false;
             }
             int checksum = 0;
