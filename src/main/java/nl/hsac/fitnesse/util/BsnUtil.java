@@ -61,12 +61,9 @@ public class BsnUtil {
         } catch (Exception e) {
             return false;
         }
-        if (bsn.length() != 9) {
+        if (bsn.length() != 9 || bsn.startsWith("00")) {
             return false;
         } else {
-            if (bsn.startsWith("00")) {
-                return false;
-            }
             int checksum = 0;
             for (int i = 0; i < 8; i++) {
                 checksum += (Integer.parseInt(Character.toString(bsn.charAt(i))) * (9 - i));
