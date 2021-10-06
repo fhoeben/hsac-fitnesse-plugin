@@ -1,9 +1,5 @@
 package nl.hsac.fitnesse.slimcoverage;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import fitnesse.slim.instructions.Instruction;
 import fitnesse.testrunner.WikiTestPage;
 import fitnesse.testsystems.TestExecutionException;
@@ -17,6 +13,10 @@ import fitnesse.testsystems.slim.SlimTestContextImpl;
 import fitnesse.testsystems.slim.tables.SlimTable;
 import fitnesse.testsystems.slim.tables.SlimTableFactory;
 import fitnesse.wiki.WikiPageDummy;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     private final SlimScenarioUsage usage;
@@ -79,9 +79,9 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
     }
 
     @Override
-    protected void testOutputChunk(String output) {
+    protected void testOutputChunk(TestPage testPage, String output) {
         if (inUsageReport) {
-            super.testOutputChunk(output);
+            super.testOutputChunk(testPage, output);
         }
     }
 
@@ -104,12 +104,12 @@ public class SlimCoverageTestSystem extends HtmlSlimTestSystem {
         // (i.e. when run by FitNesseRunner)
         getTestContext().incrementPassedTestsCount();
 
-        writeReport(usage);
+        writeReport(testPage, usage);
 
         testComplete(testPage, new TestSummary(1, 0, 0, 0));
     }
 
-    protected void writeReport(SlimScenarioUsage scenarioUsage) {
-        new SlimCoverageReportWriter(scenarioUsage, this::testOutputChunk).reportScenarioUsage();
+    protected void writeReport(TestPage testPage, SlimScenarioUsage scenarioUsage) {
+        new SlimCoverageReportWriter(scenarioUsage, s -> this.testOutputChunk(testPage, s)).reportScenarioUsage();
     }
 }
