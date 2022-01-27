@@ -1,0 +1,15 @@
+---
+Test
+---
+
+|import                      |
+|nl.hsac.fitnesse.slim.tables|
+
+|table template|test                |
+|check         |clone symbol|@{P1}|a|
+
+|script|
+
+|test |
+|P1|P2|
+|a |b |
