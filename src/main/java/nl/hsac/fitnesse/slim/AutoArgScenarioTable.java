@@ -148,7 +148,7 @@ public class AutoArgScenarioTable extends ScenarioTable {
                 }
             }
             for(Map.Entry<String,String> entry : scenarioArguments.entrySet()){
-                if(!super.getInputs().contains(entry)){
+                if(!super.getInputs().contains(entry.getKey())){
                     super.addInput(entry.getKey());
                 }
             }
