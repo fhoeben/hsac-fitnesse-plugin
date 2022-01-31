@@ -24,7 +24,16 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
     @Override
     public List<SlimAssertion> call(Map<String, String> scenarioArguments,
                                     SlimTable parentTable, int row) throws TestExecutionException {
+        /* pass all input arguments to super inputs to bypass "Variables not used in scenario" error */
+        for(Map.Entry<String,String> entry : scenarioArguments.entrySet()){
+            if(!super.getInputs().contains(entry.getKey())){
+                super.addInput(entry.getKey());
+            }
+        }
+        /* map scenario arguments to string args */
         String arrayArgs = arrayArgs(scenarioArguments);
+
+        /* replace occurence of symbol @{*} with array of arguments */
         if(getTable() instanceof HtmlTable){
             HtmlTable nTable = (HtmlTable) getTable();
             for(int i = 0; i<nTable.getRowCount();i++){
@@ -36,10 +45,12 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
                 }
             }
         }
+
+        /* call super method */
         return super.call(scenarioArguments,parentTable,row);
     }
 
-    public static String arrayArgs(Map<String, String> scenarioArguments) throws TestExecutionException {
+    private String arrayArgs(Map<String, String> scenarioArguments) throws TestExecutionException {
         if(scenarioArguments.entrySet().size() == 0) throw new TestExecutionException("Scenario has no input arguments.");
         String out = scenarioArguments.entrySet().stream().map(e -> e.getKey()+","+"@{"+e.getKey()+"}").reduce((e,v) -> e = e.concat(","+v)).get();
         return "["+out+"]";
