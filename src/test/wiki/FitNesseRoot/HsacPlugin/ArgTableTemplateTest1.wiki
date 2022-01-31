@@ -1,0 +1,34 @@
+---
+Test
+---
+
+Example for template without need to use input argument to class constructor.
+
+!define P5 {d}
+
+!|import|
+|nl.hsac.fitnesse.util.*|
+
+We define no arg template and start fixture with @{*}, which passes all values from table t1 into fixture as array.
+Array parsing is done by FitNesse engine and is passed to fixture as String[] object. Because of that, to work with this table template, fixture must implement String[] constructor and parse arguments on its own (in AllArgScenarioUtils class I provide method to do so easily). Example on how to parse input attributes is shown in TestFixture class.
+If you try to use this symbol with fixture that do not support this constructor, you will get error. Parsing engine supports most of input characters (exepct ","). Because parsing is done by FitNesse engine, all of standard masking features apply here as well.
+This table will not work as nested scenario but you can nest scenarios inside of it (as in standard scenario table).
+
+| all arg template | t1                             |
+| start | nl.hsac.fitnesse.util.TestFixture | @{*}  |
+| check | get value | P1  | a                       |
+| check | get value | P2  | b                       |
+| check | get value | P3  | c                       |
+| check | get value | P4  | !-SlimSymbol-!          |
+| check | get value | P5  | d                       |
+| check | get value | P6  | "                       |
+| check | get value | P7  |                         |
+| check | get value | P8  | !-<-!                   |
+| check | get value | P9  | [                       |
+| check | get value | P10 | ]                       |
+
+|script|
+
+!| t1 |
+| P1 | P2 | P3 | P4         | P5    | P6 | P7 | P8     | P9 | P10 |
+| a  | b  | c  | SlimSymbol | ${P5} | "  |    | !-<-!  | [  | ]   |

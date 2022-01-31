@@ -1,0 +1,18 @@
+---
+Test
+---
+
+|import                      |
+|nl.hsac.fitnesse.slim.tables|
+
+All arg template allows to define more input parameters in input table than is used in scenario itself, without getting "Variable not used" error.
+
+
+|all arg template|test              |
+|check         |clone symbol|@{P1}|a|
+
+|script|
+
+|test |
+|P1|P2|
+|a |b |

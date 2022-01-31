@@ -10,6 +10,7 @@ import fitnesse.testsystems.slim.tables.SlimTable;
 import fitnesse.testsystems.slim.tables.SlimTableFactory;
 import fitnesse.wikitext.parser.SymbolProvider;
 import fitnesse.wikitext.parser.SymbolType;
+import nl.hsac.fitnesse.slim.AllArgScenarioTable;
 import nl.hsac.fitnesse.slim.AutoArgScenarioTable;
 import nl.hsac.fitnesse.slim.StoryboardTable;
 import nl.hsac.fitnesse.slimcoverage.CoverageSlimTestSystemFactory;
@@ -41,6 +42,7 @@ public class HsacPluginFeatureFactory extends PluginFeatureFactoryBase {
         super.registerSlimTables(slimTableFactory);
         add(slimTableFactory, "table template", AutoArgScenarioTable.class);
         add(slimTableFactory, "storyboard", StoryboardTable.class);
+        add(slimTableFactory, "all arg template", AllArgScenarioTable.class);
 
         this.slimTableFactory = slimTableFactory;
         registerSlimCoverageIfPossible();
