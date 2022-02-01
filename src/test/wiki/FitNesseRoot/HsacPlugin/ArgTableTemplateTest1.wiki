@@ -15,6 +15,12 @@ If you try to use this symbol with fixture that do not support this constructor,
 This table will not work as nested scenario but you can nest scenarios inside of it (as in standard scenario table).
 
 | all arg template | t1                             |
+| t3;                                               |
+
+| all arg template | t1                             |
+| t3;                                               |
+
+| all arg template | t3                             |
 | start | nl.hsac.fitnesse.util.TestFixture | @{*}  |
 | check | get value | P1  | a                       |
 | check | get value | P2  | b                       |
@@ -27,7 +33,6 @@ This table will not work as nested scenario but you can nest scenarios inside of
 | check | get value | P9  | [                       |
 | check | get value | P10 | ]                       |
 
-|script|
 
 !| t1 |
 | P1 | P2 | P3 | P4         | P5    | P6 | P7 | P8     | P9 | P10 |
