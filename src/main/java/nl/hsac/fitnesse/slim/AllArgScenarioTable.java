@@ -58,7 +58,7 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
     }
 
     private String arrayArgs(Map<String, String> scenarioArguments) throws TestExecutionException {
-        if(scenarioArguments.entrySet().size() == 0) throw new TestExecutionException("Scenario has no input arguments.");
+        if(scenarioArguments.isEmpty()) throw new TestExecutionException("Scenario has no input arguments.");
         String out = scenarioArguments.entrySet().stream().map(e -> e.getKey()+","+"@{"+e.getKey()+"}").reduce((e,v) -> e = e.concat(","+v)).get();
         return "["+out+"]";
     }
