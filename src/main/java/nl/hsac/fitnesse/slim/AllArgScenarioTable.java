@@ -28,11 +28,11 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
     @Override
     public List<SlimAssertion> call(Map<String, String> scenarioArguments,
                                     SlimTable parentTable, int row) throws TestExecutionException {
-        if(scenarioArguments.size() == 0) {
-            scenarioArguments.putAll(getInputArgs(parentTable, this.getTestContext()));
+        if(scenarioArguments.size() == 0){
+            scenarioArguments.putAll(getInputArgs(parentTable,this.getTestContext()));
         }
         /* pass all input arguments to super inputs to bypass "Variables not used in scenario" error */
-        for(Map.Entry<String,String> entry : scenarioArguments.entrySet()) {
+        for(Map.Entry<String,String> entry : scenarioArguments.entrySet()){
             if(!getInputs().contains(entry.getKey())) {
                 addInput(entry.getKey());
             }
@@ -41,13 +41,13 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
         String arrayArgs = arrayArgs(scenarioArguments);
 
         /* replace occurence of symbol @{*} with array of arguments */
-        if(getTable() instanceof HtmlTable) {
+        if(getTable() instanceof HtmlTable){
             HtmlTable nTable = (HtmlTable) getTable();
-            for(int i = 0; i<nTable.getRowCount();i++) {
+            for(int i = 0; i<nTable.getRowCount();i++){
                 int colCount = nTable.getColumnCountInRow(i);
-                for(int j = 0; j<colCount ; j++) {
-                    if(nTable.getCellContents(j, i).trim().equals(ALL_ARG_PATTERN)){
-                        nTable.substitute(j, i, arrayArgs);
+                for(int j = 0; j<colCount ; j++){
+                    if(nTable.getCellContents(j,i).trim().equals(ALL_ARG_PATTERN)){
+                        nTable.substitute(j,i,arrayArgs);
                     }
                 }
             }
@@ -58,11 +58,11 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
     }
 
     private String arrayArgs(Map<String, String> scenarioArguments) throws TestExecutionException {
-        if(scenarioArguments.entrySet().size() == 0) return "[]";
+        if(scenarioArguments.isEmpty()) return "[]";
         String out = scenarioArguments.entrySet().stream()
-                            .map(e -> e.getKey() + ","+"@{" + e.getKey() + "}")
-                            .reduce((e, v) -> e = e.concat("," + v))
-                            .get();
+                        .map(e -> e.getKey() + ","+"@{" + e.getKey() + "}")
+                        .reduce((e, v) -> e = e.concat("," + v))
+                        .get();
         return "["+out+"]";
     }
 
