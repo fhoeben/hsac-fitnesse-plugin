@@ -1,0 +1,62 @@
+!|import                |
+|nl.hsac.fitnesse.util.*|
+
+This page presents an example usage for all arg template.
+
+All arg template adds new symbol @{*}, which passes all values from input table into fixture as array and keeps them on all nested levels. This allows you to run fixture classes without having to explicitly pass every column from input table (either through constructor or setter methods). Array parsing is done by FitNesse engine and is passed to fixture as String[] object. Parsing engine supports most of input characters (exepct ","). Because parsing is done by FitNesse engine, all of standard masking features apply here as well.
+
+To work with this table template and new symbol, fixture must implement String[] constructor and parse arguments on its own. If you try to use this symbol with fixture that do not support String[] constructor, you will get error. Example implementation is shown below.
+{{{
+private void parseFitNesseArgsList(String[] args) throws StopTestSlimException{
+    if(Math.floorMod(args.length,2) != 0) {
+        throw new StopTestSlimException("Incorrect number of arguments in class constructor. Please check your test syntax. The only attribute that is allowed in this constructor is @{*}");
+    }
+    for(int i = 0;i<= args.length-2;i+=2){
+        String key = args[i];
+        String value = args[i+1];
+        argsMap.put(key,value);
+    }
+}
+}}}
+
+Below example shows simple usage for all arg template with nested scenarios.
+
+|all arg template|t1|
+|t2;                |
+
+|all arg template|t2|
+|t3;                |
+
+|all arg template|t3                                                  |
+|                |                                                    |
+|start           |nl.hsac.fitnesse.util.TestFixture|@{*}              |
+|check           |get value                        |P1 |a             |
+|check           |get value                        |P2 |b             |
+|check           |get value                        |P3 |c             |
+|check           |get value                        |P4 |!-SlimSymbol-!|
+|check           |get value                        |P5 |d             |
+|check           |get value                        |P6 |"             |
+|check           |get value                        |P7 |              |
+|check           |get value                        |P8 |!-<-!         |
+|check           |get value                        |P9 |[             |
+|check           |get value                        |P10|]             |
+
+
+!note define and pass simple variable so you can see that standard masking works as well
+!define P5 {d}
+
+!| t1                                        |
+|P1|P2|P3|P4        |P5   |P6|P7|P8   |P9|P10|
+|a |b |c |SlimSymbol|${P5}|" |  |!-<-!|[ |]  |
+
+
+All arg template also allows you to define more input parameters in input table than is used in scenario itself, without getting "Variable not used" error.
+
+|all arg template|test                |
+|check           |clone symbol|@{P1}|a|
+
+|script|
+
+|test |
+|P1|P2|
+|a |b |
