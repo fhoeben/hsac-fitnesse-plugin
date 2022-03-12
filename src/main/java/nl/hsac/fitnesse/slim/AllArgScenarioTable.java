@@ -4,6 +4,7 @@ import fitnesse.testsystems.TestExecutionException;
 import fitnesse.testsystems.slim.HtmlTable;
 import fitnesse.testsystems.slim.SlimTestContext;
 import fitnesse.testsystems.slim.Table;
+import fitnesse.testsystems.slim.tables.DecisionTable;
 import fitnesse.testsystems.slim.tables.ScenarioTable;
 import fitnesse.testsystems.slim.tables.SlimAssertion;
 import fitnesse.testsystems.slim.tables.SlimTable;
@@ -23,11 +24,23 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
 
     public AllArgScenarioTable(Table table, String tableId, SlimTestContext testContext) {
         super(table, tableId, testContext);
+        String s = "";
     }
 
     @Override
     public List<SlimAssertion> call(Map<String, String> scenarioArguments,
                                     SlimTable parentTable, int row) throws TestExecutionException {
+        /* set number of total number of tests for scenario
+            * TOTAL -> substract 2 because of header + variable defintion
+            * CURRENT -> substract 1 because of variable definition
+        */
+        if(parentTable instanceof DecisionTable){
+            scenarioArguments.put("SCENARIO_TESTS_TOTAL", String.valueOf(parentTable.getTable().getRowCount()-2));
+            scenarioArguments.put("TOTAL_ROWS", String.valueOf(parentTable.getTable().getRowCount()-2));
+            scenarioArguments.put("SCENARIO_TESTS_CURRENT", String.valueOf(row-1));
+            scenarioArguments.put("CURRENT_ROW", String.valueOf(row-1));
+        }
+        /* put all arguments of in scenario arguments */
         if(scenarioArguments.size() == 0){
             scenarioArguments.putAll(getInputArgs(parentTable,this.getTestContext()));
         }
@@ -38,7 +51,7 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
             }
         }
         /* map scenario arguments to string args */
-        String arrayArgs = arrayArgs(scenarioArguments);
+        String arrayArgs = arrayArgs(row, scenarioArguments);
 
         /* replace occurence of symbol @{*} with array of arguments */
         if(getTable() instanceof HtmlTable){
@@ -57,7 +70,7 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
         return super.call(scenarioArguments,parentTable,row);
     }
 
-    private String arrayArgs(Map<String, String> scenarioArguments) throws TestExecutionException {
+    private String arrayArgs(int rownum, Map<String, String> scenarioArguments) throws TestExecutionException {
         if(scenarioArguments.isEmpty()) return "[]";
         String out = scenarioArguments.entrySet().stream()
                         .map(e -> e.getKey() + ","+"@{" + e.getKey() + "}")
