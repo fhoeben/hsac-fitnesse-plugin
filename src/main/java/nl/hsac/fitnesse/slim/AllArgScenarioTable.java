@@ -34,11 +34,11 @@ public class AllArgScenarioTable extends AutoArgScenarioTable {
             * TOTAL -> substract 2 because of header + variable defintion
             * CURRENT -> substract 1 because of variable definition
         */
-        if(parentTable instanceof DecisionTable){
-            scenarioArguments.put("SCENARIO_TESTS_TOTAL", String.valueOf(parentTable.getTable().getRowCount()-2));
-            scenarioArguments.put("TOTAL_ROWS", String.valueOf(parentTable.getTable().getRowCount()-2));
-            scenarioArguments.put("SCENARIO_TESTS_CURRENT", String.valueOf(row-1));
-            scenarioArguments.put("CURRENT_ROW", String.valueOf(row-1));
+        if (parentTable instanceof DecisionTable) {
+            scenarioArguments.put("SCENARIO_TESTS_TOTAL", String.valueOf(parentTable.getTable().getRowCount() - 2));
+            scenarioArguments.put("TOTAL_ROWS", String.valueOf(parentTable.getTable().getRowCount() - 2));
+            scenarioArguments.put("SCENARIO_TESTS_CURRENT", String.valueOf(row - 1));
+            scenarioArguments.put("CURRENT_ROW", String.valueOf(row - 1));
         }
         /* put all arguments of in scenario arguments */
         if(scenarioArguments.size() == 0){
