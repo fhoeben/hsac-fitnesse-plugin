@@ -58,6 +58,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_types: other,doc,chore
 
+      - name: Configure git
+        run: |
+          git config --global user.email "fhoeben-github@hsac.nl"
+          git config --global user.name "GitHub Action"
+
+      - name: Commit pom.xml without -SNAPSHOT
+        run: |
+          git add pom.xml
+          git commit -m "Prepare for release"
+          git push origin master
+
       - name: Create Release
         id: createRelease
         uses: softprops/action-gh-release@v1
