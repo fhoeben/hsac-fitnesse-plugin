@@ -19,6 +19,7 @@ jobs:
         with:
           java-version: '8'
           distribution: 'zulu'
+          cache: 'maven'
 
       - name: Unsnapshot version
         run:  mvn versions:set -DremoveSnapshot
@@ -109,6 +110,7 @@ jobs:
         with:
           java-version: '8'
           distribution: 'zulu'
+          cache: 'maven'
 
       - name: Configure git
         run: |
