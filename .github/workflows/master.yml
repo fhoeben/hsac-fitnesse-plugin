@@ -7,15 +7,15 @@ on:
 
 jobs:
   maven-release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Java and Maven
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'zulu'
@@ -27,7 +27,7 @@ jobs:
       - id: get-version
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: upload release pom
         uses: actions/upload-artifact@v3
@@ -53,10 +53,10 @@ jobs:
 
   github-release:
     needs: [maven-release]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: download pom
         uses: actions/download-artifact@v3
@@ -100,13 +100,13 @@ jobs:
 
   update-version:
     needs: [github-release]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Java and Maven
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '8'
           distribution: 'zulu'
