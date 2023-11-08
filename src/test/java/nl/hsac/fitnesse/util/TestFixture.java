@@ -2,11 +2,7 @@ package nl.hsac.fitnesse.util;
 
 import fitnesse.slim.StopTestSlimException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.stream.Collectors;
 
 /**
  * Example fixture for all arg scenario table usage.
@@ -14,6 +10,10 @@ import java.util.stream.Collectors;
 public class TestFixture {
 
     LinkedHashMap<String,String> argsMap;
+
+    public TestFixture(){
+        argsMap = new LinkedHashMap<>();
+    }
 
     public TestFixture(String[] args) throws StopTestSlimException {
         argsMap = new LinkedHashMap<>();
@@ -40,5 +40,9 @@ public class TestFixture {
             String value = args[i+1];
             argsMap.put(key,value);
         }
+    }
+
+    public void setValue(String key, String value){
+        argsMap.put(key,value);
     }
 }
