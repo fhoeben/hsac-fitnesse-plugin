@@ -27,27 +27,30 @@ Below example shows simple usage for all arg template with nested scenarios.
 |all arg template|t2|
 |t3;                |
 
-|all arg template|t3                                                  |
-|                |                                                    |
-|start           |nl.hsac.fitnesse.util.TestFixture|@{*}              |
-|check           |get value                        |P1 |a             |
-|check           |get value                        |P2 |b             |
-|check           |get value                        |P3 |c             |
-|check           |get value                        |P4 |!-SlimSymbol-!|
-|check           |get value                        |P5 |d             |
-|check           |get value                        |P6 |"             |
-|check           |get value                        |P7 |              |
-|check           |get value                        |P8 |!-<-!         |
-|check           |get value                        |P9 |[             |
-|check           |get value                        |P10|]             |
+|all arg template|t3                                                      |
+|                |                                                        |
+|start           |nl.hsac.fitnesse.util.TestFixture|@{*}                  |
+|check           |get value                        |P1     |a             |
+|check           |get value                        |P2     |b             |
+|check           |get value                        |P3     |c             |
+|check           |get value                        |P4     |!-SlimSymbol-!|
+|check           |get value                        |P5     |d             |
+|check           |get value                        |P6     |"             |
+|check           |get value                        |P7     |              |
+|check           |get value                        |P8     |!-<-!         |
+|check           |get value                        |P9     |[             |
+|check           |get value                        |P10    |]             |
+|check           |get value                        |row    |@{CURRENT_ROW}|
+|check           |get value                        |tnum   |@{TOTAL_ROWS} |
 
 
 !note define and pass simple variable so you can see that standard masking works as well
 !define P5 {d}
 
-!| t1                                        |
-|P1|P2|P3|P4        |P5   |P6|P7|P8   |P9|P10|
-|a |b |c |SlimSymbol|${P5}|" |  |!-<-!|[ |]  |
+!| t1                                                 |
+|P1|P2|P3|P4        |P5   |P6|P7|P8   |P9|P10|row|tnum|
+|a |b |c |SlimSymbol|${P5}|" |  |!-<-!|[ |]  |1  |2   |
+|a |b |c |SlimSymbol|${P5}|" |  |!-<-!|[ |]  |2  |2   |
 
 
 All arg template also allows you to define more input parameters in input table than is used in scenario itself, without getting "Variable not used" error.
@@ -60,3 +63,22 @@ All arg template also allows you to define more input parameters in input table 
 |test |
 |P1|P2|
 |a |b |
+
+All arg table also sets 2 automatic variables:
+ * '''!-@{CURRENT}-!''' (or '''!-@{SCENARIO_TESTS_CURRENT}-!''') which keeps row number of that is currently executed from fundamental decision table
+ * '''!-@{TOTAL}-!''' (or '''!-@{SCENARIO_TESTS_TOTAL}-!''') which keeps number of tests rows in fundamental decision table
+
+|all arg template | autotest2                                                             |
+|start           |nl.hsac.fitnesse.util.TestFixture                                       |
+|set             |row                              |value       |@{row}                   |
+|set             |total_row                        |value       |@{tnum}                  |
+|check           |get value                        |row         |@{CURRENT_ROW}           |
+|check           |get value                        |row         |@{SCENARIO_TESTS_CURRENT}|
+|check           |get value                        |total_row   |@{TOTAL_ROWS}            |
+|check           |get value                        |total_row   |@{SCENARIO_TESTS_TOTAL}  |
+
+|autotest2 |
+|row |tnum |
+|1   |3    |
+|2   |3    |
+|3   |3    |
