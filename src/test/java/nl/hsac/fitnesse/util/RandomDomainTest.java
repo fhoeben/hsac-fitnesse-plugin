@@ -1,10 +1,9 @@
 package nl.hsac.fitnesse.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,9 +12,6 @@ import static org.junit.Assert.assertTrue;
 public class RandomDomainTest {
     private final RandomDomain domain = new RandomDomain();
     private final RandomUtil random = new RandomUtil();
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     /**
      * Tests tld randomization.
@@ -73,12 +69,10 @@ public class RandomDomainTest {
      */
     @Test
     public void testDomainLengthException() {
-        exception.expect(IllegalArgumentException.class);
-        RandomDomain.generateFullDomain(domain, 4);
-        RandomDomain.generateFullDomain(domain, 3);
-        RandomDomain.generateFullDomain(domain, 2);
-        RandomDomain.generateFullDomain(domain, 1);
-        RandomDomain.generateFullDomain(domain, -1);
+        assertThrows(IllegalArgumentException.class, () -> RandomDomain.generateFullDomain(domain, 4));
+        assertThrows(IllegalArgumentException.class, () -> RandomDomain.generateFullDomain(domain, 3));
+        assertThrows(IllegalArgumentException.class, () -> RandomDomain.generateFullDomain(domain, 2));
+        assertThrows(IllegalArgumentException.class, () -> RandomDomain.generateFullDomain(domain, 1));
+        assertThrows(IllegalArgumentException.class, () -> RandomDomain.generateFullDomain(domain, -1));
     }
-
 }

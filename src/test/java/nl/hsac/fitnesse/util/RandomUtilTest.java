@@ -1,22 +1,17 @@
 package nl.hsac.fitnesse.util;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests RandomUtil.
  */
 public class RandomUtilTest {
     private final RandomUtil util = new RandomUtil();
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
 
     /**
      * Tests int generation.
@@ -59,9 +54,6 @@ public class RandomUtilTest {
      */
     @Test
     public void testSplitLengthException() {
-        exception.expect(IllegalArgumentException.class);
-        util.getRandomSplit(1);
+        assertThrows(IllegalArgumentException.class, () -> util.getRandomSplit(1));
     }
-
-
 }

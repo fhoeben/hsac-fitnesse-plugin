@@ -1,10 +1,9 @@
 package nl.hsac.fitnesse.symbols;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -12,9 +11,6 @@ import static org.junit.Assert.assertTrue;
  */
 public class RandomStringTest {
     private final RandomString stringLengthGenerator = new RandomString();
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testLength() {
@@ -108,8 +104,7 @@ public class RandomStringTest {
      * to test for the exceptions
      */
     private void checkGeneratedLengthException(String lengthParam, String prefix) {
-        exception.expect(IllegalArgumentException.class);
-        stringLengthGenerator.getStringLength(lengthParam, prefix);
+        assertThrows(IllegalArgumentException.class, () -> stringLengthGenerator.getStringLength(lengthParam, prefix));
     }
 
     /**
