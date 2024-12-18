@@ -1,17 +1,77 @@
 package nl.hsac.fitnesse.util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Helpers for BSNs.
  */
 public class BsnUtil {
     private RandomUtil randomUtil = new RandomUtil();
+    private final Set<String> bsnsToExclude = new HashSet<>();
 
     /**
      * Generates random number that could be a BSN.
-     * Based on: http://www.testnummers.nl/bsn.js
      * @return random BSN.
      */
     public String generateBsn() {
+        String result;
+        int attempts = 0;
+        do {
+            if (attempts > 1000) {
+                throw new RuntimeException("Unable to generate new random BSN");
+            }
+            attempts++;
+            result = generateNextBsn();
+        } while (!bsnsToExclude.add(result));
+        return result;
+    }
+
+    /**
+     * Checks whether BSN is valid.
+     * Based on: https://mxforum.mendix.com/questions/2162/
+     * @param bsn BSN to check.
+     * @return true if it is structurally sound.
+     */
+    public boolean testBsn(String bsn) {
+        try {
+            Double.parseDouble(bsn);
+        } catch (Exception e) {
+            return false;
+        }
+        if (bsn.length() != 9) {
+            return false;
+        } else {
+            int checksum = 0;
+            for (int i = 0; i < 8; i++) {
+                checksum += (Integer.parseInt(Character.toString(bsn.charAt(i))) * (9 - i));
+            }
+            checksum -= Integer.parseInt(Character.toString(bsn.charAt(8)));
+            if (checksum % 11 != 0) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public void addBsnToExclude(String bsn) {
+        bsnsToExclude.add(bsn);
+    }
+
+    public Set<String> getBsnsToExclude() {
+        return bsnsToExclude;
+    }
+
+    public void resetExcludedBsns() {
+        bsnsToExclude.clear();
+    }
+
+    /**
+     * Based on: http://www.testnummers.nl/bsn.js
+     * @return String that passes BSN test.
+     */
+    private String generateNextBsn() {
         String Result1 = "";
         int Nr9 = randomUtil.random(3);
         int Nr8 = randomUtil.random(10);
@@ -47,34 +107,6 @@ public class BsnUtil {
         Result1 += Nr2;
         Result1 += Nr1;
         return Result1;
-    }
-
-    /**
-     * Checks whether BSN is valid.
-     * Based on: https://mxforum.mendix.com/questions/2162/
-     * @param bsn BSN to check.
-     * @return true if it is structurally sound.
-     */
-    public boolean testBsn(String bsn) {
-        try {
-            Double.parseDouble(bsn);
-        } catch (Exception e) {
-            return false;
-        }
-        if (bsn.length() != 9) {
-            return false;
-        } else {
-            int checksum = 0;
-            for (int i = 0; i < 8; i++) {
-                checksum += (Integer.parseInt(Character.toString(bsn.charAt(i))) * (9 - i));
-            }
-            checksum -= Integer.parseInt(Character.toString(bsn.charAt(8)));
-            if (checksum % 11 != 0) {
-                return false;
-            }
-        }
-        return true;
-
     }
 
     private int floor(double d) {
