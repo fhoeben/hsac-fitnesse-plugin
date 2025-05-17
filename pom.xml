@@ -4,7 +4,7 @@
 
     <groupId>nl.hsac</groupId>
     <artifactId>hsac-fitnesse-plugin</artifactId>
-    <version>1.33.3-SNAPSHOT</version>
+    <version>1.33.3</version>
 	<packaging>jar</packaging>
 	<url>https://github.com/fhoeben/hsac-fitnesse-plugin</url>
 	<name>HSAC's FitNesse Plugin</name>
@@ -36,7 +36,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.outputTimestamp>2025-02-23T08:48:52Z</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-05-17T19:38:08Z</project.build.outputTimestamp>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
