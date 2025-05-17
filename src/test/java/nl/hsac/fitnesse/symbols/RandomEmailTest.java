@@ -1,11 +1,9 @@
 package nl.hsac.fitnesse.symbols;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static java.lang.String.valueOf;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -14,9 +12,6 @@ import static org.junit.Assert.assertTrue;
 public class RandomEmailTest {
     private final RandomUtil random = new RandomUtil();
     private final RandomEmail EmailGenerator = new RandomEmail();
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testLengthNoDomain() {
@@ -76,9 +71,8 @@ public class RandomEmailTest {
      */
     @Test
     public void testGetRandomLocalAddressZeroException() {
-        exception.expect(IllegalArgumentException.class);
-        EmailGenerator.getRandomLocalAddress(0);
-
+        assertThrows(IllegalArgumentException.class,
+                () -> EmailGenerator.getRandomLocalAddress(0));
     }
 
     /**
@@ -86,9 +80,10 @@ public class RandomEmailTest {
      */
     @Test
     public void testgetEmailRandomPartLengthDomainSizeException() {
-        exception.expect(IllegalArgumentException.class);
-        EmailGenerator.getEmailRandomPartLength("9", "test.com");
+        assertThrows(IllegalArgumentException.class,
+                () -> EmailGenerator.getEmailRandomPartLength("9", "test.com"));
     }
+
 
     /**
      * Tests length generation for the random part if a domain is given.
@@ -99,7 +94,6 @@ public class RandomEmailTest {
             String length = Integer.toString(random.random(50) + 8 + 1 + 1); //domain is 8 long, 1 for @, 1 for at least 1 character
             int result = EmailGenerator.getEmailRandomPartLength(length, "test.com");
             assertTrue("Got: " + result + " on test " + i, result <= 50);
-
         }
     }
 
@@ -108,8 +102,8 @@ public class RandomEmailTest {
      */
     @Test
     public void testRandomEmail() {
-        exception.expect(IllegalArgumentException.class);
-        EmailGenerator.randomEmail("10", "n.nl");
+        assertThrows(IllegalArgumentException.class,
+                () -> EmailGenerator.randomEmail("10", "n.nl"));
     }
 
     /**
@@ -126,9 +120,7 @@ public class RandomEmailTest {
      * to test for the exceptions
      */
     private void checkGeneratedLengthException(String lengthParam, String prefix) {
-        exception.expect(IllegalArgumentException.class);
-        EmailGenerator.randomEmail(lengthParam, prefix);
+        assertThrows(IllegalArgumentException.class,
+                () -> EmailGenerator.randomEmail(lengthParam, prefix));
     }
-
-
 }
