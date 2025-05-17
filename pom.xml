@@ -103,7 +103,7 @@
 							<publishingServerId>central</publishingServerId>
 							<autoPublish>true</autoPublish>
 							<waitUntil>published</waitUntil>
-							<waitMaxTime>3000</waitMaxTime>
+							<waitMaxTime>3600</waitMaxTime>
 						</configuration>
 					</plugin>
 					<plugin>
