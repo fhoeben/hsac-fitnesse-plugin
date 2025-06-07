@@ -1,0 +1,145 @@
+name: release
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      - '.github/dependabot.yml'
+      - '*.txt'
+
+jobs:
+  maven-release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+          cache: 'maven'
+
+      - name: Unsnapshot version
+        run:  mvn versions:set -DremoveSnapshot
+
+      - id: get-version
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: upload release pom
+        uses: actions/upload-artifact@v4
+        with:
+          name: pom
+          path: pom.xml
+          if-no-files-found: error
+
+      - name: Set up Apache Maven Central
+        uses: actions/setup-java@v4
+        with: # running setup-java again overwrites the settings.xml
+          java-version: '11'
+          distribution: 'zulu'
+          cache: 'maven'
+          server-id: central
+          server-username: CENTRAL_USERNAME # env variable for username in deploy
+          server-password: CENTRAL_PASSWORD # env variable for token in deploy
+          gpg-private-key: ${{ secrets.gpg_private_key }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+
+      - name: Publish to Apache Maven Central
+        run: mvn clean deploy -P release
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.gpg_passphrase }}
+
+      - name: upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: target
+          path: target/hsac-fitnesse-plugin-*.jar
+
+  github-release:
+    needs: [maven-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: download pom
+        uses: actions/download-artifact@v4
+        with:
+          name: pom
+
+      - name: download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: target
+          path: target
+
+      - name: Create changelog text
+        id: changelog
+        uses: loopwerk/tag-changelog@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: other,doc,chore
+
+      - name: Configure git
+        run: |
+          git config --global user.email "fhoeben-github@hsac.nl"
+          git config --global user.name "GitHub Action"
+
+      - name: Commit pom.xml without -SNAPSHOT
+        run: |
+          git add pom.xml
+          git commit -m "Prepare for release"
+          git push origin master
+
+      - name: Create Release
+        id: createRelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.maven-release.outputs.version }}
+          body: ${{ steps.changelog.outputs.changes }}
+          draft: false
+          prerelease: false
+          files: |
+            target/hsac-fitnesse-plugin-*.jar
+
+  update-version:
+    needs: [github-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+          cache: 'maven'
+
+      - name: Configure git
+        run: |
+          git config --global user.email "fhoeben-github@hsac.nl"
+          git config --global user.name "GitHub Action"
+
+      - name: Pull changes from github-release job
+        run: |
+          git pull origin
+
+      - name: Update version
+        run: |
+          mvn -B release:update-versions -DautoVersionSubmodules=true
+
+      - name: Push pom.xml with next -SNAPSHOT version to repository
+        run: |
+          git add pom.xml
+          git commit -m "Prepare for next developments"
+          git push origin master

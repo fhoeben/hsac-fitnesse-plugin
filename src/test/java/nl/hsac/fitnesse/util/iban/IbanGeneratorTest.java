@@ -1,11 +1,10 @@
 package nl.hsac.fitnesse.util.iban;
 
 import nl.hsac.fitnesse.util.RandomUtil;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -16,12 +15,6 @@ public class IbanGeneratorTest {
     private static final RandomUtil RANDOM_UTIL = new RandomUtil();
     private final NLIbanGenerator generator = new NLIbanGenerator();
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
-    /**
-     * Tests random generation.
-     */
     @Test
     public void testGenerate() {
         for (int i = 0; i < 100; i++) {
@@ -59,8 +52,7 @@ public class IbanGeneratorTest {
      */
     @Test
     public void testErrorCountryCode() {
-        exception.expect(IllegalArgumentException.class);
-        ibanGenerator.generateIban("ZZ", "");
+        assertThrows(IllegalArgumentException.class, () -> ibanGenerator.generateIban("ZZ", ""));
     }
 
     /**
@@ -107,8 +99,7 @@ public class IbanGeneratorTest {
      */
     @Test
     public void testErrorPaddingWithZeros() {
-        exception.expect(IllegalArgumentException.class);
-        ibanGenerator.padWithStartingZeros("ZZ", 1);
+        assertThrows(IllegalArgumentException.class, () -> ibanGenerator.padWithStartingZeros("ZZ", 1));
     }
 
     private void testPadWithStartingZeros(String string, int desiredLength) {
@@ -126,6 +117,5 @@ public class IbanGeneratorTest {
         assertEquals("Got: " + result, expectedIbanLength, result.length());
         assertTrue("Got: " + result, result.startsWith(countryCode));
     }
-
 }
 

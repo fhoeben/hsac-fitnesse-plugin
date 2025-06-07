@@ -1,0 +1,39 @@
+name: test
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    branches:
+      - '*'
+      - '!master'
+
+jobs:
+  maven-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+          cache: maven
+
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots package
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: target
+          path: |
+            target
+            !target/generated-sources
+            !target/generated-test-sources
+            !target/classes
+            !target/test-classes
+            !target/maven-*
